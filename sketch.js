@@ -5,6 +5,7 @@ var myInitButton;
 var myNextStepButton;
 var myNextRoundButton;
 var mySummaryButton;
+var myUpdateParametersButton;
 
 // Order input areas
 var retailerOrderInput, warehouseOrderInput, DCOrderInput, factoryOrderInput;
@@ -16,6 +17,7 @@ var stepInRound;
 // Role played in game
 var role;
 var roleInput;
+var adminPasswordInput;
 
 // messages and actions required
 var message;
@@ -78,18 +80,24 @@ var cumcostBackorderFactory = [];
 
 // Range for the order size; the latter is uniformly generated as an integer 
 // within the interval
-var maxOrderSize = 80;
-var minOrderSize = 20;
+var maxOrderSize;
+var maxOrderSizeInput;
+var minOrderSize;
+var minOrderSizeInput;
 
 // Unit holding and backorder costs
-var UCInventoryRetailer = 1;
-var UCInventoryWarehouse = 0.75;
-var UCInventoryDC = 0.50;
-var UCInventoryFactory = 0.25;
-var UCBackorderRetailer = 5;
-var UCBackorderWarehouse = 2;
-var UCBackorderDC = 1.50;
-var UCBackorderFactory = 1;
+var UCInventoryRetailer;
+var UCInventoryWarehouse;
+var UCInventoryDC;
+var UCInventoryFactory;
+var UCBackorderRetailer;
+var UCBackorderWarehouse;
+var UCBackorderDC;
+var UCBackorderFactory;
+
+// Admin Password
+var adminPasswordSuccess = 0;
+var passwordEntered;
 
 
 
@@ -105,6 +113,10 @@ function setup() {
 	roleInput.position(515, 5);
 	roleInput.size(30, 15);
 	
+	adminPasswordInput = createInput('', 'password');
+	adminPasswordInput.position(800, 5);
+	adminPasswordInput.size(120, 15);
+	
 	myInitButton = createButton("Initialize");
 	myInitButton.mousePressed(initGame);
 	
@@ -118,10 +130,17 @@ function setup() {
 	myNextRoundButton = createButton("Next Round");
 	myNextRoundButton.mousePressed(nextRound);
 	
-	//createP('');
+	createP('');
 	
 	mySummaryButton = createButton("Summary");
-	mySummaryButton.mousePressed(myFunction);
+	mySummaryButton.mousePressed(generateSummary);
+	myChartsButton = createButton("Charts");
+	myChartsButton.mousePressed(generateCharts);
+	
+	createP('');
+	
+	myUpdateParametersButton = createButton("Update Parameters");
+	myUpdateParametersButton.mousePressed(updateParameters);
 	
 	createP('');
 	
@@ -144,6 +163,15 @@ function setup() {
 	factoryOrderInput = createInput('');
 	factoryOrderInput.position(20+900, 450);
 	factoryOrderInput.size(30, 15);
+	
+	// game parameters
+	minOrderSizeInput = createInput('');
+	minOrderSizeInput.position(20+1200, 480);
+	minOrderSizeInput.size(30, 15);
+	
+	maxOrderSizeInput = createInput('');
+	maxOrderSizeInput.position(80+1200, 480);
+	maxOrderSizeInput.size(30, 15);
 
 }
 
@@ -165,7 +193,8 @@ function initGame() {
 	
 	role = "NA";
 	switch (roleInput.value()) {
-		case "A": role = "Admin";
+		case "A": checkAdminPassword();
+		if (adminPasswordSuccess) role = "Admin";
 		break;
 		case "R": role = "Retailer";
 		break;
@@ -239,6 +268,19 @@ function initGame() {
 	cumcostInventoryFactory[roundSim] = 0;
 	costBackorderFactory[roundSim] = "NA";
 	cumcostBackorderFactory[roundSim] = 0;
+	
+	// parameters
+	minOrderSize = 20;
+	maxOrderSize = 80;
+	
+	UCInventoryRetailer = 1;
+	UCInventoryWarehouse = 0.75;
+	UCInventoryDC = 0.50;
+	UCInventoryFactory = 0.25;
+	UCBackorderRetailer = 5;
+	UCBackorderWarehouse = 2;
+	UCBackorderDC = 1.50;
+	UCBackorderFactory = 1;
 	
 	switch (role) {
 		case "Admin": displayAll();
@@ -918,22 +960,59 @@ function nextRound() {
 }
 
 
-function myFunction() {
+function generateSummary() {
 //  var myWindow = window.open(url='dummy.html');
 //	var myWindow = window.open("", "MsgWindow", "width=200, height=100");
-	var myWindow = window.open("", "MsgWindow");
-	var table = '';
-	var rows = 200, cols = 10;
-	for (var r = 1; r <= rows; r++) {
-		table += '<tr>'; 
-		for (var c = 1; c <= cols; c++) {
-			table += '<td>' + c + '</td>';
-		}
-		table += '</tr>'; 
+	var summaryRetailer = window.open("", "MsgWindow");
+	var textSummary = 'Summary Retailer';
+	summaryRetailer.document.write('<h1>' + textSummary + '</h1>');
+	var rows = roundSim-1;
+	for (var r = 1; r <= rows; r++) { 
+		textSummary = 'Round: ' + r + ' - Order Received: ' + orderReceivedByRetailer[r] + 
+		' - Qty. Received: ' + quantityReceivedByRetailer[r] + ' - Qty. Delivered: ' + 
+		quantityDeliveredByRetailer[r] + ' - Order Made: ' + orderMadeByRetailerMinus1[r] + 
+		' - Inventory: ' + inventoryRetailer[r] + ' - Backorder: ' + backorderRetailer[r] + 
+		' - Cost Inventory: ' + costInventoryRetailer[r] + ' - Backorder: ' + backorderRetailer[r] + 
+		' - Cost Backorder: ' + costBackorderRetailer[r];
+		summaryRetailer.document.write('<p>' + textSummary + '</p>');
 	}
-    myWindow.document.write('<table>' + table + '</table>');
+}
+
+function generateCharts() {
 	
-//	myWindow.document.write("<p>This is 'MsgWindow'. I am 200px wide and 100px tall!</p>");
+	switch (role) {
+		case "Admin": generateChartsAll();
+		break;
+		case "Retailer": 
+		break;
+	}
+	
+}
+
+function generateChartsAll() {
+
+localStorage.setItem("list_orders_retailer",  JSON.stringify(orderMadeByRetailerMinus1));
+localStorage.setItem("list_inventory_retailer",  JSON.stringify(inventoryRetailer));
+localStorage.setItem("list_backorder_retailer",  JSON.stringify(backorderRetailer));
+localStorage.setItem("list_orders_warehouse",  JSON.stringify(orderMadeByWarehouseMinus1));
+localStorage.setItem("list_inventory_warehouse",  JSON.stringify(inventoryWarehouse));
+localStorage.setItem("list_backorder_warehouse",  JSON.stringify(backorderWarehouse));
+localStorage.setItem("list_orders_DC",  JSON.stringify(orderMadeByDCMinus1));
+localStorage.setItem("list_inventory_DC",  JSON.stringify(inventoryDC));
+localStorage.setItem("list_backorder_DC",  JSON.stringify(backorderDC));
+localStorage.setItem("list_orders_factory",  JSON.stringify(quantityInProduction1));
+localStorage.setItem("list_inventory_factory",  JSON.stringify(inventoryFactory));
+localStorage.setItem("list_backorder_factory",  JSON.stringify(backorderFactory));
+
+var chartWindow = window.open(url="charts/chartsAll.html");
+
+}
+
+function checkAdminPassword() {
+	passwordEntered = adminPasswordInput.value();
+	adminPasswordInput.value('');
+	if (passwordEntered == "admin") adminPasswordSuccess = 1;
+	else alert("Wrong password!");
 
 }
 
@@ -1070,6 +1149,7 @@ function displayInit() {
 	fill(0, 0, 0);
 	textSize(18);
 	text("Playing as: [A]dmin, [R]etailer, [W]arehouse, [D]C, [F]actory?", 20, 20); 
+	text("Password (for Admin):", 600, 20); 
 	
 	textSize(14);
 	text("Retailer", 20, 60);
@@ -1078,6 +1158,7 @@ function displayInit() {
 	text("Factory", 20+900, 60);
 	textSize(18);
 	text("Game Log", 20+ 1200, 20);
+	text("Game Parameters", 20+ 1200, 400);
 	
 	// display Retailer shapes
 	noFill();
@@ -1162,6 +1243,11 @@ function displayInit() {
 	triangle(60+900,340,90+900,340,75+900,310);
 	
 	triangle(230+900,340,260+900,340,245+900,310);
+	
+	//parameters
+	fill(0, 0, 0);
+	textSize(10);
+	text("Range Cust. Orders", 20+1200, 470);
 
 }
 
@@ -1178,6 +1264,8 @@ function displayRound() {
 	text("Action needed: ", 40+1200, 220);
 	text(actionReq, 40+1200, 240);
 	text("---------------------------------------", 40+1200, 260);
+	text("Min: ", 40+1200, 280);
+	text(minOrderSize, 40+1200, 300);
 	
 }
 
@@ -1189,4 +1277,13 @@ function displayAll() {
 	displayWarehouse();
 	displayDC();
 	displayFactory();
+}
+
+function updateParameters() {
+	if (role == "Admin") {
+		minOrderSize = parseFloat(minOrderSizeInput.value());
+		maxOrderSize = parseFloat(maxOrderSizeInput.value());
+		minOrderSizeInput.value('');
+		maxOrderSizeInput.value('');
+	}
 }
