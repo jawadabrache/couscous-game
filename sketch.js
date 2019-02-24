@@ -10,6 +10,12 @@ var myUpdateParametersButton;
 // Order input areas
 var retailerOrderInput, warehouseOrderInput, DCOrderInput, factoryOrderInput;
 
+// Quantity Received areas
+var retailerQtyReceived, warehouseQtyReceived, DCQtyReceived, factoryQtyReceived;
+
+// Order Received areas
+var warehouseOrderReceived, DCOrderReceived, factoryOrderReceived;
+
 // Iterators for rounds and steps
 var roundSim;
 var stepInRound;
@@ -100,7 +106,6 @@ var adminPasswordSuccess = 0;
 var passwordEntered;
 
 
-
 function setup() {
   // put setup code here
 	
@@ -132,9 +137,9 @@ function setup() {
 	
 	createP('');
 	
-	mySummaryButton = createButton("Summary");
-	mySummaryButton.mousePressed(generateSummary);
-	myChartsButton = createButton("Charts");
+	mySummaryButton = createButton("Summary Tables");
+	mySummaryButton.mousePressed(generateTables);
+	myChartsButton = createButton("Summary Charts");
 	myChartsButton.mousePressed(generateCharts);
 	
 	createP('');
@@ -149,20 +154,45 @@ function setup() {
 	retailerOrderInput.size(30, 15);
 	
 	retailerQtyReceived = createInput('');
-	retailerQtyReceived.position(20, 400);
+	retailerQtyReceived.position(200, 400);
 	retailerQtyReceived.size(30, 15);
+	
 	
 	warehouseOrderInput = createInput('');
 	warehouseOrderInput.position(20+300, 450);
 	warehouseOrderInput.size(30, 15);
 	
+	warehouseOrderReceived = createInput('');
+	warehouseOrderReceived.position(20+300, 400);
+	warehouseOrderReceived.size(30, 15);
+	
+	warehouseQtyReceived = createInput('');
+	warehouseQtyReceived.position(200+300, 400);
+	warehouseQtyReceived.size(30, 15);
+	
 	DCOrderInput = createInput('');
 	DCOrderInput.position(20+600, 450);
 	DCOrderInput.size(30, 15);
 	
+	DCOrderReceived = createInput('');
+	DCOrderReceived.position(20+600, 400);
+	DCOrderReceived.size(30, 15);
+	
+	DCQtyReceived = createInput('');
+	DCQtyReceived.position(200+600, 400);
+	DCQtyReceived.size(30, 15);
+	
 	factoryOrderInput = createInput('');
 	factoryOrderInput.position(20+900, 450);
 	factoryOrderInput.size(30, 15);
+	
+	factoryOrderReceived = createInput('');
+	factoryOrderReceived.position(20+900, 400);
+	factoryOrderReceived.size(30, 15);
+	
+	factoryQtyReceived = createInput('');
+	factoryQtyReceived.position(200+900, 400);
+	factoryQtyReceived.size(30, 15);
 	
 	// game parameters
 	minOrderSizeInput = createInput('');
@@ -175,7 +205,6 @@ function setup() {
 
 }
 
-
 function draw() {
 	//background(220, 180, 200);
 	// background(200, 200, 0)
@@ -183,10 +212,8 @@ function draw() {
 	
 }
 
-
-
 function initGame() {
-	roundSim = 1;
+	roundSim = 0;
 	stepInRound = 0;
 	
 	// set role
@@ -287,8 +314,10 @@ function initGame() {
 		break;
 		case "Retailer": displayRetailerOnly();
 		break;
+		case "Warehouse": displayWarehouseOnly();
+		break;
 	}
-	// displayAll();
+
 }
 
 function nextStep() {
@@ -298,13 +327,74 @@ function nextStep() {
 		break;
 		case "Retailer": nextStepRetailer();
 		break;
+		case "Warehouse": nextStepWarehouse();
+		break;
 	}
 }
 
 function nextStepAdmin() {
 	
-	stepInRound++;
 	switch (stepInRound) {
+		case 0: 
+		// new round: update data
+		roundSim++;
+		// Retailer update
+		orderReceivedByRetailer[roundSim] = "NA";
+		orderMadeByRetailerMinus1[roundSim] = orderMadeByRetailerMinus1[roundSim-1];
+		orderMadeByRetailerMinus2[roundSim] = orderMadeByRetailerMinus2[roundSim-1];
+		quantityDeliveredByRetailer[roundSim] = "NA";
+		quantityReceivedByRetailer[roundSim] = "NA";
+		inventoryRetailer[roundSim] = inventoryRetailer[roundSim-1];
+		backorderRetailer[roundSim] = backorderRetailer[roundSim-1];
+		costInventoryRetailer[roundSim] = "NA";
+		cumcostInventoryRetailer[roundSim] = cumcostInventoryRetailer[roundSim-1];
+		costBackorderRetailer[roundSim] = "NA";
+		cumcostBackorderRetailer[roundSim] = cumcostBackorderRetailer[roundSim-1];
+		
+		// Warehouse update
+		orderReceivedByWarehouse[roundSim]= "NA";
+		orderMadeByWarehouseMinus1[roundSim] = orderMadeByWarehouseMinus1[roundSim-1];
+		orderMadeByWarehouseMinus2[roundSim] = orderMadeByWarehouseMinus2[roundSim-1];
+		quantityDeliveredByWarehouseTransit1[roundSim] = quantityDeliveredByWarehouseTransit1[roundSim-1];
+		quantityDeliveredByWarehouseTransit2[roundSim] = quantityDeliveredByWarehouseTransit2[roundSim-1];
+		quantityReceivedByWarehouse[roundSim]= "NA";
+		inventoryWarehouse[roundSim] = inventoryWarehouse[roundSim-1];
+		backorderWarehouse[roundSim] = backorderWarehouse[roundSim-1];
+		costInventoryWarehouse[roundSim] = "NA";
+		cumcostInventoryWarehouse[roundSim] = cumcostInventoryWarehouse[roundSim-1];
+		costBackorderWarehouse[roundSim] = "NA";
+		cumcostBackorderWarehouse[roundSim] = cumcostBackorderWarehouse[roundSim-1];
+		
+		// DC update
+		orderReceivedByDC[roundSim]= "NA";
+		orderMadeByDCMinus1[roundSim] = orderMadeByDCMinus1[roundSim-1];
+		orderMadeByDCMinus2[roundSim] = orderMadeByDCMinus2[roundSim-1];
+		quantityDeliveredByDCTransit1[roundSim] = quantityDeliveredByDCTransit1[roundSim-1];
+		quantityDeliveredByDCTransit2[roundSim] = quantityDeliveredByDCTransit2[roundSim-1];
+		quantityReceivedByDC[roundSim]= "NA";
+		inventoryDC[roundSim] = inventoryDC[roundSim-1];
+		backorderDC[roundSim] = backorderDC[roundSim-1];
+		costInventoryDC[roundSim] = "NA";
+		cumcostInventoryDC[roundSim] = cumcostInventoryDC[roundSim-1];
+		costBackorderDC[roundSim] = "NA";
+		cumcostBackorderDC[roundSim] = cumcostBackorderDC[roundSim-1];
+		
+		// Factory update
+		orderReceivedByFactory[roundSim]= "NA";
+		quantityDeliveredByFactoryTransit1[roundSim] = quantityDeliveredByFactoryTransit1[roundSim-1];
+		quantityDeliveredByFactoryTransit2[roundSim] = quantityDeliveredByFactoryTransit2[roundSim-1];
+		quantityInProduction1[roundSim] = quantityInProduction1[roundSim-1];
+		quantityInProduction2[roundSim] = quantityInProduction2[roundSim-1];
+		quantityInProduction3[roundSim] = quantityInProduction3[roundSim-1];
+		inventoryFactory[roundSim] = inventoryFactory[roundSim-1];
+		backorderFactory[roundSim] = backorderFactory[roundSim-1];
+		costInventoryFactory[roundSim] = "NA";
+		cumcostInventoryFactory[roundSim] = cumcostInventoryFactory[roundSim-1];
+		costBackorderFactory[roundSim] = "NA";
+		cumcostBackorderFactory[roundSim] = cumcostBackorderFactory[roundSim-1];
+		message = "New round starting!";
+		displayAll();
+		break;
 		case 1:
 		// step 1: retailer informs the warehouse that they are receiving 
 		// the order they made two periods earlier 
@@ -555,11 +645,21 @@ function nextStepAdmin() {
 		displayAll();
 		break;
 		case 27:
-		// step 27: End of current round, increment round and return step to 0 
+		// step 27: End of current round
+		message = "End of current round!";
+		displayAll();
+		break;
+	}
+	if (stepInRound == 27) {
+		stepInRound = 0; 
+	} else stepInRound++;
+}
+
+function nextStepRetailer() {
+	
+	switch (stepInRound) {
+		case 0:
 		roundSim++;
-		stepInRound = 0;
-		
-		message = "New round to start!";
 		
 		// Retailer update
 		orderReceivedByRetailer[roundSim] = "NA";
@@ -574,63 +674,14 @@ function nextStepAdmin() {
 		costBackorderRetailer[roundSim] = "NA";
 		cumcostBackorderRetailer[roundSim] = cumcostBackorderRetailer[roundSim-1];
 		
-		// Warehouse update
-		orderReceivedByWarehouse[roundSim]= "NA";
-		orderMadeByWarehouseMinus1[roundSim] = orderMadeByWarehouseMinus1[roundSim-1];
-		orderMadeByWarehouseMinus2[roundSim] = orderMadeByWarehouseMinus2[roundSim-1];
-		quantityDeliveredByWarehouseTransit1[roundSim] = quantityDeliveredByWarehouseTransit1[roundSim-1];
-		quantityDeliveredByWarehouseTransit2[roundSim] = quantityDeliveredByWarehouseTransit2[roundSim-1];
-		quantityReceivedByWarehouse[roundSim]= "NA";
-		inventoryWarehouse[roundSim] = inventoryWarehouse[roundSim-1];
-		backorderWarehouse[roundSim] = backorderWarehouse[roundSim-1];
-		costInventoryWarehouse[roundSim] = "NA";
-		cumcostInventoryWarehouse[roundSim] = cumcostInventoryWarehouse[roundSim-1];
-		costBackorderWarehouse[roundSim] = "NA";
-		cumcostBackorderWarehouse[roundSim] = cumcostBackorderWarehouse[roundSim-1];
-		
-		// DC update
-		orderReceivedByDC[roundSim]= "NA";
-		orderMadeByDCMinus1[roundSim] = orderMadeByDCMinus1[roundSim-1];
-		orderMadeByDCMinus2[roundSim] = orderMadeByDCMinus2[roundSim-1];
-		quantityDeliveredByDCTransit1[roundSim] = quantityDeliveredByDCTransit1[roundSim-1];
-		quantityDeliveredByDCTransit2[roundSim] = quantityDeliveredByDCTransit2[roundSim-1];
-		quantityReceivedByDC[roundSim]= "NA";
-		inventoryDC[roundSim] = inventoryDC[roundSim-1];
-		backorderDC[roundSim] = backorderDC[roundSim-1];
-		costInventoryDC[roundSim] = "NA";
-		cumcostInventoryDC[roundSim] = cumcostInventoryDC[roundSim-1];
-		costBackorderDC[roundSim] = "NA";
-		cumcostBackorderDC[roundSim] = cumcostBackorderDC[roundSim-1];
-		
-		// Factory update
-		orderReceivedByFactory[roundSim]= "NA";
-		quantityDeliveredByFactoryTransit1[roundSim] = quantityDeliveredByFactoryTransit1[roundSim-1];
-		quantityDeliveredByFactoryTransit2[roundSim] = quantityDeliveredByFactoryTransit2[roundSim-1];
-		quantityInProduction1[roundSim] = quantityInProduction1[roundSim-1];
-		quantityInProduction2[roundSim] = quantityInProduction2[roundSim-1];
-		quantityInProduction3[roundSim] = quantityInProduction3[roundSim-1];
-		inventoryFactory[roundSim] = inventoryFactory[roundSim-1];
-		backorderFactory[roundSim] = backorderFactory[roundSim-1];
-		costInventoryFactory[roundSim] = "NA";
-		cumcostInventoryFactory[roundSim] = cumcostInventoryFactory[roundSim-1];
-		costBackorderFactory[roundSim] = "NA";
-		cumcostBackorderFactory[roundSim] = cumcostBackorderFactory[roundSim-1];
-		
-		displayAll();
-		
+		message = "New round starting!";
+		displayRetailerOnly();
 		break;
-	}
-	
-}
-
-function nextStepRetailer() {
-	stepInRound++;
-	switch (stepInRound) {
 		case 1:
 		// step 1: retailer informs the warehouse that they are receiving 
 		// the order they made two periods earlier 
 		message = "Retailer informs Warehouse of incoming order";
-		actionReq = "Order to transmit to Warehouse! Waiting Shipment ...";
+		actionReq = "Order to transmit to Warehouse! Waiting shipment ...";
 		displayRetailerOnly();
 		break;
 		case 2:
@@ -698,11 +749,153 @@ function nextStepRetailer() {
 		displayRetailerOnly();
 		break;
 		case 9:
-		// step 9: End of current round, increment round and return step to 0 
+		// step 9: End of current round
+		message = "End of current round!";
+		displayRetailerOnly();
+		break;
+	}
+	if (stepInRound == 9) {
+		stepInRound = 0; 
+	} else stepInRound++;
+	
+}
+
+function nextStepWarehouse() {
+	
+	switch (stepInRound) {
+		case 0:
 		roundSim++;
-		stepInRound = 0;
 		
-		message = "New round to start!";
+		// Warehouse update
+		orderReceivedByWarehouse[roundSim]= "NA";
+		orderMadeByWarehouseMinus1[roundSim] = orderMadeByWarehouseMinus1[roundSim-1];
+		orderMadeByWarehouseMinus2[roundSim] = orderMadeByWarehouseMinus2[roundSim-1];
+		quantityDeliveredByWarehouseTransit1[roundSim] = quantityDeliveredByWarehouseTransit1[roundSim-1];
+		quantityDeliveredByWarehouseTransit2[roundSim] = quantityDeliveredByWarehouseTransit2[roundSim-1];
+		quantityReceivedByWarehouse[roundSim]= "NA";
+		inventoryWarehouse[roundSim] = inventoryWarehouse[roundSim-1];
+		backorderWarehouse[roundSim] = backorderWarehouse[roundSim-1];
+		costInventoryWarehouse[roundSim] = "NA";
+		cumcostInventoryWarehouse[roundSim] = cumcostInventoryWarehouse[roundSim-1];
+		costBackorderWarehouse[roundSim] = "NA";
+		cumcostBackorderWarehouse[roundSim] = cumcostBackorderWarehouse[roundSim-1];
+		
+		message = "New round starting!";
+		displayWarehouseOnly();
+		break;
+		case 1: 
+		// step 1: Warehouse takes note of the order received from retailer  
+		message = "Warehouse takes note of the order received from retailer";
+		actionReq = "Order received to enter!";
+		displayWarehouseOnly();
+		break;
+		case 2:
+		// step 2: Order received by warehouse updated 
+		orderReceivedByWarehouse[roundSim] = parseFloat(warehouseOrderReceived.value());
+		message = "Order received by warehouse updated";
+		actionReq = "";
+		displayWarehouseOnly();
+		break;
+		case 3:
+		// step 3: Warehouse informs the DC that they are receiving 
+		// the order they made two periods earlier 
+		message = "Warehouse informs DC of incoming order";
+		actionReq = "Order to transmit to DC! Waiting shipment ...";
+		displayWarehouseOnly();
+		break;
+		case 4:
+		// step 4: Warehouse takes note of the shipment received from DC  
+		message = "Warehouse takes note of the shipment received from DC";
+		actionReq = "Quantity received to enter!";
+		displayWarehouseOnly();
+		break;
+		case 5:
+		// step 5: Quantity received by retailer updated 
+		quantityReceivedByWarehouse[roundSim] = parseFloat(warehouseQtyReceived.value());
+		message = "Quantity received by warehouse updated";
+		actionReq = "";
+		displayWarehouseOnly();
+		break;
+		case 6:
+		// step 6: Warehouse informs retailer of incoming shipment
+		message = "Warehouse informs retailer of incoming shipment";
+		actionReq = "Shipment sent to retailer ...";
+		displayWarehouseOnly();
+		break;
+		case 7:
+		// step 7: Shipment advancement warehouse to retailer
+		quantityDeliveredByWarehouseTransit2[roundSim] = quantityDeliveredByWarehouseTransit1[roundSim];
+		quantityDeliveredByWarehouseTransit1[roundSim] = "NA";
+		message = "Shipment advancement warehouse to retailer";
+		actionReq = "";
+		displayWarehouseOnly();
+		break;
+		case 8:
+		// step 8: Quantity added to inventory at the level of Warehouse
+		inventoryWarehouse[roundSim] = inventoryWarehouse[roundSim] + quantityReceivedByWarehouse[roundSim];
+		message = "Quantity added to Warehouse inventory";
+		displayWarehouseOnly();
+		break;
+		case 9:
+		// step 9: Order fulfillment at the level of Warehouse 
+		backorderWarehouse[roundSim] = backorderWarehouse[roundSim] + orderReceivedByWarehouse[roundSim];
+		if (inventoryWarehouse[roundSim] >= backorderWarehouse[roundSim]) 
+		{
+			quantityDeliveredByWarehouseTransit1[roundSim] = backorderWarehouse[roundSim] ;
+			inventoryWarehouse[roundSim] = inventoryWarehouse[roundSim] - backorderWarehouse[roundSim];
+			backorderWarehouse[roundSim] = 0;
+		}
+		else
+		{
+			quantityDeliveredByWarehouseTransit1[roundSim] = inventoryWarehouse[roundSim];
+			backorderWarehouse[roundSim] = backorderWarehouse[roundSim] - inventoryWarehouse[roundSim];
+			inventoryWarehouse[roundSim] = 0;
+		}
+		
+		// compute inventory and backorder costs
+		costInventoryWarehouse[roundSim] = UCInventoryWarehouse * inventoryWarehouse[roundSim];
+		cumcostInventoryWarehouse[roundSim] += costInventoryWarehouse[roundSim];
+		costBackorderWarehouse[roundSim] = UCBackorderWarehouse * backorderWarehouse[roundSim];
+		cumcostBackorderWarehouse[roundSim] += costBackorderWarehouse[roundSim];
+		message = "Order fulfillment and inventory update at Warehouse";
+		displayWarehouseOnly();
+		break;
+		case 10:
+		// step 10: orders advancing at the level of Warehouse 
+		orderMadeByWarehouseMinus2[roundSim] = orderMadeByWarehouseMinus1[roundSim];
+		orderMadeByWarehouseMinus1[roundSim] = "NA";
+		message = "Orders advancing at Warehouse";
+		actionReq = "Warehouse needs to enter new order!";
+		displayWarehouseOnly();
+		break;
+		case 11:
+		// step 11: Warehouse enters its order 
+		orderMadeByWarehouseMinus1[roundSim] = parseFloat(warehouseOrderInput.value());
+		message = "New order by Warehouse";
+		actionReq = "";
+		displayWarehouseOnly();
+		break;
+		case 12:
+		// step 12: End of current round
+		message = "End of current round!";
+		displayWarehouseOnly();
+		break;
+	}
+	if (stepInRound == 12) {
+		stepInRound = 0; 
+	} else stepInRound++;
+	
+}
+
+function nextRound() {
+	
+	if (stepInRound != 0) {
+		// DO NOTHING: you need to finish the previous round first
+	}
+	else {
+		
+		// update round first
+		roundSim++;
 		
 		// Retailer update
 		orderReceivedByRetailer[roundSim] = "NA";
@@ -717,18 +910,48 @@ function nextStepRetailer() {
 		costBackorderRetailer[roundSim] = "NA";
 		cumcostBackorderRetailer[roundSim] = cumcostBackorderRetailer[roundSim-1];
 		
-		displayRetailerOnly();
-		break;
-	}
-	
-}
-
-function nextRound() {
-	
-	if (stepInRound != 0) {
-		// DO NOTHING: you need to finish the previous round first
-	}
-	else {
+		// Warehouse update
+		orderReceivedByWarehouse[roundSim]= "NA";
+		orderMadeByWarehouseMinus1[roundSim] = orderMadeByWarehouseMinus1[roundSim-1];
+		orderMadeByWarehouseMinus2[roundSim] = orderMadeByWarehouseMinus2[roundSim-1];
+		quantityDeliveredByWarehouseTransit1[roundSim] = quantityDeliveredByWarehouseTransit1[roundSim-1];
+		quantityDeliveredByWarehouseTransit2[roundSim] = quantityDeliveredByWarehouseTransit2[roundSim-1];
+		quantityReceivedByWarehouse[roundSim]= "NA";
+		inventoryWarehouse[roundSim] = inventoryWarehouse[roundSim-1];
+		backorderWarehouse[roundSim] = backorderWarehouse[roundSim-1];
+		costInventoryWarehouse[roundSim] = "NA";
+		cumcostInventoryWarehouse[roundSim] = cumcostInventoryWarehouse[roundSim-1];
+		costBackorderWarehouse[roundSim] = "NA";
+		cumcostBackorderWarehouse[roundSim] = cumcostBackorderWarehouse[roundSim-1];
+		
+		// DC update
+		orderReceivedByDC[roundSim]= "NA";
+		orderMadeByDCMinus1[roundSim] = orderMadeByDCMinus1[roundSim-1];
+		orderMadeByDCMinus2[roundSim] = orderMadeByDCMinus2[roundSim-1];
+		quantityDeliveredByDCTransit1[roundSim] = quantityDeliveredByDCTransit1[roundSim-1];
+		quantityDeliveredByDCTransit2[roundSim] = quantityDeliveredByDCTransit2[roundSim-1];
+		quantityReceivedByDC[roundSim]= "NA";
+		inventoryDC[roundSim] = inventoryDC[roundSim-1];
+		backorderDC[roundSim] = backorderDC[roundSim-1];
+		costInventoryDC[roundSim] = "NA";
+		cumcostInventoryDC[roundSim] = cumcostInventoryDC[roundSim-1];
+		costBackorderDC[roundSim] = "NA";
+		cumcostBackorderDC[roundSim] = cumcostBackorderDC[roundSim-1];
+		
+		// Factory update
+		orderReceivedByFactory[roundSim]= "NA";
+		quantityDeliveredByFactoryTransit1[roundSim] = quantityDeliveredByFactoryTransit1[roundSim-1];
+		quantityDeliveredByFactoryTransit2[roundSim] = quantityDeliveredByFactoryTransit2[roundSim-1];
+		quantityInProduction1[roundSim] = quantityInProduction1[roundSim-1];
+		quantityInProduction2[roundSim] = quantityInProduction2[roundSim-1];
+		quantityInProduction3[roundSim] = quantityInProduction3[roundSim-1];
+		inventoryFactory[roundSim] = inventoryFactory[roundSim-1];
+		backorderFactory[roundSim] = backorderFactory[roundSim-1];
+		costInventoryFactory[roundSim] = "NA";
+		cumcostInventoryFactory[roundSim] = cumcostInventoryFactory[roundSim-1];
+		costBackorderFactory[roundSim] = "NA";
+		cumcostBackorderFactory[roundSim] = cumcostBackorderFactory[roundSim-1];
+		
 		// Perform all the steps at once
 		
 		// step 1: retailer informs the warehouse that they are receiving 
@@ -894,64 +1117,9 @@ function nextRound() {
 		// step 26: Retailer enters its order 
 		orderMadeByRetailerMinus1[roundSim] = parseFloat(retailerOrderInput.value());
 		
-		// step 27: End of current round, increment round and return step to 0 
-		roundSim++;
-		// stepInRound = 0; NO NEED FOR THIS
+		// step 27: End of current round
 		
-		// Retailer update
-		orderReceivedByRetailer[roundSim] = "NA";
-		orderMadeByRetailerMinus1[roundSim] = orderMadeByRetailerMinus1[roundSim-1];
-		orderMadeByRetailerMinus2[roundSim] = orderMadeByRetailerMinus2[roundSim-1];
-		quantityDeliveredByRetailer[roundSim] = "NA";
-		quantityReceivedByRetailer[roundSim] = "NA";
-		inventoryRetailer[roundSim] = inventoryRetailer[roundSim-1];
-		backorderRetailer[roundSim] = backorderRetailer[roundSim-1];
-		costInventoryRetailer[roundSim] = "NA";
-		cumcostInventoryRetailer[roundSim] = cumcostInventoryRetailer[roundSim-1];
-		costBackorderRetailer[roundSim] = "NA";
-		cumcostBackorderRetailer[roundSim] = cumcostBackorderRetailer[roundSim-1];
-		
-		// Warehouse update
-		orderReceivedByWarehouse[roundSim]= "NA";
-		orderMadeByWarehouseMinus1[roundSim] = orderMadeByWarehouseMinus1[roundSim-1];
-		orderMadeByWarehouseMinus2[roundSim] = orderMadeByWarehouseMinus2[roundSim-1];
-		quantityDeliveredByWarehouseTransit1[roundSim] = quantityDeliveredByWarehouseTransit1[roundSim-1];
-		quantityDeliveredByWarehouseTransit2[roundSim] = quantityDeliveredByWarehouseTransit2[roundSim-1];
-		quantityReceivedByWarehouse[roundSim]= "NA";
-		inventoryWarehouse[roundSim] = inventoryWarehouse[roundSim-1];
-		backorderWarehouse[roundSim] = backorderWarehouse[roundSim-1];
-		costInventoryWarehouse[roundSim] = "NA";
-		cumcostInventoryWarehouse[roundSim] = cumcostInventoryWarehouse[roundSim-1];
-		costBackorderWarehouse[roundSim] = "NA";
-		cumcostBackorderWarehouse[roundSim] = cumcostBackorderWarehouse[roundSim-1];
-		
-		// DC update
-		orderReceivedByDC[roundSim]= "NA";
-		orderMadeByDCMinus1[roundSim] = orderMadeByDCMinus1[roundSim-1];
-		orderMadeByDCMinus2[roundSim] = orderMadeByDCMinus2[roundSim-1];
-		quantityDeliveredByDCTransit1[roundSim] = quantityDeliveredByDCTransit1[roundSim-1];
-		quantityDeliveredByDCTransit2[roundSim] = quantityDeliveredByDCTransit2[roundSim-1];
-		quantityReceivedByDC[roundSim]= "NA";
-		inventoryDC[roundSim] = inventoryDC[roundSim-1];
-		backorderDC[roundSim] = backorderDC[roundSim-1];
-		costInventoryDC[roundSim] = "NA";
-		cumcostInventoryDC[roundSim] = cumcostInventoryDC[roundSim-1];
-		costBackorderDC[roundSim] = "NA";
-		cumcostBackorderDC[roundSim] = cumcostBackorderDC[roundSim-1];
-		
-		// Factory update
-		orderReceivedByFactory[roundSim]= "NA";
-		quantityDeliveredByFactoryTransit1[roundSim] = quantityDeliveredByFactoryTransit1[roundSim-1];
-		quantityDeliveredByFactoryTransit2[roundSim] = quantityDeliveredByFactoryTransit2[roundSim-1];
-		quantityInProduction1[roundSim] = quantityInProduction1[roundSim-1];
-		quantityInProduction2[roundSim] = quantityInProduction2[roundSim-1];
-		quantityInProduction3[roundSim] = quantityInProduction3[roundSim-1];
-		inventoryFactory[roundSim] = inventoryFactory[roundSim-1];
-		backorderFactory[roundSim] = backorderFactory[roundSim-1];
-		costInventoryFactory[roundSim] = "NA";
-		cumcostInventoryFactory[roundSim] = cumcostInventoryFactory[roundSim-1];
-		costBackorderFactory[roundSim] = "NA";
-		cumcostBackorderFactory[roundSim] = cumcostBackorderFactory[roundSim-1];
+		// stepInRound = 0; NO NEED FOR THIS IN THE BATCH MODE
 		
 		displayAll();	
 	}
@@ -959,32 +1127,15 @@ function nextRound() {
 
 }
 
-
-function generateSummary() {
-//  var myWindow = window.open(url='dummy.html');
-//	var myWindow = window.open("", "MsgWindow", "width=200, height=100");
-	var summaryRetailer = window.open("", "MsgWindow");
-	var textSummary = 'Summary Retailer';
-	summaryRetailer.document.write('<h1>' + textSummary + '</h1>');
-	var rows = roundSim-1;
-	for (var r = 1; r <= rows; r++) { 
-		textSummary = 'Round: ' + r + ' - Order Received: ' + orderReceivedByRetailer[r] + 
-		' - Qty. Received: ' + quantityReceivedByRetailer[r] + ' - Qty. Delivered: ' + 
-		quantityDeliveredByRetailer[r] + ' - Order Made: ' + orderMadeByRetailerMinus1[r] + 
-		' - Inventory: ' + inventoryRetailer[r] + ' - Backorder: ' + backorderRetailer[r] + 
-		' - Cost Inventory: ' + costInventoryRetailer[r] + ' - Backorder: ' + backorderRetailer[r] + 
-		' - Cost Backorder: ' + costBackorderRetailer[r];
-		summaryRetailer.document.write('<p>' + textSummary + '</p>');
-	}
-}
-
 function generateCharts() {
 	
 	switch (role) {
 		case "Admin": generateChartsAll();
 		break;
-		case "Retailer": 
+		case "Retailer": generateChartsRetailer();
 		break;
+		case "Warehouse": generateChartsWarehouse();
+		break;	
 	}
 	
 }
@@ -1008,6 +1159,77 @@ var chartWindow = window.open(url="charts/chartsAll.html");
 
 }
 
+function generateChartsRetailer() {
+
+localStorage.setItem("list_orders_retailer",  JSON.stringify(orderMadeByRetailerMinus1));
+localStorage.setItem("list_inventory_retailer",  JSON.stringify(inventoryRetailer));
+localStorage.setItem("list_backorder_retailer",  JSON.stringify(backorderRetailer));
+
+var chartWindow = window.open(url="charts/chartsRetailer.html");
+}
+
+function generateChartsWarehouse() {
+
+localStorage.setItem("list_orders_warehouse",  JSON.stringify(orderMadeByWarehouseMinus1));
+localStorage.setItem("list_inventory_warehouse",  JSON.stringify(inventoryWarehouse));
+localStorage.setItem("list_backorder_warehouse",  JSON.stringify(backorderWarehouse));
+
+var chartWindow = window.open(url="charts/chartsWarehouse.html");
+
+}
+
+function generateTables() {
+	
+	switch (role) {
+		case "Admin": generateTablesAll();
+		break;
+		case "Retailer": generateTablesRetailer();
+		break;
+		case "Warehouse": generateTablesWarehouse();
+		break;
+	}
+	
+}
+
+function generateTablesAll() {
+
+localStorage.setItem("list_orders_retailer",  JSON.stringify(orderMadeByRetailerMinus1));
+localStorage.setItem("list_inventory_retailer",  JSON.stringify(inventoryRetailer));
+localStorage.setItem("list_backorder_retailer",  JSON.stringify(backorderRetailer));
+localStorage.setItem("list_orders_warehouse",  JSON.stringify(orderMadeByWarehouseMinus1));
+localStorage.setItem("list_inventory_warehouse",  JSON.stringify(inventoryWarehouse));
+localStorage.setItem("list_backorder_warehouse",  JSON.stringify(backorderWarehouse));
+localStorage.setItem("list_orders_DC",  JSON.stringify(orderMadeByDCMinus1));
+localStorage.setItem("list_inventory_DC",  JSON.stringify(inventoryDC));
+localStorage.setItem("list_backorder_DC",  JSON.stringify(backorderDC));
+localStorage.setItem("list_orders_factory",  JSON.stringify(quantityInProduction1));
+localStorage.setItem("list_inventory_factory",  JSON.stringify(inventoryFactory));
+localStorage.setItem("list_backorder_factory",  JSON.stringify(backorderFactory));
+
+var chartWindow = window.open(url="charts/TablesAll.html");
+
+}
+
+function generateTablesWarehouse() {
+
+
+localStorage.setItem("list_orders_warehouse",  JSON.stringify(orderMadeByWarehouseMinus1));
+localStorage.setItem("list_inventory_warehouse",  JSON.stringify(inventoryWarehouse));
+localStorage.setItem("list_backorder_warehouse",  JSON.stringify(backorderWarehouse));
+
+var chartWindow = window.open(url="charts/TablesWarehouse.html");
+
+}
+
+function generateTablesRetailer() {
+
+localStorage.setItem("list_orders_retailer",  JSON.stringify(orderMadeByRetailerMinus1));
+localStorage.setItem("list_inventory_retailer",  JSON.stringify(inventoryRetailer));
+localStorage.setItem("list_backorder_retailer",  JSON.stringify(backorderRetailer));
+
+var chartWindow = window.open(url="charts/TablesRetailer.html");
+}
+
 function checkAdminPassword() {
 	passwordEntered = adminPasswordInput.value();
 	adminPasswordInput.value('');
@@ -1023,7 +1245,31 @@ function displayRetailerOnly() {
 	displayRetailer();
 	displayRetailerPlus();
 }
-	
+
+function displayWarehouseOnly() {
+	clear();
+	displayInit();
+	displayRound();
+	displayWarehouse();
+	displayWarehousePlus();
+}
+
+function displayDCOnly() {
+	clear();
+	displayInit();
+	displayRound();
+	displayDC();
+	displayDCPlus();
+}
+
+function displayFactoryOnly() {
+	clear();
+	displayInit();
+	displayRound();
+	displayFactory();
+	displayFactoryPlus();
+}
+
 function displayRetailer() {
 	fill(0, 0, 0);
 	textSize(14);
@@ -1054,7 +1300,7 @@ function displayRetailer() {
 }
 
 function displayRetailerPlus() {
-	text("Qty. Received", 20, 395);
+	text("Qty. Received", 200, 395);
 }
 
 function displayWarehouse() {
@@ -1086,6 +1332,11 @@ function displayWarehouse() {
 
 }
 
+function displayWarehousePlus() {
+	text("Order Received", 20+300, 395);
+	text("Qty. Received", 200+300, 395);
+}
+
 function displayDC() {
 	fill(0, 0, 0);
 	textSize(14);
@@ -1115,6 +1366,11 @@ function displayDC() {
 
 }
 
+function displayDCPlus() {
+	text("Order Received", 20+600, 395);
+	text("Qty. Received", 200+600, 395);
+}
+
 function displayFactory() {
 	fill(0, 0, 0);
 	textSize(14);
@@ -1142,6 +1398,11 @@ function displayFactory() {
 	
 	text("Order", 20+900, 445);
 
+}
+
+function displayFactoryPlus() {
+	text("Order Received", 20+900, 395);
+	text("Qty. Received", 200+900, 395);
 }
 
 function displayInit() {
@@ -1264,8 +1525,6 @@ function displayRound() {
 	text("Action needed: ", 40+1200, 220);
 	text(actionReq, 40+1200, 240);
 	text("---------------------------------------", 40+1200, 260);
-	text("Min: ", 40+1200, 280);
-	text(minOrderSize, 40+1200, 300);
 	
 }
 
