@@ -105,7 +105,6 @@ var UCBackorderFactory;
 var adminPasswordSuccess = 0;
 var passwordEntered;
 
-var song1, song2;
 
 function drawInformationFlowLine(xorig, yorig, xdest, ydest, withTerm) {
 
@@ -159,8 +158,6 @@ function setup() {
 	
 	// main canvas
 	canvas = createCanvas(1600, 550);
-	song1 = loadSound('sounds/The End - Beginning.mp3');
-	song2 = loadSound('sounds/The End - End.mp3');
 	
 	//createP('');
 	roleInput = createInput('');
@@ -1656,7 +1653,6 @@ function updateParameters() {
 function drawNotifBeginningRetailer() {
 	textSize(18);
 	text("Round is beginning ...", 20, 380); 
-	song1.play();
 }
 
 function drawNotifEndRetailer() {
