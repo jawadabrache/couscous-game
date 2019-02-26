@@ -105,13 +105,62 @@ var UCBackorderFactory;
 var adminPasswordSuccess = 0;
 var passwordEntered;
 
+var song1, song2;
+
+function drawInformationFlowLine(xorig, yorig, xdest, ydest, withTerm) {
+
+	var rad = 5; //vertex radius
+    var offset = rad;
+    point(xorig, yorig); //starting vertex
+    point(xdest, ydest); //ending vertex
+	
+	strokeWeight(1);
+	drawingContext.setLineDash([0.5, 3]);
+    line(xorig, yorig, xdest, ydest); //draw a line beetween the vertices
+
+	if (withTerm) {
+		// this code is to make the arrow point
+		push() //start new drawing state
+		var angle = atan2(yorig - ydest, xorig - xdest); //gets the angle of the line
+		translate(xdest, ydest); //translates to the destination vertex
+		rotate(angle-HALF_PI); //rotates the arrow point
+		triangle(-offset*0.5, offset, offset*0.5, offset, 0, -offset/2); //draws the arrow point as a triangle
+		pop();
+	}
+	drawingContext.setLineDash([]);
+}
+
+function drawMaterialFlowLine(xorig, yorig, xdest, ydest, withTerm) {
+		
+	var rad = 5; //vertex radius
+    var offset = rad;
+    point(xorig, yorig); //starting vertex
+    point(xdest, ydest); //ending vertex
+	
+	strokeWeight(1);
+	drawingContext.setLineDash([]);
+    line(xorig, yorig, xdest, ydest); //draw a line beetween the vertices
+
+	if (withTerm) {
+		// this code is to make the arrow point
+		push() //start new drawing state
+		var angle = atan2(yorig - ydest, xorig - xdest); //gets the angle of the line
+		translate(xdest, ydest); //translates to the destination vertex
+		rotate(angle-HALF_PI); //rotates the arrow point
+		triangle(-offset*0.5, offset, offset*0.5, offset, 0, -offset/2); //draws the arrow point as a triangle
+		pop();
+	}
+	
+}
+
 
 function setup() {
   // put setup code here
 	
 	// main canvas
-	canvas = createCanvas(1600, 500);
-	//background(230, 0, 230)
+	canvas = createCanvas(1600, 550);
+	//song1 = loadSound('sounds/The End - Beginning.mp3');
+	//song2 = loadSound('sounds/The End - End.mp3');
 	
 	//createP('');
 	roleInput = createInput('');
@@ -206,8 +255,7 @@ function setup() {
 }
 
 function draw() {
-	//background(220, 180, 200);
-	// background(200, 200, 0)
+
 	displayInit();
 	
 }
@@ -676,13 +724,19 @@ function nextStepRetailer() {
 		
 		message = "New round starting!";
 		displayRetailerOnly();
+		
+		drawNotifBeginningRetailer();
+		
 		break;
 		case 1:
 		// step 1: retailer informs the warehouse that they are receiving 
 		// the order they made two periods earlier 
 		message = "Retailer informs Warehouse of incoming order";
 		actionReq = "Order to transmit to Warehouse! Waiting shipment ...";
-		displayRetailerOnly();
+		displayRetailerOnly();	
+		
+		// draw flow
+		drawLineRetailer_s01();
 		break;
 		case 2:
 		// step 2: Retailer takes note of the shipment received from Warehouse 
@@ -690,6 +744,12 @@ function nextStepRetailer() {
 		message = "Retailer takes note of the shipment received from Warehouse";
 		actionReq = "Quantity received to enter!";
 		displayRetailerOnly();
+		
+		// draw line
+		drawLineRetailer_s02();
+		
+		drawNotifRetailer_s02();
+
 		break;
 		case 3:
 		// step 3: Quantity received by retailer updated 
@@ -697,18 +757,27 @@ function nextStepRetailer() {
 		message = "Quantity received by retailer updated";
 		actionReq = "";
 		displayRetailerOnly();
+		
+		// draw line
+		drawLineRetailer_s03();
 		break;
 		case 4:
 		// step 4: Customer order generated at Retailer
 		orderReceivedByRetailer[roundSim] = Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize);
 		message = "Retailer gets new customer order";
 		displayRetailerOnly();
+		
+		// draw line
+		drawLineRetailer_s04();
 		break;
 		case 5:
 		// step 5: Quantity added to inventory at the level of Retailer
 		inventoryRetailer[roundSim] = inventoryRetailer[roundSim] + quantityReceivedByRetailer[roundSim];
 		message = "Quantity added to Retailer inventory";
 		displayRetailerOnly();
+		
+		// draw line
+		drawLineRetailer_s05();
 		break;
 		case 6:
 		// step 6: Order fulfillment at the level of Retailer
@@ -731,7 +800,11 @@ function nextStepRetailer() {
 		costBackorderRetailer[roundSim] = UCBackorderRetailer * backorderRetailer[roundSim];
 		cumcostBackorderRetailer[roundSim] += costBackorderRetailer[roundSim];
 		message = "Order fulfillment and inventory update at Retailer";
+		
 		displayRetailerOnly();
+		
+		// draw line
+		drawLineRetailer_s06();
 		break;
 		case 7:
 		// step 7: orders advancing at the level of Retailer 
@@ -740,6 +813,12 @@ function nextStepRetailer() {
 		message = "Orders advancing at Retailer";
 		actionReq = "Retailer needs to enter new order!";
 		displayRetailerOnly();
+		
+		// draw line
+		drawLineRetailer_s07();
+		
+		// draw line
+		drawNotifRetailer_s07();
 		break;
 		case 8:
 		// step 8: Retailer enters its order 
@@ -747,11 +826,16 @@ function nextStepRetailer() {
 		message = "New order by Retailer";
 		actionReq = "";
 		displayRetailerOnly();
+		
+		// draw line
+		drawLineRetailer_s08();
 		break;
 		case 9:
 		// step 9: End of current round
 		message = "End of current round!";
 		displayRetailerOnly();
+		
+		drawNotifEndRetailer();
 		break;
 	}
 	if (stepInRound == 9) {
@@ -1271,6 +1355,7 @@ function displayFactoryOnly() {
 }
 
 function displayRetailer() {
+	
 	fill(0, 0, 0);
 	textSize(14);
 	text("Retailer", 20, 60);
@@ -1300,6 +1385,7 @@ function displayRetailer() {
 }
 
 function displayRetailerPlus() {
+	
 	text("Qty. Received", 200, 395);
 }
 
@@ -1406,7 +1492,8 @@ function displayFactoryPlus() {
 }
 
 function displayInit() {
-	//background(230, 0, 230)
+	//background(255);
+
 	fill(0, 0, 0);
 	textSize(18);
 	text("Playing as: [A]dmin, [R]etailer, [W]arehouse, [D]C, [F]actory?", 20, 20); 
@@ -1437,9 +1524,14 @@ function displayInit() {
 	text("OH", 125, 315);
 	text("BO", 125, 335);
 	
+	
 	noFill();
 	triangle(20,340,50,340,35,310);
 	triangle(230,340,260,340,245,310);
+	
+	// rectangle Retailer
+	
+	rect(10,30,300-10,510);
 	
 	// display Warehouse shapes
 	noFill();
@@ -1457,10 +1549,16 @@ function displayInit() {
 	text("OH", 125+300, 315);
 	text("BO", 125+300, 335);
 	
+	
 	noFill();
 	triangle(20+300,340,50+300,340,35+300,310);
 	triangle(60+300,340,90+300,340,75+300,310);
 	triangle(230+300,340,260+300,340,245+300,310);
+	
+	// rectangle Warehouse
+	
+	rect(10+300,30,300-10,510);
+	
 	
 	// display DC shapes
 	noFill();
@@ -1483,6 +1581,10 @@ function displayInit() {
 	triangle(60+600,340,90+600,340,75+600,310);
 	triangle(230+600,340,260+600,340,245+600,310);
 	
+	// rectangle DC
+	
+	rect(10+600,30,300-10,510);
+	
 	// display Factory shapes
 	noFill();
 	rect(20+900,260,40,20);
@@ -1504,6 +1606,10 @@ function displayInit() {
 	triangle(60+900,340,90+900,340,75+900,310);
 	
 	triangle(230+900,340,260+900,340,245+900,310);
+	
+	// rectangle Factory
+	
+	rect(10+900,30,300-10,510);
 	
 	//parameters
 	fill(0, 0, 0);
@@ -1545,4 +1651,65 @@ function updateParameters() {
 		minOrderSizeInput.value('');
 		maxOrderSizeInput.value('');
 	}
+}
+
+function drawNotifBeginningRetailer() {
+	textSize(18);
+	text("Round is beginning ...", 20, 380); 
+	// song1.play();
+}
+
+function drawNotifEndRetailer() {
+	textSize(18);
+	text("This is the end ...", 20, 380); 
+}
+
+function drawLineRetailer_s01() {
+	drawInformationFlowLine(260,255,260,245,0);
+	drawInformationFlowLine(260,245,340,245,0);
+	drawInformationFlowLine(340,245,340,255,1);
+}
+
+function drawLineRetailer_s02() {
+	drawMaterialFlowLine(315,325,260,325,1);
+}
+
+function drawNotifRetailer_s02() {
+	noFill();
+	ellipse(215,408,120,80);
+}
+
+function drawLineRetailer_s03() {
+	drawMaterialFlowLine(240,408,245,408,0);
+	drawMaterialFlowLine(245,408,245,350,1);
+}
+
+
+function drawLineRetailer_s04() {
+	drawInformationFlowLine(40,245,40,255,1);
+}
+
+function drawLineRetailer_s05() {
+	drawMaterialFlowLine(230,325,200,325,1);
+}
+
+function drawLineRetailer_s06() {
+	drawMaterialFlowLine(110,325,50,325,1);
+	drawMaterialFlowLine(35,300,35,290,1);
+}
+
+function drawLineRetailer_s07() {
+	drawInformationFlowLine(210,245,260,245,1);
+}
+
+function drawNotifRetailer_s07() {
+	noFill();
+	ellipse(35,458,120,80);
+}
+
+function drawLineRetailer_s08() {
+	drawInformationFlowLine(60,460,80,460,0);
+	drawInformationFlowLine(80,460,80,245,0);
+	drawInformationFlowLine(80,245,210,245,0);
+	drawInformationFlowLine(210,245,210,255,1);
 }
