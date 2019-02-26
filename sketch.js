@@ -105,6 +105,11 @@ var UCBackorderFactory;
 var adminPasswordSuccess = 0;
 var passwordEntered;
 
+function playSound() {
+          var sound = document.getElementById("audio");
+          sound.play();
+}
+
 
 function drawInformationFlowLine(xorig, yorig, xdest, ydest, withTerm) {
 
@@ -1653,6 +1658,7 @@ function updateParameters() {
 function drawNotifBeginningRetailer() {
 	textSize(18);
 	text("Round is beginning ...", 20, 380); 
+	playSound();
 }
 
 function drawNotifEndRetailer() {
