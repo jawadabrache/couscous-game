@@ -6,6 +6,7 @@ var myNextStepButton;
 var myNextRoundButton;
 var mySummaryButton;
 var myUpdateParametersButton;
+var myMusicButton;
 
 // Order input areas
 var retailerOrderInput, warehouseOrderInput, DCOrderInput, factoryOrderInput;
@@ -105,6 +106,13 @@ var UCBackorderFactory;
 var adminPasswordSuccess = 0;
 var passwordEntered;
 
+// Music track
+var nbrTracks;
+var trackId = [];
+var trackName = [];
+var trackFileName = [];
+var trackPlayed;
+
 function drawInformationFlowLine(xorig, yorig, xdest, ydest, withTerm) {
 
 	var rad = 5; //vertex radius
@@ -167,10 +175,18 @@ function setup() {
 	adminPasswordInput.position(800, 5);
 	adminPasswordInput.size(120, 15);
 	
-	myInitButton = createButton("Initialize");
+	myInitButton = createButton("Init.");
+	myInitButton.position(930,5)
 	myInitButton.mousePressed(initGame);
 	
-	createP('');
+	myUpdateParametersButton = createButton("Params.");
+	myUpdateParametersButton.mousePressed(updateParameters);
+	myUpdateParametersButton.position(980,5);
+	
+	myMusicButton = createButton("Music?");
+	myMusicButton.mousePressed(displayMusic);
+	myMusicButton.position(1080,5);
+	
 	
  	myNextStepButton = createButton("Next Step");
 	myNextStepButton.mousePressed(nextStep);
@@ -186,11 +202,6 @@ function setup() {
 	mySummaryButton.mousePressed(generateTables);
 	myChartsButton = createButton("Summary Charts");
 	myChartsButton.mousePressed(generateCharts);
-	
-	createP('');
-	
-	myUpdateParametersButton = createButton("Update Parameters");
-	myUpdateParametersButton.mousePressed(updateParameters);
 	
 	createP('');
 	
@@ -247,6 +258,33 @@ function setup() {
 	maxOrderSizeInput = createInput('');
 	maxOrderSizeInput.position(80+1200, 480);
 	maxOrderSizeInput.size(30, 15);
+	
+	// Populate Music Tracks
+	nbrTracks = 10;
+	trackId = [0,1,2,3,4,5,6,7,8,9]
+	trackName = [
+		'Tchaikovsky - Piano Concerto No.1', 
+		'Rossini - Il Barbiere di Siviglia',
+		'Orff - Carmina Burana',
+		'Rodrigo - Concierto de Aranjuez',
+		'Bach - Goldberg Variations',
+		'Beethoven - Symphony No.3 (Eroica)',
+		'Mozart - Piano Concerto No.21',
+		'Beethoven - Piano Sonata No.8 (Pathetique)',
+		'Tchaikovsky - Swan Lake',
+		'Chopin - Nocturne No.1'
+		]; 
+	trackFileName = [
+		'Track0.mp3',
+		'Track1.mp3',
+		'Track2.mp3',
+		'Track3.mp3',
+		'Track4.mp3',
+		'Track5.mp3',
+		'Track6.mp3',
+		'Track7.mp3',
+		'Track8.mp3',
+		'Track9.mp3'];
 
 }
 
@@ -361,6 +399,12 @@ function initGame() {
 		case "Warehouse": displayWarehouseOnly();
 		break;
 	}
+	
+	// generate randomly the id of track to play
+	trackPlayed = Math.floor (Math.random() * nbrTracks);
+	
+	var track = new Audio("sounds/"+trackFileName[trackPlayed]);
+    track.play();
 
 }
 
@@ -1525,8 +1569,8 @@ function displayInit() {
 	triangle(20,340,50,340,35,310);
 	triangle(230,340,260,340,245,310);
 	
-	// rectangle Retailer
-	
+	// Area Retailer
+	rect(10,30,300-10,480);
 	rect(10,30,300-10,510);
 	
 	// display Warehouse shapes
@@ -1551,10 +1595,10 @@ function displayInit() {
 	triangle(60+300,340,90+300,340,75+300,310);
 	triangle(230+300,340,260+300,340,245+300,310);
 	
-	// rectangle Warehouse
+	// Area Warehouse
 	
+	rect(10+300,30,300-10,480);
 	rect(10+300,30,300-10,510);
-	
 	
 	// display DC shapes
 	noFill();
@@ -1577,8 +1621,8 @@ function displayInit() {
 	triangle(60+600,340,90+600,340,75+600,310);
 	triangle(230+600,340,260+600,340,245+600,310);
 	
-	// rectangle DC
-	
+	// Area DC
+	rect(10+600,30,300-10,480);
 	rect(10+600,30,300-10,510);
 	
 	// display Factory shapes
@@ -1603,8 +1647,8 @@ function displayInit() {
 	
 	triangle(230+900,340,260+900,340,245+900,310);
 	
-	// rectangle Factory
-	
+	// Area Factory
+	rect(10+900,30,300-10,480);
 	rect(10+900,30,300-10,510);
 	
 	//parameters
@@ -1653,16 +1697,16 @@ function drawNotifBeginningRetailer() {
 	textSize(18);
 	text("Round is beginning ...", 20, 380); 
 	//var sound = document.getElementById("audio1");
-	var sound = new Audio('sounds/The End - Beginning.mp3')
-          sound.play();
+	// var sound = new Audio('sounds/The End - Beginning.mp3')
+    //      sound.play();
 }
 
 function drawNotifEndRetailer() {
 	textSize(18);
 	text("This is the end ...", 20, 380); 
 	// var sound = document.getElementById("audio2");
-	var sound = new Audio('sounds/The End - End.mp3')
-          sound.play();
+	// var sound = new Audio('sounds/The End - End.mp3')
+    //      sound.play();
 }
 
 function drawLineRetailer_s01() {
@@ -1713,4 +1757,43 @@ function drawLineRetailer_s08() {
 	drawInformationFlowLine(80,460,80,245,0);
 	drawInformationFlowLine(80,245,210,245,0);
 	drawInformationFlowLine(210,245,210,255,1);
+}
+
+function displayMusic() {
+	switch (role) {
+			case 'Admin': displayMusicRetailer(); displayMusicWarehouse(); displayMusicDC(); displayMusicFactory();
+			break;
+			case 'Retailer': displayMusicRetailer();
+			break;
+			case 'Warehouse': displayMusicWarehouse();
+			break;
+			case 'DC': displayMusicDC();
+			break;
+			case 'Factory': DisplayMusicFactory();
+			break;
+	}
+}
+
+function displayMusicRetailer() {
+	textSize(13);
+	text("Music played - Excerpts from:", 20, 505);
+	text(trackName[trackPlayed], 20, 530); 
+}
+
+function displayMusicWarehouse() {
+	textSize(13);
+	text("Music played - Excerpts from:", 20+300, 505);
+	text(trackName[trackPlayed], 20+300, 530); 
+}
+
+function displayMusicDC() {
+	textSize(13);
+	text("Music played - Excerpts from:", 20+600, 505);
+	text(trackName[trackPlayed], 20+600, 530); 
+}
+
+function displayMusicFactory() {
+	textSize(13);
+	text("Music played - Excerpts from:", 20+900, 505);
+	text(trackName[trackPlayed], 20+900, 530); 
 }
