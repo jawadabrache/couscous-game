@@ -248,17 +248,17 @@ function setup() {
 	factoryOrderReceived.position(20+900, 400);
 	factoryOrderReceived.size(30, 15);
 	
-	factoryQtyReceived = createInput('');
-	factoryQtyReceived.position(200+900, 400);
-	factoryQtyReceived.size(30, 15);
+	//factoryQtyReceived = createInput('');
+	//factoryQtyReceived.position(200+900, 400);
+	//factoryQtyReceived.size(30, 15);
 	
 	// game parameters
 	minOrderSizeInput = createInput('');
-	minOrderSizeInput.position(20+1200, 480);
+	minOrderSizeInput.position(20+1200, 400);
 	minOrderSizeInput.size(30, 15);
 	
 	maxOrderSizeInput = createInput('');
-	maxOrderSizeInput.position(80+1200, 480);
+	maxOrderSizeInput.position(80+1200, 400);
 	maxOrderSizeInput.size(30, 15);
 	
 	// Populate Music Tracks
@@ -442,6 +442,9 @@ function initGame() {
 		case "Warehouse": displayWarehouseOnly();
 		break;
 		case "DC": displayDCOnly();
+		break;
+		case "Factory": displayFactoryOnly();
+		break;
 	}
 	
 	// generate randomly the id of track to play
@@ -462,6 +465,8 @@ function nextStep() {
 		case "Warehouse": nextStepWarehouse();
 		break;
 		case "DC": nextStepDC();
+		break;
+		case "Factory": nextStepFactory();
 		break;
 	}
 }
@@ -1274,6 +1279,156 @@ function nextStepDC() {
 	
 }
 
+function nextStepFactory() {
+	
+	switch (stepInRound) {
+		case 0:
+		roundSim++;
+		
+		// Factory update
+		
+		orderReceivedByFactory[roundSim]= "NA";
+		quantityDeliveredByFactoryTransit1[roundSim] = quantityDeliveredByFactoryTransit1[roundSim-1];
+		quantityDeliveredByFactoryTransit2[roundSim] = quantityDeliveredByFactoryTransit2[roundSim-1];
+		quantityInProduction1[roundSim] = quantityInProduction1[roundSim-1];
+		quantityInProduction2[roundSim] = quantityInProduction2[roundSim-1];
+		quantityInProduction3[roundSim] = quantityInProduction3[roundSim-1];
+		inventoryFactory[roundSim] = inventoryFactory[roundSim-1];
+		backorderFactory[roundSim] = backorderFactory[roundSim-1];
+		costInventoryFactory[roundSim] = "NA";
+		cumcostInventoryFactory[roundSim] = cumcostInventoryFactory[roundSim-1];
+		costBackorderFactory[roundSim] = "NA";
+		cumcostBackorderFactory[roundSim] = cumcostBackorderFactory[roundSim-1];
+		
+		message = "New round starting!";
+		displayFactoryOnly();
+		
+		drawNotifBeginningFactory();
+		break;
+		
+		case 1: 
+		// step 1: Factory takes note of the order received from DC  
+		message = "Factory takes note of the order received from DC";
+		actionReq = "Order received to enter!";
+		displayFactoryOnly();
+		
+		// draw line
+		drawLineFactory_s01();
+		
+		drawNotifFactory_s01();
+		break;
+		case 2:
+		// step 2: Order received by Factory updated 
+		orderReceivedByFactory[roundSim] = parseFloat(factoryOrderReceived.value());
+		message = "Order received by Factory updated";
+		actionReq = "";
+		displayFactoryOnly();
+		
+		// draw line
+		drawLineFactory_s02();
+		break;
+		
+		case 3:
+		// step 3: Factory informs DC of incoming shipment
+		message = "Factory informs DC of incoming shipment";
+		actionReq = "Shipment sent to DC ...";
+		displayFactoryOnly();
+		
+		// draw line
+		drawLineFactory_s03();
+		break;
+		
+		case 4:
+		// step 4: Shipment advancement Factory to DC 
+		quantityDeliveredByFactoryTransit2[roundSim] = quantityDeliveredByFactoryTransit1[roundSim];
+		quantityDeliveredByFactoryTransit1[roundSim] = "NA";
+		message = "Shipment advancement Factory to DC";
+		actionReq = "";
+		displayFactoryOnly();
+		
+		// draw line
+		drawLineFactory_s04();
+		break;
+		
+		case 5:
+		// step 5: Quantity added to inventory at the level of factory 
+		inventoryFactory[roundSim] = inventoryFactory[roundSim] + quantityInProduction3[roundSim];
+		quantityInProduction3[roundSim] = "NA";
+		message = "Quantity added to Factory inventory";
+		displayFactoryOnly();
+		
+		// draw line
+		drawLineFactory_s05();
+		break;
+		
+		case 6:
+		// step 6: Order fulfillment at the level of factory 
+		backorderFactory[roundSim] = backorderFactory[roundSim] + orderReceivedByFactory[roundSim];
+		if (inventoryFactory[roundSim] >= backorderFactory[roundSim]) 
+		{
+			quantityDeliveredByFactoryTransit1[roundSim] = backorderFactory[roundSim] ;
+			inventoryFactory[roundSim] = inventoryFactory[roundSim] - backorderFactory[roundSim];
+			backorderFactory[roundSim] = 0;
+		}
+		else
+		{
+			quantityDeliveredByFactoryTransit1[roundSim] = inventoryFactory[roundSim];
+			backorderFactory[roundSim] = backorderFactory[roundSim] - inventoryFactory[roundSim];
+			inventoryFactory[roundSim] = 0;
+		}
+		// compute inventory and backorder costs
+		costInventoryFactory[roundSim] = UCInventoryFactory * inventoryFactory[roundSim];
+		cumcostInventoryFactory[roundSim] += costInventoryFactory[roundSim];
+		costBackorderFactory[roundSim] = UCBackorderFactory * backorderFactory[roundSim];
+		cumcostBackorderFactory[roundSim] += costBackorderFactory[roundSim];
+		message = "Order fulfillment and inventory update at Factory";
+		displayFactoryOnly();
+		
+		// draw line
+		drawLineFactory_s06();
+		break;
+		
+		case 7:
+		// step 7: Production advancing at the level of Factory 
+		quantityInProduction3[roundSim] = quantityInProduction2[roundSim];
+		quantityInProduction2[roundSim] = quantityInProduction1[roundSim];
+		quantityInProduction1[roundSim] = "NA";
+		message = "Production advancement at Factory";
+		actionReq = "Factory needs to enter new order!";
+		displayFactoryOnly();
+		
+		// draw line
+		drawLineFactory_s07();
+		
+		// draw line
+		drawNotifFactory_s07();
+		break;
+		
+		case 8:
+		// step 8: Factory enters its production order 
+		quantityInProduction1[roundSim] = parseFloat(factoryOrderInput.value());
+		message = "New production order by Factory";
+		actionReq = "";
+		displayFactoryOnly();
+		
+		// draw line
+		drawLineFactory_s08();
+		break;
+		
+		case 9:
+		// step 9: End of current round
+		message = "End of current round!";
+		displayFactoryOnly();
+		
+		drawNotifEndFactory();
+		break;
+	}
+	if (stepInRound == 9) {
+		stepInRound = 0; 
+	} else stepInRound++;
+	
+}
+
 function nextRound() {
 	
 	if (stepInRound != 0) {
@@ -1523,8 +1678,11 @@ function generateCharts() {
 		break;
 		case "Warehouse": generateChartsWarehouse();
 		break;	
+		case "DC": generateChartsDC();
+		break;
+		case "Factory": generateChartsFactory();
+		break;	
 	}
-	
 }
 
 function generateChartsAll() {
@@ -1565,6 +1723,26 @@ var chartWindow = window.open(url="charts/chartsWarehouse.html");
 
 }
 
+function generateChartsDC() {
+
+localStorage.setItem("list_orders_DC",  JSON.stringify(orderMadeByDCMinus1));
+localStorage.setItem("list_inventory_DC",  JSON.stringify(inventoryDC));
+localStorage.setItem("list_backorder_DC",  JSON.stringify(backorderDC));
+
+var chartWindow = window.open(url="charts/chartsDC.html");
+
+}
+
+function generateChartsFactory() {
+
+localStorage.setItem("list_orders_factory",  JSON.stringify(quantityInProduction1));
+localStorage.setItem("list_inventory_factory",  JSON.stringify(inventoryFactory));
+localStorage.setItem("list_backorder_factory",  JSON.stringify(backorderFactory));
+
+var chartWindow = window.open(url="charts/chartsFactory.html");
+
+}
+
 function generateTables() {
 	
 	switch (role) {
@@ -1573,6 +1751,10 @@ function generateTables() {
 		case "Retailer": generateTablesRetailer();
 		break;
 		case "Warehouse": generateTablesWarehouse();
+		break;
+		case "DC": generateTablesDC();
+		break;
+		case "Factory": generateTablesFactory();
 		break;
 	}
 	
@@ -1615,6 +1797,24 @@ localStorage.setItem("list_inventory_retailer",  JSON.stringify(inventoryRetaile
 localStorage.setItem("list_backorder_retailer",  JSON.stringify(backorderRetailer));
 
 var chartWindow = window.open(url="charts/TablesRetailer.html");
+}
+
+function generateTablesDC() {
+
+localStorage.setItem("list_orders_DC",  JSON.stringify(orderMadeByDCMinus1));
+localStorage.setItem("list_inventory_DC",  JSON.stringify(inventoryDC));
+localStorage.setItem("list_backorder_DC",  JSON.stringify(backorderDC));
+
+var chartWindow = window.open(url="charts/TablesDC.html");
+}
+
+function generateTablesFactory() {
+
+localStorage.setItem("list_orders_factory",  JSON.stringify(quantityInProduction1));
+localStorage.setItem("list_inventory_factory",  JSON.stringify(inventoryFactory));
+localStorage.setItem("list_backorder_factory",  JSON.stringify(backorderFactory));
+
+var chartWindow = window.open(url="charts/TablesFactory.html");
 }
 
 function checkAdminPassword() {
@@ -1791,7 +1991,6 @@ function displayFactory() {
 
 function displayFactoryPlus() {
 	text("Order Received", 20+900, 395);
-	text("Qty. Received", 200+900, 395);
 }
 
 function displayInit() {
@@ -1809,7 +2008,7 @@ function displayInit() {
 	text("Factory", 20+900, 60);
 	textSize(18);
 	text("Game Log", 20+ 1200, 20);
-	text("Game Parameters", 20+ 1200, 400);
+	text("Game Parameters", 20+ 1200, 320);
 	
 	// display Retailer shapes
 	noFill();
@@ -1917,7 +2116,7 @@ function displayInit() {
 	//parameters
 	fill(0, 0, 0);
 	textSize(10);
-	text("Range Cust. Orders", 20+1200, 470);
+	text("Range Cust. Orders", 20+1200, 390);
 
 }
 
@@ -2188,7 +2387,62 @@ function drawLineDC_s11() {
 	drawInformationFlowLine(105+600,245,210+600,245,0);
 	drawInformationFlowLine(210+600,245,210+600,255,1);
 }
+
+function drawLineFactory_s01() {
+	drawInformationFlowLine(260+600,255,260+600,245,0);
+	drawInformationFlowLine(260+600,245,340+600,245,0);
+	drawInformationFlowLine(340+600,245,340+600,255,1);
+}
+
+function drawNotifFactory_s01() {
+	noFill();
+	ellipse(45+900,400,120,80);
+}
+
+function drawLineFactory_s02() {
+	drawInformationFlowLine(55+900,408,110+900,408,0);
+	drawInformationFlowLine(110+900,408,110+900,270,0);
+	drawInformationFlowLine(110+900,270,65+900,270,1);
+}
+
+function drawLineFactory_s03() {
+	drawMaterialFlowLine(315+600,325,260+600,325,1);
+}
+
+function drawLineFactory_s04() {
+	drawMaterialFlowLine(60+900,325,50+900,325,1);
+}
+
+function drawLineFactory_s05() {
+	drawMaterialFlowLine(230+900,325,200+900,325,1);
+}
+
+function drawLineFactory_s06() {
+	drawInformationFlowLine(65+900,270,75+900,270,0);
+	drawInformationFlowLine(75+900,270,75+900,305,1);
+	drawMaterialFlowLine(110+900,325,90+900,325,1);
 	
+}
+
+function drawLineFactory_s07() {
+	drawMaterialFlowLine(210+900,245,260+900,245,1);
+	drawMaterialFlowLine(270+900,290,270+900,325,0);
+	drawMaterialFlowLine(270+900,325,260+900,325,1);
+}
+
+function drawNotifFactory_s07() {
+	noFill();
+	ellipse(35+900,458,120,80);
+}
+
+function drawLineFactory_s08() {
+	drawInformationFlowLine(60+900,460,105+900,460,0);
+	drawInformationFlowLine(105+900,460,105+900,245,0);
+	drawInformationFlowLine(105+900,245,210+900,245,0);
+	drawInformationFlowLine(210+900,245,210+900,255,1);
+}
+
+
 function displayMusic() {
 	switch (role) {
 			case 'Admin': displayMusicRetailer(); displayMusicWarehouse(); displayMusicDC(); displayMusicFactory();
@@ -2199,7 +2453,7 @@ function displayMusic() {
 			break;
 			case 'DC': displayMusicDC();
 			break;
-			case 'Factory': DisplayMusicFactory();
+			case 'Factory': displayMusicFactory();
 			break;
 	}
 }
