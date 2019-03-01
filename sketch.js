@@ -113,6 +113,8 @@ var trackName = [];
 var trackFileName = [];
 var trackPlayed;
 
+
+// Support function for drawing
 function drawInformationFlowLine(xorig, yorig, xdest, ydest, withTerm) {
 
 	var rad = 5; //vertex radius
@@ -183,7 +185,7 @@ function setup() {
 	myUpdateParametersButton.mousePressed(updateParameters);
 	myUpdateParametersButton.position(980,5);
 	
-	myMusicButton = createButton("Music?");
+	myMusicButton = createButton("Music played?");
 	myMusicButton.mousePressed(displayMusic);
 	myMusicButton.position(1080,5);
 	
@@ -260,8 +262,8 @@ function setup() {
 	maxOrderSizeInput.size(30, 15);
 	
 	// Populate Music Tracks
-	nbrTracks = 10;
-	trackId = [0,1,2,3,4,5,6,7,8,9]
+	nbrTracks = 30;
+	trackId = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]
 	trackName = [
 		'Tchaikovsky - Piano Concerto No.1', 
 		'Rossini - Il Barbiere di Siviglia',
@@ -272,7 +274,27 @@ function setup() {
 		'Mozart - Piano Concerto No.21',
 		'Beethoven - Piano Sonata No.8 (Pathetique)',
 		'Tchaikovsky - Swan Lake',
-		'Chopin - Nocturne No.1'
+		'Chopin - Nocturne No.1',
+		'Rimsky-Korsakov - Scheherazade',
+		'Vivaldi - The Four Seasons',
+		'Ravel - Bolero',
+		'Beethoven - Piano Sonata No.14 (Moonlight)',
+		'Mozart - Symphony No.40',
+		'Beethoven - Symphony No.5',
+		'Verdi - La Traviata',
+		'Mozart - Le Nozze di Figaro',
+		'Debussy - Preludes, Book I',
+		'Bach - Cello Suite No.1',
+		'Dvorak - Symphony No.9 (From the New World)',
+		'Bellini - Norma',
+		'Rachmaninoff - Piano Concerto No.2',
+		'Chopin - Etude No.12 (Revolutionary)',
+		'Beethoven - Symphony No.9 (Chorale)',
+		'Bizet - Carmen',
+		'Mozart - Piano Sonata No.11 (Alla Turca)',
+		'Strauss - Also Sprach Zarathustra',
+		'Chopin - Grande Valse brillante, Op.18',
+		'Mendelssohn - Violin Concerto'
 		]; 
 	trackFileName = [
 		'Track0.mp3',
@@ -284,7 +306,28 @@ function setup() {
 		'Track6.mp3',
 		'Track7.mp3',
 		'Track8.mp3',
-		'Track9.mp3'];
+		'Track9.mp3',
+		'Track10.mp3',
+		'Track11.mp3',
+		'Track12.mp3',
+		'Track13.mp3',
+		'Track14.mp3',
+		'Track15.mp3',
+		'Track16.mp3',
+		'Track17.mp3',
+		'Track18.mp3',
+		'Track19.mp3',
+		'Track20.mp3',
+		'Track21.mp3',
+		'Track22.mp3',
+		'Track23.mp3',
+		'Track24.mp3',
+		'Track25.mp3',
+		'Track26.mp3',
+		'Track27.mp3',
+		'Track28.mp3',
+		'Track29.mp3'
+		];
 
 }
 
@@ -398,6 +441,7 @@ function initGame() {
 		break;
 		case "Warehouse": displayWarehouseOnly();
 		break;
+		case "DC": displayDCOnly();
 	}
 	
 	// generate randomly the id of track to play
@@ -416,6 +460,8 @@ function nextStep() {
 		case "Retailer": nextStepRetailer();
 		break;
 		case "Warehouse": nextStepWarehouse();
+		break;
+		case "DC": nextStepDC();
 		break;
 	}
 }
@@ -906,12 +952,19 @@ function nextStepWarehouse() {
 		
 		message = "New round starting!";
 		displayWarehouseOnly();
+		
+		drawNotifBeginningWarehouse();
 		break;
 		case 1: 
 		// step 1: Warehouse takes note of the order received from retailer  
 		message = "Warehouse takes note of the order received from retailer";
 		actionReq = "Order received to enter!";
 		displayWarehouseOnly();
+		
+		// draw line
+		drawLineWarehouse_s01();
+		
+		drawNotifWarehouse_s01();
 		break;
 		case 2:
 		// step 2: Order received by warehouse updated 
@@ -919,6 +972,9 @@ function nextStepWarehouse() {
 		message = "Order received by warehouse updated";
 		actionReq = "";
 		displayWarehouseOnly();
+		
+		// draw line
+		drawLineWarehouse_s02();
 		break;
 		case 3:
 		// step 3: Warehouse informs the DC that they are receiving 
@@ -926,25 +982,40 @@ function nextStepWarehouse() {
 		message = "Warehouse informs DC of incoming order";
 		actionReq = "Order to transmit to DC! Waiting shipment ...";
 		displayWarehouseOnly();
+		
+		// draw line
+		drawLineWarehouse_s03();
 		break;
 		case 4:
 		// step 4: Warehouse takes note of the shipment received from DC  
 		message = "Warehouse takes note of the shipment received from DC";
 		actionReq = "Quantity received to enter!";
 		displayWarehouseOnly();
+		
+		// draw line
+		drawLineWarehouse_s04();
+		
+		drawNotifWarehouse_s04();
 		break;
 		case 5:
-		// step 5: Quantity received by retailer updated 
+		// step 5: Quantity received by warehouse updated 
 		quantityReceivedByWarehouse[roundSim] = parseFloat(warehouseQtyReceived.value());
 		message = "Quantity received by warehouse updated";
 		actionReq = "";
 		displayWarehouseOnly();
+		
+		// draw line
+		drawLineWarehouse_s05();
 		break;
 		case 6:
 		// step 6: Warehouse informs retailer of incoming shipment
 		message = "Warehouse informs retailer of incoming shipment";
 		actionReq = "Shipment sent to retailer ...";
 		displayWarehouseOnly();
+		
+		// draw line
+		drawLineWarehouse_s06();
+		
 		break;
 		case 7:
 		// step 7: Shipment advancement warehouse to retailer
@@ -953,12 +1024,18 @@ function nextStepWarehouse() {
 		message = "Shipment advancement warehouse to retailer";
 		actionReq = "";
 		displayWarehouseOnly();
+		
+		// draw line
+		drawLineWarehouse_s07();
 		break;
 		case 8:
 		// step 8: Quantity added to inventory at the level of Warehouse
 		inventoryWarehouse[roundSim] = inventoryWarehouse[roundSim] + quantityReceivedByWarehouse[roundSim];
 		message = "Quantity added to Warehouse inventory";
 		displayWarehouseOnly();
+		
+		// draw line
+		drawLineWarehouse_s08();
 		break;
 		case 9:
 		// step 9: Order fulfillment at the level of Warehouse 
@@ -983,6 +1060,9 @@ function nextStepWarehouse() {
 		cumcostBackorderWarehouse[roundSim] += costBackorderWarehouse[roundSim];
 		message = "Order fulfillment and inventory update at Warehouse";
 		displayWarehouseOnly();
+		
+		// draw line
+		drawLineWarehouse_s09();
 		break;
 		case 10:
 		// step 10: orders advancing at the level of Warehouse 
@@ -991,6 +1071,12 @@ function nextStepWarehouse() {
 		message = "Orders advancing at Warehouse";
 		actionReq = "Warehouse needs to enter new order!";
 		displayWarehouseOnly();
+		
+		// draw line
+		drawLineWarehouse_s10();
+		
+		// draw line
+		drawNotifWarehouse_s10();
 		break;
 		case 11:
 		// step 11: Warehouse enters its order 
@@ -998,11 +1084,188 @@ function nextStepWarehouse() {
 		message = "New order by Warehouse";
 		actionReq = "";
 		displayWarehouseOnly();
+		
+		// draw line
+		drawLineWarehouse_s11();
 		break;
 		case 12:
 		// step 12: End of current round
 		message = "End of current round!";
 		displayWarehouseOnly();
+		
+		drawNotifEndWarehouse();
+		break;
+	}
+	if (stepInRound == 12) {
+		stepInRound = 0; 
+	} else stepInRound++;
+	
+}
+
+function nextStepDC() {
+	
+	switch (stepInRound) {
+		case 0:
+		roundSim++;
+		
+		// Warehouse update
+		orderReceivedByDC[roundSim]= "NA";
+		orderMadeByDCMinus1[roundSim] = orderMadeByDCMinus1[roundSim-1];
+		orderMadeByDCMinus2[roundSim] = orderMadeByDCMinus2[roundSim-1];
+		quantityDeliveredByDCTransit1[roundSim] = quantityDeliveredByDCTransit1[roundSim-1];
+		quantityDeliveredByDCTransit2[roundSim] = quantityDeliveredByDCTransit2[roundSim-1];
+		quantityReceivedByDC[roundSim]= "NA";
+		inventoryDC[roundSim] = inventoryDC[roundSim-1];
+		backorderDC[roundSim] = backorderDC[roundSim-1];
+		costInventoryDC[roundSim] = "NA";
+		cumcostInventoryDC[roundSim] = cumcostInventoryDC[roundSim-1];
+		costBackorderDC[roundSim] = "NA";
+		cumcostBackorderDC[roundSim] = cumcostBackorderDC[roundSim-1];
+		
+		message = "New round starting!";
+		displayDCOnly();
+		
+		drawNotifBeginningDC();
+		break;
+		case 1: 
+		// step 1: DC takes note of the order received from Warehouse  
+		message = "DC takes note of the order received from Warehouse";
+		actionReq = "Order received to enter!";
+		displayDCOnly();
+		
+		// draw line
+		drawLineDC_s01();
+		
+		drawNotifDC_s01();
+		break;
+		case 2:
+		// step 2: Order received by DC updated 
+		orderReceivedByDC[roundSim] = parseFloat(DCOrderReceived.value());
+		message = "Order received by DC updated";
+		actionReq = "";
+		displayDCOnly();
+		
+		// draw line
+		drawLineDC_s02();
+		break;
+		case 3:
+		// step 3: DC informs the Factory that they are receiving 
+		// the order they made two periods earlier 
+		message = "DC informs Factory of incoming order";
+		actionReq = "Order to transmit to Factory! Waiting shipment ...";
+		displayDCOnly();
+		
+		// draw line
+		drawLineDC_s03();
+		break;
+		case 4:
+		// step 4: DC takes note of the shipment received from Factory  
+		message = "DC takes note of the shipment received from Factory";
+		actionReq = "Quantity received to enter!";
+		displayDCOnly();
+		
+		// draw line
+		drawLineDC_s04();
+		
+		drawNotifDC_s04();
+		break;
+		case 5:
+		// step 5: Quantity received by DC updated 
+		quantityReceivedByDC[roundSim] = parseFloat(DCQtyReceived.value());
+		message = "Quantity received by DC updated";
+		actionReq = "";
+		displayDCOnly();
+		
+		// draw line
+		drawLineDC_s05();
+		break;
+		case 6:
+		// step 6: DC informs Warehouse of incoming shipment
+		message = "DC informs Warehouse of incoming shipment";
+		actionReq = "Shipment sent to Warehouse ...";
+		displayDCOnly();
+		
+		// draw line
+		drawLineDC_s06();
+		
+		break;
+		case 7:
+		// step 7: Shipment advancement DC to Warehouse
+		quantityDeliveredByDCTransit2[roundSim] = quantityDeliveredByDCTransit1[roundSim];
+		quantityDeliveredByDCTransit1[roundSim] = "NA";
+		message = "Shipment advancement DC to Warehouse";
+		actionReq = "";
+		displayDCOnly();
+		
+		// draw line
+		drawLineDC_s07();
+		break;
+		case 8:
+		// step 8: Quantity added to inventory at the level of DC
+		inventoryDC[roundSim] = inventoryDC[roundSim] + quantityReceivedByDC[roundSim];
+		message = "Quantity added to DC inventory";
+		displayDCOnly();
+		
+		// draw line
+		drawLineDC_s08();
+		break;
+		case 9:
+		// step 9: Order fulfillment at the level of DC 
+		backorderDC[roundSim] = backorderDC[roundSim] + orderReceivedByDC[roundSim];
+		if (inventoryDC[roundSim] >= backorderDC[roundSim]) 
+		{
+			quantityDeliveredByDCTransit1[roundSim] = backorderDC[roundSim] ;
+			inventoryDC[roundSim] = inventoryDC[roundSim] - backorderDC[roundSim];
+			backorderDC[roundSim] = 0;
+		}
+		else
+		{
+			quantityDeliveredByDCTransit1[roundSim] = inventoryDC[roundSim];
+			backorderDC[roundSim] = backorderDC[roundSim] - inventoryDC[roundSim];
+			inventoryDC[roundSim] = 0;
+		}
+		
+		// compute inventory and backorder costs
+		costInventoryDC[roundSim] = UCInventoryDC * inventoryDC[roundSim];
+		cumcostInventoryDC[roundSim] += costInventoryDC[roundSim];
+		costBackorderDC[roundSim] = UCBackorderDC * backorderDC[roundSim];
+		cumcostBackorderDC[roundSim] += costBackorderDC[roundSim];
+		message = "Order fulfillment and inventory update at DC";
+		displayDCOnly();
+		
+		// draw line
+		drawLineDC_s09();
+		break;
+		case 10:
+		// step 10: orders advancing at the level of DC 
+		orderMadeByDCMinus2[roundSim] = orderMadeByDCMinus1[roundSim];
+		orderMadeByDCMinus1[roundSim] = "NA";
+		message = "Orders advancing at DC";
+		actionReq = "DC needs to enter new order!";
+		displayDCOnly();
+		
+		// draw line
+		drawLineDC_s10();
+		
+		// draw line
+		drawNotifDC_s10();
+		break;
+		case 11:
+		// step 11: DC enters its order 
+		orderMadeByDCMinus1[roundSim] = parseFloat(DCOrderInput.value());
+		message = "New order by DC";
+		actionReq = "";
+		displayDCOnly();
+		
+		// draw line
+		drawLineDC_s11();
+		break;
+		case 12:
+		// step 12: End of current round
+		message = "End of current round!";
+		displayDCOnly();
+		
+		drawNotifEndDC();
 		break;
 	}
 	if (stepInRound == 12) {
@@ -1695,18 +1958,42 @@ function updateParameters() {
 
 function drawNotifBeginningRetailer() {
 	textSize(18);
-	text("Round is beginning ...", 20, 380); 
-	//var sound = document.getElementById("audio1");
-	// var sound = new Audio('sounds/The End - Beginning.mp3')
-    //      sound.play();
+	text("Round is beginning ...", 80, 450); 
 }
 
 function drawNotifEndRetailer() {
 	textSize(18);
-	text("This is the end ...", 20, 380); 
-	// var sound = document.getElementById("audio2");
-	// var sound = new Audio('sounds/The End - End.mp3')
-    //      sound.play();
+	text("This is the end ...", 80, 450); 
+}
+
+function drawNotifBeginningWarehouse() {
+	textSize(18);
+	text("Round is beginning ...", 80+300, 450); 
+}
+
+function drawNotifEndWarehouse() {
+	textSize(18);
+	text("This is the end ...", 80+300, 450); 
+}
+
+function drawNotifBeginningDC() {
+	textSize(18);
+	text("Round is beginning ...", 80+600, 450); 
+}
+
+function drawNotifEndDC() {
+	textSize(18);
+	text("This is the end ...", 80+600, 450); 
+}
+
+function drawNotifBeginningFactory() {
+	textSize(18);
+	text("Round is beginning ...", 80+900, 450); 
+}
+
+function drawNotifEndFactory() {
+	textSize(18);
+	text("This is the end ...", 80+900, 450); 
 }
 
 function drawLineRetailer_s01() {
@@ -1728,7 +2015,6 @@ function drawLineRetailer_s03() {
 	drawMaterialFlowLine(240,408,245,408,0);
 	drawMaterialFlowLine(245,408,245,350,1);
 }
-
 
 function drawLineRetailer_s04() {
 	drawInformationFlowLine(40,245,40,255,1);
@@ -1759,6 +2045,150 @@ function drawLineRetailer_s08() {
 	drawInformationFlowLine(210,245,210,255,1);
 }
 
+function drawLineWarehouse_s01() {
+	drawInformationFlowLine(260,255,260,245,0);
+	drawInformationFlowLine(260,245,340,245,0);
+	drawInformationFlowLine(340,245,340,255,1);
+}
+
+function drawNotifWarehouse_s01() {
+	noFill();
+	ellipse(45+300,400,120,80);
+}
+
+function drawLineWarehouse_s02() {
+	drawInformationFlowLine(55+300,408,110+300,408,0);
+	drawInformationFlowLine(110+300,408,110+300,270,0);
+	drawInformationFlowLine(110+300,270,65+300,270,1);
+}
+
+function drawLineWarehouse_s03() {
+	drawInformationFlowLine(260+300,255,260+300,245,0);
+	drawInformationFlowLine(260+300,245,340+300,245,0);
+	drawInformationFlowLine(340+300,245,340+300,255,1);
+}
+
+function drawLineWarehouse_s04() {
+	drawMaterialFlowLine(315+300,325,260+300,325,1);
+}
+
+function drawNotifWarehouse_s04() {
+	noFill();
+	ellipse(215+300,408,120,80);
+}
+
+function drawLineWarehouse_s05() {
+	drawMaterialFlowLine(240+300,408,245+300,408,0);
+	drawMaterialFlowLine(245+300,408,245+300,350,1);
+}
+
+function drawLineWarehouse_s06() {
+	drawMaterialFlowLine(315,325,260,325,1);
+}
+
+function drawLineWarehouse_s07() {
+	drawMaterialFlowLine(60+300,325,50+300,325,1);
+}
+
+function drawLineWarehouse_s08() {
+	drawMaterialFlowLine(230+300,325,200+300,325,1);
+}
+
+function drawLineWarehouse_s09() {
+	drawInformationFlowLine(65+300,270,75+300,270,0);
+	drawInformationFlowLine(75+300,270,75+300,305,1);
+	drawMaterialFlowLine(110+300,325,90+300,325,1);
+	
+}
+
+function drawLineWarehouse_s10() {
+	drawInformationFlowLine(210+300,245,260+300,245,1);
+}
+
+function drawNotifWarehouse_s10() {
+	noFill();
+	ellipse(35+300,458,120,80);
+}
+
+function drawLineWarehouse_s11() {
+	drawInformationFlowLine(60+300,460,105+300,460,0);
+	drawInformationFlowLine(105+300,460,105+300,245,0);
+	drawInformationFlowLine(105+300,245,210+300,245,0);
+	drawInformationFlowLine(210+300,245,210+300,255,1);
+}
+	
+function drawLineDC_s01() {
+	drawInformationFlowLine(260+300,255,260+300,245,0);
+	drawInformationFlowLine(260+300,245,340+300,245,0);
+	drawInformationFlowLine(340+300,245,340+300,255,1);
+}
+
+function drawNotifDC_s01() {
+	noFill();
+	ellipse(45+600,400,120,80);
+}
+
+function drawLineDC_s02() {
+	drawInformationFlowLine(55+600,408,110+600,408,0);
+	drawInformationFlowLine(110+600,408,110+600,270,0);
+	drawInformationFlowLine(110+600,270,65+600,270,1);
+}
+
+function drawLineDC_s03() {
+	drawInformationFlowLine(260+600,255,260+600,245,0);
+	drawInformationFlowLine(260+600,245,340+600,245,0);
+	drawInformationFlowLine(340+600,245,340+600,255,1);
+}
+
+function drawLineDC_s04() {
+	drawMaterialFlowLine(315+600,325,260+600,325,1);
+}
+
+function drawNotifDC_s04() {
+	noFill();
+	ellipse(215+600,408,120,80);
+}
+
+function drawLineDC_s05() {
+	drawMaterialFlowLine(240+600,408,245+600,408,0);
+	drawMaterialFlowLine(245+600,408,245+600,350,1);
+}
+
+function drawLineDC_s06() {
+	drawMaterialFlowLine(315+300,325,260+300,325,1);
+}
+
+function drawLineDC_s07() {
+	drawMaterialFlowLine(60+600,325,50+600,325,1);
+}
+
+function drawLineDC_s08() {
+	drawMaterialFlowLine(230+600,325,200+600,325,1);
+}
+
+function drawLineDC_s09() {
+	drawInformationFlowLine(65+600,270,75+600,270,0);
+	drawInformationFlowLine(75+600,270,75+600,305,1);
+	drawMaterialFlowLine(110+600,325,90+600,325,1);
+	
+}
+
+function drawLineDC_s10() {
+	drawInformationFlowLine(210+600,245,260+600,245,1);
+}
+
+function drawNotifDC_s10() {
+	noFill();
+	ellipse(35+600,458,120,80);
+}
+
+function drawLineDC_s11() {
+	drawInformationFlowLine(60+600,460,105+600,460,0);
+	drawInformationFlowLine(105+600,460,105+600,245,0);
+	drawInformationFlowLine(105+600,245,210+600,245,0);
+	drawInformationFlowLine(210+600,245,210+600,255,1);
+}
+	
 function displayMusic() {
 	switch (role) {
 			case 'Admin': displayMusicRetailer(); displayMusicWarehouse(); displayMusicDC(); displayMusicFactory();
