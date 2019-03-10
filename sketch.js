@@ -85,12 +85,32 @@ var cumcostInventoryFactory = [];
 var costBackorderFactory = [];
 var cumcostBackorderFactory = [];
 
+// Pattern for customer order generation
+var pattern;
+var patternInput;
+
+// Amplification multiplicative factors
+var amplifMultip2;
+var amplifMultipInput2;
+var amplifMultip3;
+var amplifMultipInput3;
+
+// Amplification after/every n rounds
+var amplifAfterInput;
+var amplifEveryInput;
+var amplifAfter;
+var amplifEvery;
+
 // Range for the order size; the latter is uniformly generated as an integer 
 // within the interval
 var maxOrderSize;
-var maxOrderSizeInput;
+var maxOrderSizeInput1;
+var maxOrderSizeInput2;
+var maxOrderSizeInput3;
 var minOrderSize;
-var minOrderSizeInput;
+var minOrderSizeInput1;
+var minOrderSizeInput2;
+var minOrderSizeInput3;
 
 // Unit holding and backorder costs
 var UCInventoryRetailer;
@@ -166,44 +186,46 @@ function setup() {
   // put setup code here
 	
 	// main canvas
-	canvas = createCanvas(1600, 550);
+	canvas = createCanvas(1600, 640);
 	
 	//createP('');
 	roleInput = createInput('');
-	roleInput.position(515, 5);
+	roleInput.position(505, 5);
 	roleInput.size(30, 15);
 	
 	adminPasswordInput = createInput('', 'password');
-	adminPasswordInput.position(800, 5);
+	adminPasswordInput.position(775, 5);
 	adminPasswordInput.size(120, 15);
 	
-	myInitButton = createButton("Init.");
+	myInitButton = createButton("Init. Game");
 	myInitButton.position(930,5)
 	myInitButton.mousePressed(initGame);
 	
-	myUpdateParametersButton = createButton("Params.");
+	myUpdateParametersButton = createButton("Update Params.");
 	myUpdateParametersButton.mousePressed(updateParameters);
-	myUpdateParametersButton.position(980,5);
+	myUpdateParametersButton.position(1015,5);
 	
-	myMusicButton = createButton("Music played?");
+	myMusicButton = createButton("Music?");
 	myMusicButton.mousePressed(displayMusic);
-	myMusicButton.position(1080,5);
+	myMusicButton.position(1140,5);
 	
 	
  	myNextStepButton = createButton("Next Step");
 	myNextStepButton.mousePressed(nextStep);
-	
-	//createP('');
+	myNextStepButton.position(450, 550);
 	
 	myNextRoundButton = createButton("Next Round");
 	myNextRoundButton.mousePressed(nextRound);
+	myNextRoundButton.position(650, 550);
 	
-	createP('');
+	//createP('');
 	
-	mySummaryButton = createButton("Summary Tables");
+	mySummaryButton = createButton("Tables");
 	mySummaryButton.mousePressed(generateTables);
-	myChartsButton = createButton("Summary Charts");
+	mySummaryButton.position(450, 590);
+	myChartsButton = createButton("Charts");
 	myChartsButton.mousePressed(generateCharts);
+	myChartsButton.position(650,590);
 	
 	createP('');
 	
@@ -248,18 +270,58 @@ function setup() {
 	factoryOrderReceived.position(20+900, 400);
 	factoryOrderReceived.size(30, 15);
 	
-	//factoryQtyReceived = createInput('');
-	//factoryQtyReceived.position(200+900, 400);
-	//factoryQtyReceived.size(30, 15);
-	
 	// game parameters
-	minOrderSizeInput = createInput('');
-	minOrderSizeInput.position(20+1200, 400);
-	minOrderSizeInput.size(30, 15);
 	
-	maxOrderSizeInput = createInput('');
-	maxOrderSizeInput.position(80+1200, 400);
-	maxOrderSizeInput.size(30, 15);
+	// default parameter values
+	
+	pattern = 1;
+	minOrderSize = 20;
+	maxOrderSize = 80;
+	
+	patternInput = createInput('');
+	patternInput.position(80+1200, 340);
+	patternInput.size(30, 15);
+	
+	minOrderSizeInput1 = createInput('');
+	minOrderSizeInput1.position(40+1200, 400);
+	minOrderSizeInput1.size(30, 15);
+	
+	maxOrderSizeInput1 = createInput('');
+	maxOrderSizeInput1.position(80+1200, 400);
+	maxOrderSizeInput1.size(30, 15);
+	
+	minOrderSizeInput2 = createInput('');
+	minOrderSizeInput2.position(40+1200, 440);
+	minOrderSizeInput2.size(30, 15);
+	
+	maxOrderSizeInput2 = createInput('');
+	maxOrderSizeInput2.position(80+1200, 440);
+	maxOrderSizeInput2.size(30, 15);
+	
+	amplifMultipInput2 = createInput('');
+	amplifMultipInput2.position(140+1200, 440);
+	amplifMultipInput2.size(30, 15);
+	
+	amplifAfterInput = createInput('');
+	amplifAfterInput.position(220+1200, 440);
+	amplifAfterInput.size(30, 15);
+	
+	minOrderSizeInput3 = createInput('');
+	minOrderSizeInput3.position(40+1200, 480);
+	minOrderSizeInput3.size(30, 15);
+	
+	maxOrderSizeInput3 = createInput('');
+	maxOrderSizeInput3.position(80+1200, 480);
+	maxOrderSizeInput3.size(30, 15);
+	
+	amplifMultipInput3= createInput('');
+	amplifMultipInput3.position(140+1200, 480);
+	amplifMultipInput3.size(30, 15);
+	
+	amplifEveryInput = createInput('');
+	amplifEveryInput.position(220+1200, 480);
+	amplifEveryInput.size(30, 15);
+	
 	
 	// Populate Music Tracks
 	nbrTracks = 30;
@@ -289,7 +351,7 @@ function setup() {
 		'Bellini - Norma',
 		'Rachmaninoff - Piano Concerto No.2',
 		'Chopin - Etude No.12 (Revolutionary)',
-		'Beethoven - Symphony No.9 (Chorale)',
+		'Beethoven - Symphony No.9 (Choral)',
 		'Bizet - Carmen',
 		'Mozart - Piano Sonata No.11 (Alla Turca)',
 		'Strauss - Also Sprach Zarathustra',
@@ -359,7 +421,7 @@ function initGame() {
 	}
 	
 	// init message and action required
-	message = "New round to start!";
+	message = "";
 	actionReq = "";
 	
 	// Retailer elements to initialize and display
@@ -421,9 +483,7 @@ function initGame() {
 	costBackorderFactory[roundSim] = "NA";
 	cumcostBackorderFactory[roundSim] = 0;
 	
-	// parameters
-	minOrderSize = 20;
-	maxOrderSize = 80;
+	
 	
 	UCInventoryRetailer = 1;
 	UCInventoryWarehouse = 0.75;
@@ -435,7 +495,7 @@ function initGame() {
 	UCBackorderFactory = 1;
 	
 	switch (role) {
-		case "Admin": displayAll();
+		case "Admin": displayAll(); displayParams();
 		break;
 		case "Retailer": displayRetailerOnly();
 		break;
@@ -532,70 +592,138 @@ function nextStepAdmin() {
 		costBackorderFactory[roundSim] = "NA";
 		cumcostBackorderFactory[roundSim] = cumcostBackorderFactory[roundSim-1];
 		message = "New round starting!";
+		
 		displayAll();
+		
+		drawNotifBeginningRetailer();
+		drawNotifBeginningWarehouse();
+		drawNotifBeginningDC();
+		drawNotifBeginningFactory();
+		
 		break;
+		
 		case 1:
 		// step 1: retailer informs the warehouse that they are receiving 
 		// the order they made two periods earlier 
 		orderReceivedByWarehouse[roundSim] = orderMadeByRetailerMinus2[roundSim];
+		
 		message = "Retailer informs Warehouse of incoming order";
+		actionReq = "Order to transmit to Warehouse! Waiting shipment ...";
+		
 		displayAll();
+		
+		// draw flow
+		drawLineRetailer_s01();
+		
 		break;
+		
 		case 2:
 		// step 2: warehouse informs the DC that they are receiving 
 		// the order they made two periods earlier 
 		orderReceivedByDC[roundSim] = orderMadeByWarehouseMinus2[roundSim];
-		message = "Warehouse informs DC of incoming order";
+		
+		message = "Warehouse transmits order to DC";
+		actionReq = "Waiting shipment ...";
+		
 		displayAll();
+		
+		// draw line
+		drawLineWarehouse_s03();
+		
 		break;
+		
 		case 3:
 		// step 3: DC informs the factory that they are receiving 
 		// the order they made two periods earlier 
 		orderReceivedByFactory[roundSim] = orderMadeByDCMinus2[roundSim];
-		message = "DC informs Factory of incoming order";
+		message = "DC transmits order to Factory";
+		actionReq = "Waiting shipment ...";
+		
 		displayAll();
+		
+		// draw line
+		drawLineDC_s03();
+		
 		break;
+		
 		case 4:
 		// step 4: Factory informs the DC that they are receiving 
 		// a shipment 
 		quantityReceivedByDC[roundSim] = quantityDeliveredByFactoryTransit2[roundSim];
-		message = "Factory informs DC of incoming shipment";
+		message = "Incoming shipment reaches DC";
+		actionReq = "";
 		displayAll();
+		
+		// draw line
+		drawLineFactory_s03();
+		
 		break;
+		
 		case 5:
 		// step 5: DC informs the warehouse that they are receiving 
 		// a shipment 
 		quantityReceivedByWarehouse[roundSim] = quantityDeliveredByDCTransit2[roundSim];
-		message = "DC informs Warehouse of incoming shipment";
+		
+		message = "Incoming shipment reaches Warehouse";
+		
 		displayAll();
+		
+		// draw line
+		drawLineDC_s06();
+		
 		break;
+		
 		case 6:
 		// step 6: Warehouse informs the retailer that they are receiving 
 		// a shipment 
 		quantityReceivedByRetailer[roundSim] = quantityDeliveredByWarehouseTransit2[roundSim];
-		message = "Warehouse informs Retailer of incoming shipment";
+		message = "Incoming shipment reaches Retailer";
+		
 		displayAll();
+		
+		// draw line
+		drawLineWarehouse_s06();
+		
 		break;
+		
 		case 7:
 		// step 7: Customer order generated at the level of the retailer 
-		orderReceivedByRetailer[roundSim] = Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize);
+		// orderReceivedByRetailer[roundSim] = Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize);
+		
+		orderReceivedByRetailer[roundSim] = generateCustomerOrder();
 		message = "Retailer gets new customer order";
 		displayAll();
+		
+		// draw line
+		drawLineRetailer_s04();
+		
 		break;
+		
 		case 8:
-		// step 8: Shipment advancement factory to DC 
+		// step 8: Shipment advancement Factory to DC 
 		quantityDeliveredByFactoryTransit2[roundSim] = quantityDeliveredByFactoryTransit1[roundSim];
 		quantityDeliveredByFactoryTransit1[roundSim] = "NA";
 		message = "Shipment advancement Factory to DC";
 		displayAll();
+		
+		// draw line
+		drawLineFactory_s04();
+		
 		break;
+		
 		case 9:
 		// step 9: Quantity added to inventory at the level of factory 
 		inventoryFactory[roundSim] = inventoryFactory[roundSim] + quantityInProduction3[roundSim];
 		quantityInProduction3[roundSim] = "NA";
 		message = "Quantity added to Factory inventory";
+		
 		displayAll();
+		
+		// draw line
+		drawLineFactory_s05();
+		
 		break;
+		
 		case 10:
 		// step 10: Order fulfillment at the level of factory 
 		backorderFactory[roundSim] = backorderFactory[roundSim] + orderReceivedByFactory[roundSim];
@@ -618,7 +746,12 @@ function nextStepAdmin() {
 		cumcostBackorderFactory[roundSim] += costBackorderFactory[roundSim];
 		message = "Order fulfillment and inventory update at Factory";
 		displayAll();
+		
+		// draw line
+		drawLineFactory_s06();
+		
 		break;
+		
 		case 11:
 		// step 11: Production advancing at the level of factory 
 		quantityInProduction3[roundSim] = quantityInProduction2[roundSim];
@@ -627,27 +760,47 @@ function nextStepAdmin() {
 		message = "Production advancement at Factory";
 		actionReq = "Factory needs to enter new order!";
 		displayAll();
+		
+		// draw line
+		drawLineFactory_s07();
+		
+		// draw line
+		drawNotifFactory_s07();
+		
 		break;
+		
 		case 12:
 		// step 12: Factory enters its production order 
 		quantityInProduction1[roundSim] = parseFloat(factoryOrderInput.value());
 		message = "New production order by Factory";
 		actionReq = "";
 		displayAll();
+		
+		// draw line
+		drawLineFactory_s08();
 		break;
+		
 		case 13:
-		// step 13: Shipment advancement DC to warehouse
+		// step 13: Shipment advancement DC to Warehouse
 		quantityDeliveredByDCTransit2[roundSim] = quantityDeliveredByDCTransit1[roundSim];
 		quantityDeliveredByDCTransit1[roundSim] = "NA";
 		message = "Shipment advancement DC to Warehouse";
 		displayAll();
+		
+		// draw line
+		drawLineDC_s07();
 		break;
+		
 		case 14:
 		// step 14: Quantity added to inventory at the level of DC
 		inventoryDC[roundSim] = inventoryDC[roundSim] + quantityReceivedByDC[roundSim];
 		message = "Quantity added to DC inventory";
 		displayAll();
+		
+		// draw line
+		drawLineDC_s08();
 		break;
+		
 		case 15:
 		// step 15: Order fulfillment at the level of DC 
 		backorderDC[roundSim] = backorderDC[roundSim] + orderReceivedByDC[roundSim];
@@ -671,7 +824,12 @@ function nextStepAdmin() {
 		cumcostBackorderDC[roundSim] += costBackorderDC[roundSim];
 		message = "Order fulfillment and inventory update at DC";
 		displayAll();
+		
+		// draw line
+		drawLineDC_s09();
+		
 		break;
+		
 		case 16:
 		// step 16: orders advancing at the level of DC 
 		orderMadeByDCMinus2[roundSim] = orderMadeByDCMinus1[roundSim];
@@ -679,27 +837,47 @@ function nextStepAdmin() {
 		message = "Orders advancing at DC";
 		actionReq = "DC needs to enter new order!";
 		displayAll();
+		
+		// draw line
+		drawLineDC_s10();
+		
+		// draw notification
+		drawNotifDC_s10();
+		
 		break;
+		
 		case 17:
 		// step 17: DC enters its order 
 		orderMadeByDCMinus1[roundSim] = parseFloat(DCOrderInput.value());
 		message = "New order by DC";
 		actionReq = "";
 		displayAll();
+		
+		// draw line
+		drawLineDC_s11();
 		break;
+		
 		case 18:
-		// step 18: Shipment advancement warehouse to retailer
+		// step 18: Shipment advancement Warehouse to Retailer
 		quantityDeliveredByWarehouseTransit2[roundSim] = quantityDeliveredByWarehouseTransit1[roundSim];
 		quantityDeliveredByWarehouseTransit1[roundSim] = "NA";
 		message = "Shipment advancement Warehouse to Retailer";
 		displayAll();
+		
+		// draw line
+		drawLineWarehouse_s07();
 		break;
+		
 		case 19:
 		// step 19: Quantity added to inventory at the level of Warehouse
 		inventoryWarehouse[roundSim] = inventoryWarehouse[roundSim] + quantityReceivedByWarehouse[roundSim];
 		message = "Quantity added to Warehouse inventory";
 		displayAll();
+		
+		// draw line
+		drawLineWarehouse_s08();
 		break;
+		
 		case 20:
 		// step 20: Order fulfillment at the level of Warehouse 
 		backorderWarehouse[roundSim] = backorderWarehouse[roundSim] + orderReceivedByWarehouse[roundSim];
@@ -723,7 +901,11 @@ function nextStepAdmin() {
 		cumcostBackorderWarehouse[roundSim] += costBackorderWarehouse[roundSim];
 		message = "Order fulfillment and inventory update at Warehouse";
 		displayAll();
+		
+		// draw line
+		drawLineWarehouse_s09();
 		break;
+		
 		case 21:
 		// step 21: orders advancing at the level of Warehouse 
 		orderMadeByWarehouseMinus2[roundSim] = orderMadeByWarehouseMinus1[roundSim];
@@ -731,20 +913,35 @@ function nextStepAdmin() {
 		message = "Orders advancing at Warehouse";
 		actionReq = "Warehouse needs to enter new order!";
 		displayAll();
+		
+		// draw line
+		drawLineWarehouse_s10();
+		
+		// draw notification
+		drawNotifWarehouse_s10();
 		break;
+		
 		case 22:
 		// step 22: Warehouse enters its order 
 		orderMadeByWarehouseMinus1[roundSim] = parseFloat(warehouseOrderInput.value());
 		message = "New order by Warehouse";
 		actionReq = "";
 		displayAll();
+		
+		// draw line
+		drawLineWarehouse_s11();
 		break;
+		
 		case 23:
 		// step 23: Quantity added to inventory at the level of Retailer
 		inventoryRetailer[roundSim] = inventoryRetailer[roundSim] + quantityReceivedByRetailer[roundSim];
 		message = "Quantity added to Retailer inventory";
 		displayAll();
+		
+		// draw line
+		drawLineRetailer_s05();
 		break;
+		
 		case 24:
 		// step 24: Order fulfillment at the level of Retailer
 		backorderRetailer[roundSim] = backorderRetailer[roundSim] + orderReceivedByRetailer[roundSim];
@@ -767,7 +964,11 @@ function nextStepAdmin() {
 		cumcostBackorderRetailer[roundSim] += costBackorderRetailer[roundSim];
 		message = "Order fulfillment and inventory update at Retailer";
 		displayAll();
+		
+		// draw line
+		drawLineRetailer_s06();
 		break;
+		
 		case 25:
 		// step 25: orders advancing at the level of Retailer 
 		orderMadeByRetailerMinus2[roundSim] = orderMadeByRetailerMinus1[roundSim];
@@ -775,18 +976,34 @@ function nextStepAdmin() {
 		message = "Orders advancing at Retailer";
 		actionReq = "Retailer needs to enter new order!";
 		displayAll();
+		
+		// draw line
+		drawLineRetailer_s07();
+		
+		// draw line
+		drawNotifRetailer_s07();
 		break;
+		
 		case 26:
 		// step 26: Retailer enters its order 
 		orderMadeByRetailerMinus1[roundSim] = parseFloat(retailerOrderInput.value());
 		message = "New order by Retailer";
 		actionReq = "";
 		displayAll();
+		
+		// draw line
+		drawLineRetailer_s08();
 		break;
+		
 		case 27:
 		// step 27: End of current round
 		message = "End of current round!";
 		displayAll();
+		
+		drawNotifEndRetailer();
+		drawNotifEndWarehouse();
+		drawNotifEndDC();
+		drawNotifEndFactory();
 		break;
 	}
 	if (stepInRound == 27) {
@@ -832,7 +1049,7 @@ function nextStepRetailer() {
 		case 2:
 		// step 2: Retailer takes note of the shipment received from Warehouse 
 		// a shipment 
-		message = "Retailer takes note of the shipment received from Warehouse";
+		message = "Retailer takes note of a shipment received";
 		actionReq = "Quantity received to enter!";
 		displayRetailerOnly();
 		
@@ -854,7 +1071,9 @@ function nextStepRetailer() {
 		break;
 		case 4:
 		// step 4: Customer order generated at Retailer
-		orderReceivedByRetailer[roundSim] = Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize);
+		// orderReceivedByRetailer[roundSim] = Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize);
+		
+		orderReceivedByRetailer[roundSim] = generateCustomerOrder();
 		message = "Retailer gets new customer order";
 		displayRetailerOnly();
 		
@@ -1431,11 +1650,14 @@ function nextStepFactory() {
 
 function nextRound() {
 	
+	if (role == "Admin") {
+	
 	if (stepInRound != 0) {
+		alert('It seems you are in the middle of a round. Please finish all its steps first before running a new one!');
 		// DO NOTHING: you need to finish the previous round first
 	}
 	else {
-		
+		alert('Please make sure the default orders values are filled. You may change these as the game progresses.');
 		// update round first
 		roundSim++;
 		
@@ -1521,7 +1743,9 @@ function nextRound() {
 		quantityReceivedByRetailer[roundSim] = quantityDeliveredByWarehouseTransit2[roundSim];
 		
 		// step 7: Customer order generated at the level of the retailer 
-		orderReceivedByRetailer[roundSim] = Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize);
+		// orderReceivedByRetailer[roundSim] = Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize);
+		
+		orderReceivedByRetailer[roundSim] = generateCustomerOrder();
 		
 		// step 8: Shipment advancement factory to DC 
 		quantityDeliveredByFactoryTransit2[roundSim] = quantityDeliveredByFactoryTransit1[roundSim];
@@ -1666,7 +1890,11 @@ function nextRound() {
 		displayAll();	
 	}
 	
-
+	}
+	
+	else {
+		alert("Sorry, but you need to be the Admin for round-based play!");
+	}
 }
 
 function generateCharts() {
@@ -1860,8 +2088,6 @@ function displayFactoryOnly() {
 function displayRetailer() {
 	
 	fill(0, 0, 0);
-	textSize(14);
-	text("Retailer", 20, 60);
 	textSize(11);
 	
 	text("Order Received: " + orderReceivedByRetailer[roundSim], 20, 80);
@@ -1875,9 +2101,45 @@ function displayRetailer() {
 	text("Qty Received: " + quantityReceivedByRetailer[roundSim], 20, 140);
 	text(quantityReceivedByRetailer[roundSim], 237, 335);
 	text("Inventory: " + inventoryRetailer[roundSim], 20, 155);
+	var colorInv = 'G';
+	
+	if (inventoryRetailer[roundSim] < inventoryRetailer[0]/2 && inventoryRetailer[roundSim] >= inventoryRetailer[0]/4) colorInv = 'Y';
+	if (inventoryRetailer[roundSim] < inventoryRetailer[0]/4 && inventoryRetailer[roundSim] > 0) colorInv = 'O';
+	if (inventoryRetailer[roundSim] == 0) colorInv = 'R';
+	
+	switch (colorInv) {
+		case 'G': 
+			fill(0, 255, 0); 
+			break;
+		case 'Y': 
+			fill(255, 255, 0); 
+			break;
+		case 'O': 
+			fill(255,165,0); 
+			break;
+		case 'R': 
+			fill(255,0,0); 
+			break;
+	}
+		
 	text(inventoryRetailer[roundSim], 155, 315);
+	fill(0, 0, 0);
+	
 	text("Backorder: " + backorderRetailer[roundSim], 20, 170);
+	
+	var colorBO = 'G';
+	if (backorderRetailer[roundSim] > 0) colorBO = 'R';
+	
+	switch (colorBO) {
+		case 'G': 
+			fill(0, 255, 0); 
+			break;
+		case 'R': 
+			fill(255,0,0); 
+			break;
+	}
 	text(backorderRetailer[roundSim], 155, 335);
+	fill(0, 0, 0);
 	
 	text("Cost Inventory: " + costInventoryRetailer[roundSim] + " - cumul.: " + cumcostInventoryRetailer[roundSim], 20, 210);
 	text("Cost Backorder: " + costBackorderRetailer[roundSim] + " - cumul.: " + cumcostBackorderRetailer[roundSim], 20, 225);
@@ -1894,8 +2156,6 @@ function displayRetailerPlus() {
 
 function displayWarehouse() {
 	fill(0, 0, 0);
-	textSize(14);
-	text("Warehouse", 20+300, 60);
 	textSize(11);
 	text("Order Received: " + orderReceivedByWarehouse[roundSim], 20+300, 80);
 	text(orderReceivedByWarehouse[roundSim], 25+300, 275);
@@ -1910,9 +2170,46 @@ function displayWarehouse() {
 	text("Qty Received: " + quantityReceivedByWarehouse[roundSim], 20+300, 155);
 	text(quantityReceivedByWarehouse[roundSim], 237+300, 335);
 	text("Inventory: " + inventoryWarehouse[roundSim], 20+300, 170);
+	
+	var colorInv = 'G';
+	
+	if (inventoryWarehouse[roundSim] < inventoryWarehouse[0]/2 && inventoryWarehouse[roundSim] >= inventoryWarehouse[0]/4) colorInv = 'Y';
+	if (inventoryWarehouse[roundSim] < inventoryWarehouse[0]/4 && inventoryWarehouse[roundSim] > 0) colorInv = 'O';
+	if (inventoryWarehouse[roundSim] == 0) colorInv = 'R';
+	
+	switch (colorInv) {
+		case 'G': 
+			fill(0, 255, 0); 
+			break;
+		case 'Y': 
+			fill(255, 255, 0); 
+			break;
+		case 'O': 
+			fill(255,165,0); 
+			break;
+		case 'R': 
+			fill(255,0,0); 
+			break;
+	}
 	text(inventoryWarehouse[roundSim], 155+300, 315);
+	
+	fill(0,0,0);
 	text("Backorder: " + backorderWarehouse[roundSim], 20+300, 185);
+	
+	var colorBO = 'G';
+	if (backorderWarehouse[roundSim] > 0) colorBO = 'R';
+	
+	switch (colorBO) {
+		case 'G': 
+			fill(0, 255, 0); 
+			break;
+		case 'R': 
+			fill(255,0,0); 
+			break;
+	}
+	
 	text(backorderWarehouse[roundSim], 155+300, 335);
+	fill(0,0,0);
 	
 	text("Cost Inventory: " + costInventoryWarehouse[roundSim] + " - cumul.: " + cumcostInventoryWarehouse[roundSim], 20+300, 210);
 	text("Cost Backorder: " + costBackorderWarehouse[roundSim] + " - cumul.: " + cumcostBackorderWarehouse[roundSim], 20+300, 225);
@@ -1928,8 +2225,6 @@ function displayWarehousePlus() {
 
 function displayDC() {
 	fill(0, 0, 0);
-	textSize(14);
-	text("DC", 20+600, 60);
 	textSize(11);
 	text("Order Received: " + orderReceivedByDC[roundSim], 20+600, 80);
 	text(orderReceivedByDC[roundSim], 25+600, 275);
@@ -1944,9 +2239,46 @@ function displayDC() {
 	text("Qty Received: " + quantityReceivedByDC[roundSim], 20+600, 155);
 	text(quantityReceivedByDC[roundSim], 237+600, 335);
 	text("Inventory: " + inventoryDC[roundSim], 20+600, 170);
+	var colorInv = 'G';
+	
+	if (inventoryDC[roundSim] < inventoryDC[0]/2 && inventoryDC[roundSim] >= inventoryDC[0]/4) colorInv = 'Y';
+	if (inventoryDC[roundSim] < inventoryDC[0]/4 && inventoryDC[roundSim] > 0) colorInv = 'O';
+	if (inventoryDC[roundSim] == 0) colorInv = 'R';
+	
+	switch (colorInv) {
+		case 'G': 
+			fill(0, 255, 0); 
+			break;
+		case 'Y': 
+			fill(255, 255, 0); 
+			break;
+		case 'O': 
+			fill(255,165,0); 
+			break;
+		case 'R': 
+			fill(255,0,0); 
+			break;
+	}
+	
 	text(inventoryDC[roundSim], 155+600, 315);
+	
+	fill(0,0,0);
 	text("Backorder: " + backorderDC[roundSim], 20+600, 185);
+	
+	var colorBO = 'G';
+	if (backorderDC[roundSim] > 0) colorBO = 'R';
+	
+	switch (colorBO) {
+		case 'G': 
+			fill(0, 255, 0); 
+			break;
+		case 'R': 
+			fill(255,0,0); 
+			break;
+	}
+	
 	text(backorderDC[roundSim], 155+600, 335);
+	fill(0,0,0);
 	
 	text("Cost Inventory: " + costInventoryDC[roundSim] + " - cumul.: " + cumcostInventoryDC[roundSim], 20+600, 210);
 	text("Cost Backorder: " + costBackorderDC[roundSim] + " - cumul.: " + cumcostBackorderDC[roundSim], 20+600, 225);
@@ -1962,8 +2294,6 @@ function displayDCPlus() {
 
 function displayFactory() {
 	fill(0, 0, 0);
-	textSize(14);
-	text("Factory", 20+900, 60);
 	textSize(11);
 	text("Order Received: " + orderReceivedByFactory[roundSim], 20+900, 80);
 	text(orderReceivedByFactory[roundSim], 25+900, 275);
@@ -1978,9 +2308,46 @@ function displayFactory() {
 	text("Qty in Production 3: " + quantityInProduction3[roundSim], 20+900, 155);
 	text(quantityInProduction3[roundSim], 237+900, 335);
 	text("Inventory: " + inventoryFactory[roundSim], 20+900, 170);
+	
+	var colorInv = 'G';
+	
+	if (inventoryFactory[roundSim] < inventoryFactory[0]/2 && inventoryFactory[roundSim] >= inventoryFactory[0]/4) colorInv = 'Y';
+	if (inventoryFactory[roundSim] < inventoryFactory[0]/4 && inventoryFactory[roundSim] > 0) colorInv = 'O';
+	if (inventoryFactory[roundSim] == 0) colorInv = 'R';
+	
+	switch (colorInv) {
+		case 'G': 
+			fill(0, 255, 0); 
+			break;
+		case 'Y': 
+			fill(255, 255, 0); 
+			break;
+		case 'O': 
+			fill(255,165,0); 
+			break;
+		case 'R': 
+			fill(255,0,0); 
+			break;
+	}
+	
 	text(inventoryFactory[roundSim], 155+900, 315);
+	fill(0,0,0);
+	
 	text("Backorder: " + backorderFactory[roundSim], 20+900, 185);
+	
+	var colorBO = 'G';
+	if (backorderFactory[roundSim] > 0) colorBO = 'R';
+	
+	switch (colorBO) {
+		case 'G': 
+			fill(0, 255, 0); 
+			break;
+		case 'R': 
+			fill(255,0,0); 
+			break;
+	}
 	text(backorderFactory[roundSim], 155+900, 335);
+	fill(0,0,0);
 	
 	text("Cost Inventory: " + costInventoryFactory[roundSim] + " - cumul.: " + cumcostInventoryFactory[roundSim], 20+900, 210);
 	text("Cost Backorder: " + costBackorderFactory[roundSim] + " - cumul.: " + cumcostBackorderFactory[roundSim], 20+900, 225);
@@ -1999,16 +2366,16 @@ function displayInit() {
 	fill(0, 0, 0);
 	textSize(18);
 	text("Playing as: [A]dmin, [R]etailer, [W]arehouse, [D]C, [F]actory?", 20, 20); 
-	text("Password (for Admin):", 600, 20); 
+	text("Password (for Admin):", 590, 20); 
 	
-	textSize(14);
-	text("Retailer", 20, 60);
-	text("Warehouse", 20+300, 60);
-	text("DC", 20+600, 60);
-	text("Factory", 20+900, 60);
 	textSize(18);
-	text("Game Log", 20+ 1200, 20);
-	text("Game Parameters", 20+ 1200, 320);
+	text("Retailer", 120, 50);
+	text("Warehouse", 120+300, 50);
+	text("DC", 120+600, 50);
+	text("Factory", 120+900, 50);
+	textSize(18);
+	text("Game Log", 20+1200, 20);
+	text("Game Parameters", 20+1200, 320);
 	
 	// display Retailer shapes
 	noFill();
@@ -2033,6 +2400,7 @@ function displayInit() {
 	
 	// Area Retailer
 	rect(10,30,300-10,480);
+	rect(10,30,300-10,30);
 	rect(10,30,300-10,510);
 	
 	// display Warehouse shapes
@@ -2060,6 +2428,7 @@ function displayInit() {
 	// Area Warehouse
 	
 	rect(10+300,30,300-10,480);
+	rect(10+300,30,300-10,30);
 	rect(10+300,30,300-10,510);
 	
 	// display DC shapes
@@ -2085,6 +2454,7 @@ function displayInit() {
 	
 	// Area DC
 	rect(10+600,30,300-10,480);
+	rect(10+600,30,300-10,30);
 	rect(10+600,30,300-10,510);
 	
 	// display Factory shapes
@@ -2111,28 +2481,54 @@ function displayInit() {
 	
 	// Area Factory
 	rect(10+900,30,300-10,480);
+	rect(10+900,30,300-10,30);
 	rect(10+900,30,300-10,510);
 	
-	//parameters
+	// Play Area
+	rect(10,540,1200-10,40);
 	fill(0, 0, 0);
-	textSize(10);
-	text("Range Cust. Orders", 20+1200, 390);
-
+	textSize(18);
+	text("Play ", 20, 560); 
+	noFill();
+	
+	// Summary Area
+	rect(10,580,1200-10,40);
+	fill(0, 0, 0);
+	textSize(18);
+	text("Display Summary", 20, 600); 
+	noFill();
+	
+	// Game log area
+	rect(10+1200,30,300,260);
+	
+	// Game parameters area
+	rect(10+1200,330,300,290);
+	
+	//parameters
+	//
+	
+	// Copyright text
+	textSize(9);
+	text("Copyright 2019 Jawad Abrache. All rights reserved.", 100+1200, 610);
 }
 
 function displayRound() {
-	textSize(12);
+	textSize(11);
 	fill(0, 0, 0);
-	text("You are playing as the " + role, 40+1200, 80);
-	text("---------------------------------------", 40+1200, 100);
-	text("Round: " + roundSim + " - Step: " + stepInRound, 40+1200, 120);
-	text("---------------------------------------", 40+1200, 140);
-	text("Event: ", 40+1200, 160);
-	text(message, 40+1200, 180);
-	text("---------------------------------------", 40+1200, 200);
-	text("Action needed: ", 40+1200, 220);
-	text(actionReq, 40+1200, 240);
-	text("---------------------------------------", 40+1200, 260);
+	text("You are playing as the " + role, 20+1200, 80);
+	text("-------------------------------------------------------------", 20+1200, 100);
+	text("Round " + roundSim + " - Step " + stepInRound, 20+1200, 120);
+	text("-------------------------------------------------------------", 20+1200, 140);
+	text("What is happening: ", 20+1200, 160);
+	fill(0,0,255);
+	text(message, 25+1200, 180);
+	fill(0, 0, 0);
+	text("-------------------------------------------------------------", 20+1200, 200);
+	text("Action needed: ", 20+1200, 220);
+	fill(255, 0, 0);
+	text(actionReq, 25+1200, 240);
+	fill(0, 0, 0);
+	text("-------------------------------------------------------------", 20+1200, 260);
 	
 }
 
@@ -2148,11 +2544,60 @@ function displayAll() {
 
 function updateParameters() {
 	if (role == "Admin") {
-		minOrderSize = parseFloat(minOrderSizeInput.value());
-		maxOrderSize = parseFloat(maxOrderSizeInput.value());
-		minOrderSizeInput.value('');
-		maxOrderSizeInput.value('');
+		
+		pattern = patternInput.value();
+		patternInput.value('');
+		
+		switch(pattern) {
+			case "1":
+			minOrderSize = parseFloat(minOrderSizeInput1.value());
+			maxOrderSize = parseFloat(maxOrderSizeInput1.value());
+			minOrderSizeInput1.value('');
+			maxOrderSizeInput1.value('');
+			break;
+			case "2":
+			minOrderSize = parseFloat(minOrderSizeInput2.value());
+			maxOrderSize = parseFloat(maxOrderSizeInput2.value());
+			amplifMultip2 = parseFloat(amplifMultipInput2.value());
+			amplifAfter = parseFloat(amplifAfterInput.value());
+			minOrderSizeInput2.value('');
+			maxOrderSizeInput2.value('');
+			amplifMultipInput2.value('');
+			amplifAfterInput.value('');
+			break;
+			case "3":
+			minOrderSize = parseFloat(minOrderSizeInput3.value());
+			maxOrderSize = parseFloat(maxOrderSizeInput3.value());
+			amplifMultip3 = parseFloat(amplifMultipInput3.value());
+			amplifEvery = parseFloat(amplifEveryInput.value());
+			minOrderSizeInput3.value('');
+			maxOrderSizeInput3.value('');
+			amplifMultipInput3.value('');
+			amplifEveryInput.value('');
+			break;
+		}	
+		
 	}
+	
+	else {
+		alert("Sorry, but you need to be the Admin to modify the game parameters!");
+	}
+}
+
+function generateCustomerOrder() {
+	switch(pattern) {
+			case "1":
+			return(Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize));
+			break;
+			case "2":
+			if (roundSim < amplifAfter) return(Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize));
+			else return(amplifMultip2 * Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize));
+			break;
+			case "3": 
+			if (roundSim % amplifEvery) return(Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize));
+			else return(amplifMultip3 * Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize));
+			break;
+		}	
 }
 
 function drawNotifBeginningRetailer() {
@@ -2442,6 +2887,27 @@ function drawLineFactory_s08() {
 	drawInformationFlowLine(210+900,245,210+900,255,1);
 }
 
+function displayParams() {
+	fill(0, 0, 0);
+	textSize(16);
+	text("Pattern: ", 20+1200, 355);
+	
+	textSize(10);
+	text("Min", 50+1200, 390);
+	text("Max", 90+1200, 390);
+	
+	text("1) ", 20+1200, 410);
+	
+	text("2) ", 20+1200, 450);
+	text("(x)", 125+1200, 450);
+	text("after", 190+1200, 450);
+	text("rounds", 260+1200, 450);
+	
+	text("3) ", 20+1200, 490);
+	text("(x)", 125+1200, 490);
+	text("every", 190+1200, 490);
+	text("rounds", 260+1200, 490);
+}
 
 function displayMusic() {
 	switch (role) {
@@ -2460,24 +2926,28 @@ function displayMusic() {
 
 function displayMusicRetailer() {
 	textSize(13);
+	fill(0,0,255);
 	text("Music played - Excerpts from:", 20, 505);
 	text(trackName[trackPlayed], 20, 530); 
 }
 
 function displayMusicWarehouse() {
 	textSize(13);
+	fill(0,0,255);
 	text("Music played - Excerpts from:", 20+300, 505);
 	text(trackName[trackPlayed], 20+300, 530); 
 }
 
 function displayMusicDC() {
 	textSize(13);
+	fill(0,0,255);
 	text("Music played - Excerpts from:", 20+600, 505);
 	text(trackName[trackPlayed], 20+600, 530); 
 }
 
 function displayMusicFactory() {
 	textSize(13);
+	fill(0,0,255);
 	text("Music played - Excerpts from:", 20+900, 505);
 	text(trackName[trackPlayed], 20+900, 530); 
 }
