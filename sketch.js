@@ -4,6 +4,7 @@ var canvas; // the drawing canvas
 var myInitButton;
 var myNextStepButton;
 var myNextRoundButton;
+var myClearAllInputsButton;
 var mySummaryButton;
 var myUpdateParametersButton;
 var myMusicButton;
@@ -217,6 +218,10 @@ function setup() {
 	myNextRoundButton = createButton("Next Round");
 	myNextRoundButton.mousePressed(nextRound);
 	myNextRoundButton.position(650, 550);
+	
+	myClearAllInputsButton = createButton("Clear Inputs");
+	myClearAllInputsButton.mousePressed(clearAllInputs);
+	myClearAllInputsButton.position(850, 550);
 	
 	//createP('');
 	
@@ -608,7 +613,6 @@ function nextStepAdmin() {
 		orderReceivedByWarehouse[roundSim] = orderMadeByRetailerMinus2[roundSim];
 		
 		message = "Retailer informs Warehouse of incoming order";
-		actionReq = "Order to transmit to Warehouse! Waiting shipment ...";
 		
 		displayAll();
 		
@@ -623,7 +627,6 @@ function nextStepAdmin() {
 		orderReceivedByDC[roundSim] = orderMadeByWarehouseMinus2[roundSim];
 		
 		message = "Warehouse transmits order to DC";
-		actionReq = "Waiting shipment ...";
 		
 		displayAll();
 		
@@ -637,7 +640,6 @@ function nextStepAdmin() {
 		// the order they made two periods earlier 
 		orderReceivedByFactory[roundSim] = orderMadeByDCMinus2[roundSim];
 		message = "DC transmits order to Factory";
-		actionReq = "Waiting shipment ...";
 		
 		displayAll();
 		
@@ -998,6 +1000,9 @@ function nextStepAdmin() {
 		case 27:
 		// step 27: End of current round
 		message = "End of current round!";
+		
+		clearAllInputs();
+		
 		displayAll();
 		
 		drawNotifEndRetailer();
@@ -1062,6 +1067,7 @@ function nextStepRetailer() {
 		case 3:
 		// step 3: Quantity received by retailer updated 
 		quantityReceivedByRetailer[roundSim] = parseFloat(retailerQtyReceived.value());
+		
 		message = "Quantity received by retailer updated";
 		actionReq = "";
 		displayRetailerOnly();
@@ -1143,6 +1149,11 @@ function nextStepRetailer() {
 		case 9:
 		// step 9: End of current round
 		message = "End of current round!";
+		
+		// clear retailer input
+		retailerQtyReceived.value('');
+		retailerOrderInput.value('');
+		
 		displayRetailerOnly();
 		
 		drawNotifEndRetailer();
@@ -1317,6 +1328,11 @@ function nextStepWarehouse() {
 		message = "End of current round!";
 		displayWarehouseOnly();
 		
+		// clear warehouse input
+		warehouseOrderReceived.value('');
+		warehouseQtyReceived.value('');
+		warehouseOrderInput.value('');
+		
 		drawNotifEndWarehouse();
 		break;
 	}
@@ -1487,6 +1503,12 @@ function nextStepDC() {
 		case 12:
 		// step 12: End of current round
 		message = "End of current round!";
+		
+		// clear DC input
+		DCOrderReceived.value('');
+		DCQtyReceived.value('');
+		DCOrderInput.value(''); 
+		
 		displayDCOnly();
 		
 		drawNotifEndDC();
@@ -1637,6 +1659,11 @@ function nextStepFactory() {
 		case 9:
 		// step 9: End of current round
 		message = "End of current round!";
+		
+		// clear Factory input
+		factoryOrderReceived.value('');
+		factoryOrderInput.value(''); 
+		
 		displayFactoryOnly();
 		
 		drawNotifEndFactory();
@@ -1657,7 +1684,7 @@ function nextRound() {
 		// DO NOTHING: you need to finish the previous round first
 	}
 	else {
-		alert('Please make sure the default orders values are filled. You may change these as the game progresses.');
+		//alert('Please make sure the default orders values are filled. You may change these as the game progresses.');
 		// update round first
 		roundSim++;
 		
@@ -2507,6 +2534,7 @@ function displayInit() {
 	//parameters
 	//
 	
+	
 	// Copyright text
 	textSize(9);
 	text("Copyright 2019 Jawad Abrache. All rights reserved.", 100+1200, 610);
@@ -2598,6 +2626,26 @@ function generateCustomerOrder() {
 			else return(amplifMultip3 * Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize));
 			break;
 		}	
+}
+
+function clearAllInputs() {
+	// clear retailer input
+	retailerQtyReceived.value('');
+	retailerOrderInput.value('');
+		
+	// clear warehouse input
+	warehouseOrderReceived.value('');
+	warehouseQtyReceived.value('');
+	warehouseOrderInput.value('');
+		
+	// clear DC input
+	DCOrderReceived.value('');
+	DCQtyReceived.value('');
+	DCOrderInput.value('');
+		
+	// clear factory input
+	factoryOrderReceived.value('');
+	factoryOrderInput.value(''); 
 }
 
 function drawNotifBeginningRetailer() {
@@ -2911,7 +2959,8 @@ function displayParams() {
 
 function displayMusic() {
 	switch (role) {
-			case 'Admin': displayMusicRetailer(); displayMusicWarehouse(); displayMusicDC(); displayMusicFactory();
+			case 'Admin': 
+			displayMusicRetailer(); displayMusicWarehouse(); displayMusicDC(); displayMusicFactory();
 			break;
 			case 'Retailer': displayMusicRetailer();
 			break;
