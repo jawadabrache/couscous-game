@@ -438,9 +438,9 @@ function initGame() {
 	quantityReceivedByRetailer[roundSim] = "NA";
 	inventoryRetailer[roundSim] = 100;
 	backorderRetailer[roundSim] = 0;
-	costInventoryRetailer[roundSim] = "NA";
+	costInventoryRetailer[roundSim] = 0;
 	cumcostInventoryRetailer[roundSim] = 0;
-	costBackorderRetailer[roundSim] = "NA";
+	costBackorderRetailer[roundSim] = 0;
 	cumcostBackorderRetailer[roundSim] = 0;
 
 	// Warehouse elements to initialize and display
@@ -453,9 +453,9 @@ function initGame() {
 	quantityReceivedByWarehouse[roundSim]= "NA";
 	inventoryWarehouse[roundSim] = 100;
 	backorderWarehouse[roundSim] = 0;
-	costInventoryWarehouse[roundSim] = "NA";
+	costInventoryWarehouse[roundSim] = 0;
 	cumcostInventoryWarehouse[roundSim] = 0;
-	costBackorderWarehouse[roundSim] = "NA";
+	costBackorderWarehouse[roundSim] = 0;
 	cumcostBackorderWarehouse[roundSim] = 0;
 	
 	// DC elements to initialize and display
@@ -468,9 +468,9 @@ function initGame() {
 	quantityReceivedByDC[roundSim]= "NA";
 	inventoryDC[roundSim] = 100;
 	backorderDC[roundSim] = 0;
-	costInventoryDC[roundSim] = "NA";
+	costInventoryDC[roundSim] = 0;
 	cumcostInventoryDC[roundSim] = 0;
-	costBackorderDC[roundSim] = "NA";
+	costBackorderDC[roundSim] = 0;
 	cumcostBackorderDC[roundSim] = 0;
 	
 	// Factory elements to initialize and display
@@ -483,12 +483,12 @@ function initGame() {
 	quantityInProduction3[roundSim] = 55;
 	inventoryFactory[roundSim] = 100;
 	backorderFactory[roundSim] = 0;
-	costInventoryFactory[roundSim] = "NA";
+	costInventoryFactory[roundSim] = 0;
 	cumcostInventoryFactory[roundSim] = 0;
-	costBackorderFactory[roundSim] = "NA";
+	costBackorderFactory[roundSim] = 0;
 	cumcostBackorderFactory[roundSim] = 0;
 	
-	
+	// Unit Costs
 	
 	UCInventoryRetailer = 1;
 	UCInventoryWarehouse = 0.75;
@@ -550,9 +550,9 @@ function nextStepAdmin() {
 		quantityReceivedByRetailer[roundSim] = "NA";
 		inventoryRetailer[roundSim] = inventoryRetailer[roundSim-1];
 		backorderRetailer[roundSim] = backorderRetailer[roundSim-1];
-		costInventoryRetailer[roundSim] = "NA";
+		costInventoryRetailer[roundSim] = 0;
 		cumcostInventoryRetailer[roundSim] = cumcostInventoryRetailer[roundSim-1];
-		costBackorderRetailer[roundSim] = "NA";
+		costBackorderRetailer[roundSim] = 0;
 		cumcostBackorderRetailer[roundSim] = cumcostBackorderRetailer[roundSim-1];
 		
 		// Warehouse update
@@ -564,9 +564,9 @@ function nextStepAdmin() {
 		quantityReceivedByWarehouse[roundSim]= "NA";
 		inventoryWarehouse[roundSim] = inventoryWarehouse[roundSim-1];
 		backorderWarehouse[roundSim] = backorderWarehouse[roundSim-1];
-		costInventoryWarehouse[roundSim] = "NA";
+		costInventoryWarehouse[roundSim] = 0;
 		cumcostInventoryWarehouse[roundSim] = cumcostInventoryWarehouse[roundSim-1];
-		costBackorderWarehouse[roundSim] = "NA";
+		costBackorderWarehouse[roundSim] = 0;
 		cumcostBackorderWarehouse[roundSim] = cumcostBackorderWarehouse[roundSim-1];
 		
 		// DC update
@@ -578,9 +578,9 @@ function nextStepAdmin() {
 		quantityReceivedByDC[roundSim]= "NA";
 		inventoryDC[roundSim] = inventoryDC[roundSim-1];
 		backorderDC[roundSim] = backorderDC[roundSim-1];
-		costInventoryDC[roundSim] = "NA";
+		costInventoryDC[roundSim] = 0;
 		cumcostInventoryDC[roundSim] = cumcostInventoryDC[roundSim-1];
-		costBackorderDC[roundSim] = "NA";
+		costBackorderDC[roundSim] = 0;
 		cumcostBackorderDC[roundSim] = cumcostBackorderDC[roundSim-1];
 		
 		// Factory update
@@ -592,9 +592,9 @@ function nextStepAdmin() {
 		quantityInProduction3[roundSim] = quantityInProduction3[roundSim-1];
 		inventoryFactory[roundSim] = inventoryFactory[roundSim-1];
 		backorderFactory[roundSim] = backorderFactory[roundSim-1];
-		costInventoryFactory[roundSim] = "NA";
+		costInventoryFactory[roundSim] = 0;
 		cumcostInventoryFactory[roundSim] = cumcostInventoryFactory[roundSim-1];
-		costBackorderFactory[roundSim] = "NA";
+		costBackorderFactory[roundSim] = 0;
 		cumcostBackorderFactory[roundSim] = cumcostBackorderFactory[roundSim-1];
 		message = "New round starting!";
 		
@@ -1030,9 +1030,9 @@ function nextStepRetailer() {
 		quantityReceivedByRetailer[roundSim] = "NA";
 		inventoryRetailer[roundSim] = inventoryRetailer[roundSim-1];
 		backorderRetailer[roundSim] = backorderRetailer[roundSim-1];
-		costInventoryRetailer[roundSim] = "NA";
+		costInventoryRetailer[roundSim] = 0;
 		cumcostInventoryRetailer[roundSim] = cumcostInventoryRetailer[roundSim-1];
-		costBackorderRetailer[roundSim] = "NA";
+		costBackorderRetailer[roundSim] = 0;
 		cumcostBackorderRetailer[roundSim] = cumcostBackorderRetailer[roundSim-1];
 		
 		message = "New round starting!";
@@ -1180,9 +1180,9 @@ function nextStepWarehouse() {
 		quantityReceivedByWarehouse[roundSim]= "NA";
 		inventoryWarehouse[roundSim] = inventoryWarehouse[roundSim-1];
 		backorderWarehouse[roundSim] = backorderWarehouse[roundSim-1];
-		costInventoryWarehouse[roundSim] = "NA";
+		costInventoryWarehouse[roundSim] = 0;
 		cumcostInventoryWarehouse[roundSim] = cumcostInventoryWarehouse[roundSim-1];
-		costBackorderWarehouse[roundSim] = "NA";
+		costBackorderWarehouse[roundSim] = 0;
 		cumcostBackorderWarehouse[roundSim] = cumcostBackorderWarehouse[roundSim-1];
 		
 		message = "New round starting!";
@@ -1357,9 +1357,9 @@ function nextStepDC() {
 		quantityReceivedByDC[roundSim]= "NA";
 		inventoryDC[roundSim] = inventoryDC[roundSim-1];
 		backorderDC[roundSim] = backorderDC[roundSim-1];
-		costInventoryDC[roundSim] = "NA";
+		costInventoryDC[roundSim] = 0;
 		cumcostInventoryDC[roundSim] = cumcostInventoryDC[roundSim-1];
-		costBackorderDC[roundSim] = "NA";
+		costBackorderDC[roundSim] = 0;
 		cumcostBackorderDC[roundSim] = cumcostBackorderDC[roundSim-1];
 		
 		message = "New round starting!";
@@ -1536,9 +1536,9 @@ function nextStepFactory() {
 		quantityInProduction3[roundSim] = quantityInProduction3[roundSim-1];
 		inventoryFactory[roundSim] = inventoryFactory[roundSim-1];
 		backorderFactory[roundSim] = backorderFactory[roundSim-1];
-		costInventoryFactory[roundSim] = "NA";
+		costInventoryFactory[roundSim] = 0;
 		cumcostInventoryFactory[roundSim] = cumcostInventoryFactory[roundSim-1];
-		costBackorderFactory[roundSim] = "NA";
+		costBackorderFactory[roundSim] = 0;
 		cumcostBackorderFactory[roundSim] = cumcostBackorderFactory[roundSim-1];
 		
 		message = "New round starting!";
@@ -1696,9 +1696,9 @@ function nextRound() {
 		quantityReceivedByRetailer[roundSim] = "NA";
 		inventoryRetailer[roundSim] = inventoryRetailer[roundSim-1];
 		backorderRetailer[roundSim] = backorderRetailer[roundSim-1];
-		costInventoryRetailer[roundSim] = "NA";
+		costInventoryRetailer[roundSim] = 0;
 		cumcostInventoryRetailer[roundSim] = cumcostInventoryRetailer[roundSim-1];
-		costBackorderRetailer[roundSim] = "NA";
+		costBackorderRetailer[roundSim] = 0;
 		cumcostBackorderRetailer[roundSim] = cumcostBackorderRetailer[roundSim-1];
 		
 		// Warehouse update
@@ -1710,9 +1710,9 @@ function nextRound() {
 		quantityReceivedByWarehouse[roundSim]= "NA";
 		inventoryWarehouse[roundSim] = inventoryWarehouse[roundSim-1];
 		backorderWarehouse[roundSim] = backorderWarehouse[roundSim-1];
-		costInventoryWarehouse[roundSim] = "NA";
+		costInventoryWarehouse[roundSim] = 0;
 		cumcostInventoryWarehouse[roundSim] = cumcostInventoryWarehouse[roundSim-1];
-		costBackorderWarehouse[roundSim] = "NA";
+		costBackorderWarehouse[roundSim] = 0;
 		cumcostBackorderWarehouse[roundSim] = cumcostBackorderWarehouse[roundSim-1];
 		
 		// DC update
@@ -1724,9 +1724,9 @@ function nextRound() {
 		quantityReceivedByDC[roundSim]= "NA";
 		inventoryDC[roundSim] = inventoryDC[roundSim-1];
 		backorderDC[roundSim] = backorderDC[roundSim-1];
-		costInventoryDC[roundSim] = "NA";
+		costInventoryDC[roundSim] = 0;
 		cumcostInventoryDC[roundSim] = cumcostInventoryDC[roundSim-1];
-		costBackorderDC[roundSim] = "NA";
+		costBackorderDC[roundSim] = 0;
 		cumcostBackorderDC[roundSim] = cumcostBackorderDC[roundSim-1];
 		
 		// Factory update
@@ -1738,9 +1738,9 @@ function nextRound() {
 		quantityInProduction3[roundSim] = quantityInProduction3[roundSim-1];
 		inventoryFactory[roundSim] = inventoryFactory[roundSim-1];
 		backorderFactory[roundSim] = backorderFactory[roundSim-1];
-		costInventoryFactory[roundSim] = "NA";
+		costInventoryFactory[roundSim] = 0;
 		cumcostInventoryFactory[roundSim] = cumcostInventoryFactory[roundSim-1];
-		costBackorderFactory[roundSim] = "NA";
+		costBackorderFactory[roundSim] = 0;
 		cumcostBackorderFactory[roundSim] = cumcostBackorderFactory[roundSim-1];
 		
 		// Perform all the steps at once
@@ -2020,15 +2020,34 @@ function generateTablesAll() {
 localStorage.setItem("list_orders_retailer",  JSON.stringify(orderMadeByRetailerMinus1));
 localStorage.setItem("list_inventory_retailer",  JSON.stringify(inventoryRetailer));
 localStorage.setItem("list_backorder_retailer",  JSON.stringify(backorderRetailer));
+localStorage.setItem("list_cost_inventory_retailer",  JSON.stringify(costInventoryRetailer));
+localStorage.setItem("list_cumcost_inventory_retailer",  JSON.stringify(cumcostInventoryRetailer));
+localStorage.setItem("list_cost_backorder_retailer",  JSON.stringify(costBackorderRetailer));
+localStorage.setItem("list_cumcost_backorder_retailer",  JSON.stringify(cumcostBackorderRetailer));
+
 localStorage.setItem("list_orders_warehouse",  JSON.stringify(orderMadeByWarehouseMinus1));
 localStorage.setItem("list_inventory_warehouse",  JSON.stringify(inventoryWarehouse));
 localStorage.setItem("list_backorder_warehouse",  JSON.stringify(backorderWarehouse));
+localStorage.setItem("list_cost_inventory_warehouse",  JSON.stringify(costInventoryWarehouse));
+localStorage.setItem("list_cumcost_inventory_warehouse",  JSON.stringify(cumcostInventoryWarehouse));
+localStorage.setItem("list_cost_backorder_warehouse",  JSON.stringify(costBackorderWarehouse));
+localStorage.setItem("list_cumcost_backorder_warehouse",  JSON.stringify(cumcostBackorderWarehouse));
+
 localStorage.setItem("list_orders_DC",  JSON.stringify(orderMadeByDCMinus1));
 localStorage.setItem("list_inventory_DC",  JSON.stringify(inventoryDC));
 localStorage.setItem("list_backorder_DC",  JSON.stringify(backorderDC));
+localStorage.setItem("list_cost_inventory_DC",  JSON.stringify(costInventoryDC));
+localStorage.setItem("list_cumcost_inventory_DC",  JSON.stringify(cumcostInventoryDC));
+localStorage.setItem("list_cost_backorder_DC",  JSON.stringify(costBackorderDC));
+localStorage.setItem("list_cumcost_backorder_DC",  JSON.stringify(cumcostBackorderDC));
+
 localStorage.setItem("list_orders_factory",  JSON.stringify(quantityInProduction1));
 localStorage.setItem("list_inventory_factory",  JSON.stringify(inventoryFactory));
 localStorage.setItem("list_backorder_factory",  JSON.stringify(backorderFactory));
+localStorage.setItem("list_cost_inventory_factory",  JSON.stringify(costInventoryFactory));
+localStorage.setItem("list_cumcost_inventory_factory",  JSON.stringify(cumcostInventoryFactory));
+localStorage.setItem("list_cost_backorder_factory",  JSON.stringify(costBackorderFactory));
+localStorage.setItem("list_cumcost_backorder_factory",  JSON.stringify(cumcostBackorderFactory));
 
 var chartWindow = window.open(url="charts/TablesAll.html");
 
@@ -2040,6 +2059,10 @@ function generateTablesWarehouse() {
 localStorage.setItem("list_orders_warehouse",  JSON.stringify(orderMadeByWarehouseMinus1));
 localStorage.setItem("list_inventory_warehouse",  JSON.stringify(inventoryWarehouse));
 localStorage.setItem("list_backorder_warehouse",  JSON.stringify(backorderWarehouse));
+localStorage.setItem("list_cost_inventory_warehouse",  JSON.stringify(costInventoryWarehouse));
+localStorage.setItem("list_cumcost_inventory_warehouse",  JSON.stringify(cumcostInventoryWarehouse));
+localStorage.setItem("list_cost_backorder_warehouse",  JSON.stringify(costBackorderWarehouse));
+localStorage.setItem("list_cumcost_backorder_warehouse",  JSON.stringify(cumcostBackorderWarehouse));
 
 var chartWindow = window.open(url="charts/TablesWarehouse.html");
 
@@ -2050,6 +2073,11 @@ function generateTablesRetailer() {
 localStorage.setItem("list_orders_retailer",  JSON.stringify(orderMadeByRetailerMinus1));
 localStorage.setItem("list_inventory_retailer",  JSON.stringify(inventoryRetailer));
 localStorage.setItem("list_backorder_retailer",  JSON.stringify(backorderRetailer));
+localStorage.setItem("list_cost_inventory_retailer",  JSON.stringify(costInventoryRetailer));
+localStorage.setItem("list_cumcost_inventory_retailer",  JSON.stringify(cumcostInventoryRetailer));
+localStorage.setItem("list_cost_backorder_retailer",  JSON.stringify(costBackorderRetailer));
+localStorage.setItem("list_cumcost_backorder_retailer",  JSON.stringify(cumcostBackorderRetailer));
+
 
 var chartWindow = window.open(url="charts/TablesRetailer.html");
 }
@@ -2059,6 +2087,10 @@ function generateTablesDC() {
 localStorage.setItem("list_orders_DC",  JSON.stringify(orderMadeByDCMinus1));
 localStorage.setItem("list_inventory_DC",  JSON.stringify(inventoryDC));
 localStorage.setItem("list_backorder_DC",  JSON.stringify(backorderDC));
+localStorage.setItem("list_cost_inventory_DC",  JSON.stringify(costInventoryDC));
+localStorage.setItem("list_cumcost_inventory_DC",  JSON.stringify(cumcostInventoryDC));
+localStorage.setItem("list_cost_backorder_DC",  JSON.stringify(costBackorderDC));
+localStorage.setItem("list_cumcost_backorder_DC",  JSON.stringify(cumcostBackorderDC));
 
 var chartWindow = window.open(url="charts/TablesDC.html");
 }
@@ -2068,6 +2100,10 @@ function generateTablesFactory() {
 localStorage.setItem("list_orders_factory",  JSON.stringify(quantityInProduction1));
 localStorage.setItem("list_inventory_factory",  JSON.stringify(inventoryFactory));
 localStorage.setItem("list_backorder_factory",  JSON.stringify(backorderFactory));
+localStorage.setItem("list_cost_inventory_factory",  JSON.stringify(costInventoryFactory));
+localStorage.setItem("list_cumcost_inventory_factory",  JSON.stringify(cumcostInventoryFactory));
+localStorage.setItem("list_cost_backorder_factory",  JSON.stringify(costBackorderFactory));
+localStorage.setItem("list_cumcost_backorder_factory",  JSON.stringify(cumcostBackorderFactory));
 
 var chartWindow = window.open(url="charts/TablesFactory.html");
 }
@@ -2536,8 +2572,10 @@ function displayInit() {
 	
 	
 	// Copyright text
+	fill(0, 0, 0);
 	textSize(9);
 	text("Copyright 2019 Jawad Abrache. All rights reserved.", 100+1200, 610);
+	noFill();
 }
 
 function displayRound() {
@@ -2619,11 +2657,11 @@ function generateCustomerOrder() {
 			break;
 			case "2":
 			if (roundSim < amplifAfter) return(Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize));
-			else return(amplifMultip2 * Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize));
+			else return(Math.floor(amplifMultip2 *  (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize)));
 			break;
 			case "3": 
 			if (roundSim % amplifEvery) return(Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize));
-			else return(amplifMultip3 * Math.floor (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize));
+			else return(Math.floor(amplifMultip3 *  (Math.random() * (maxOrderSize - minOrderSize) + minOrderSize)));
 			break;
 		}	
 }
