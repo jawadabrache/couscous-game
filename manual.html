@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <title>The Couscous Game</title>
+  </head>
+  <body bgcolor="#E6E6FA">
+  
+    <h1> The game's setting and assumptions </h1>
+	
+    <p> The game evolves around a simplified supply chain of couscous, made of four layers representing respectively: a retailer, a warehouse, a distribution center (DC), and a factory where couscous is produced. 
+	Orders flow in the following direction: retailer - warehouse - DC - factory, while shipments of couscous travel in the opposite direction.
+	Each layer (retailer, warehouse, DC, and factory) maintains its own inventory of couscous and uses it to fulfill orders from the layer downstream; that is, the retailer satisfies orders from customers, the warehouse responds to orders from the retailer, the DC deals with orders from the warehouse, and finally, the factory fullfills the DC's orders.
+	All layers have an order lead time (which may correspond to processing delays for instance) of two periods (rounds). Hence, an order made by a retailer of period 4 will reach the warehouse in period 6, etc. The factory has also a similar lead time of two periods for its production orders.
+	Due mainly to transportation delays between the layers, there is a lead time of two periods as well for moving couscous from one layer to the layer downstream.
+	</p>
+	
+	<p> The order fulfillment at all layers is pretty straightforward: if there is enough on-hand inventory to fulfill an order, the latter is met and the on-hand inventory is updated accordingly; otherwise, part or all of the order is backordered. 
+	For the sake of simplicity, unit (per period, per unit) costs of maintaining on-hand inventory and backorders are fixed in the current version of the game to the following values:
+	<ul>
+		<li>	Inventory at retailer = 1 MAD (Moroccan Dirham) </li>
+		<li>	Inventory at warehouse = 0.75 MAD </li>
+		<li>	Inventory at DC = 0.50 MAD </li>
+		<li>	Inventory at factory = 0.25 MAD </li>
+		<li>	Backorder at retailer = 5 MAD </li>
+		<li>	Backorder at warehouse = 2 MAD </li>
+		<li>	Backorder at DC = 1.50 MAD </li>
+		<li>	Backorder at factory = 1 MAD </li>
+	</ul>
+	</p>
+	
+	<p> Customer orders at the level of the retailer are randomly and independently generated on every period using patterns chosen by the game's administrator (admin). For the moment, three patterns have been implemented:
+	<ul>
+		<li>	<u>Pattern 1</u>: Uniform distribution between a minimum value and a maximum value.</li>
+		<li>	<u>Pattern 2</u>: Uniform distribution between a minimum value and a maximum value, with a persisting burst (or drop) in demand after n periods. The change is simulated by applying a multiplicative factor to the generated uniformly-distributed values for all periods >= n.</li>
+		<li>	<u>Pattern 3</u>: Uniform distribution between a minimum value and a maximum value, with a cyclical burst (or drop) in demand after n periods. The change is simulated by applying a multiplicative factor to the generated uniformly-distributed values every n periods.</li>
+	</ul>
+	</p>
+	
+	<p> The game starts with an initial inventory (100 units) at every layer, no backorders, and an initial pipeline of outstanding orders and shipments, that will be displayed once the game is initiated. 
+		The objective of the players is to place appropriate orders and manage their inventory in a way that "optimizes" their individual costs (on-hand and backorder) or the entire supply chain's ones if they decide to play cooperatively.  
+	</p>
+	
+	
+	<br>
+	
+	<h1> How is the game played? </h1>
+	<p> 
+		Before playing the game, the admin needs to the game's parameters. This is done through the following steps:
+	<ul>
+		<li>	<u>Step 1</u>: The role played in the game (here A for "A"dmin) is entered in the approriate cell on the top of the game's canvas, and the password provided by the author (me) is entered in the corresponding cell; the admin then initializes the game by clicking on the "Init Game" button.</li>
+		<li>	<u>Step 2</u>: Following Step 1, the "Game Parameters" area becomes accessible to the admin, who needs to enter the chosen pattern for customer order generation, supply the needed parameters accordingly, and click on the "Update Params." button.</li>
+		<li>	<u>Step 3</u>: Following Step 2, the entered parameters are hidden (so that the players may not see them) and the game is ready to be played.</li>
+	</ul>
+	<u>Note</u>: The user will notice that each time a game is initiated, a randomly selected classical music mini-track (among 30 different pieces) will play. Clicking on the "Music?" button will uncover the identity of the piece and its composer.
+	</p>
+	
+	<p>
+		After initialization, the game can be played in stepwise mode by the retailer, warehouse, DC, or factory. This is done by:
+	<ul>
+		<li>	Entering the approriate role played in the game (here R for "R"etailer, W for "W"arehouse, D for "D"C, or F for "F"actory) in the approriate cell and initializing the game by clicking on the "Init Game" button (no password is needed here).</li>
+		<li>	Following the steps of a round one by one by clicking on the "Next Step" button. The player needs to pay attention to the messages in the "Game Log" section of the canvas, especially to the actions needed appearing in red. Some of these actions would need the player to enter an order, which is imperative and needs to be correctly formatted.</li>
+		<li>	After a number of rounds of play, the player may decide to stop and check the game's progress. This is done by generating summary tables and charts, thanks to the corresponding buttons in the "Summary" section of the canvas.</li>
+	</ul>
+	</p>
+	
+	<p>
+		The admin can also play the game, but with more possibilities and full visibility of the system. 
+		Indeed, admin can play in step-wise manner in a similar way to the retailer, warehouse, DC, and factory, and see every single step of the whole cycle in a given round. Furthermore, admin can conveniently play round-wise, that is, complete rounds in one shot; this is done by clicking on the "Next round" button instead of "Next Step". 
+		By playing this way, admin needs to be cautious enough to have all orders entered beforehand, and change these default values if necessary as the game progresses. Further versions of the game may place warnings in case this is forgotten.
+		After a number of rounds of play, admin may of course generate tables and charts, which concern all the players and give him a holistic view on the individual and overall performances. 
+	</p>
+	<br>
+
+    <p>&copy; 2019 Jawad Abrache. All rights reserved.</p>
+  </body>
+</html>
