@@ -2065,6 +2065,7 @@ function generateCharts() {
 }
 
 function generateChartsAll() {
+localStorage.setItem("number_rounds",  JSON.stringify(roundSim));
 
 localStorage.setItem("list_orders_retailer",  JSON.stringify(orderMadeByRetailerMinus1));
 localStorage.setItem("list_inventory_retailer",  JSON.stringify(inventoryRetailer));
@@ -2084,7 +2085,7 @@ var chartWindow = window.open(url="charts/chartsAll.html");
 }
 
 function generateChartsRetailer() {
-
+localStorage.setItem("number_rounds",  JSON.stringify(roundSim));
 localStorage.setItem("list_orders_retailer",  JSON.stringify(orderMadeByRetailerMinus1));
 localStorage.setItem("list_inventory_retailer",  JSON.stringify(inventoryRetailer));
 localStorage.setItem("list_backorder_retailer",  JSON.stringify(backorderRetailer));
@@ -2093,7 +2094,7 @@ var chartWindow = window.open(url="charts/chartsRetailer.html");
 }
 
 function generateChartsWarehouse() {
-
+localStorage.setItem("number_rounds",  JSON.stringify(roundSim));
 localStorage.setItem("list_orders_warehouse",  JSON.stringify(orderMadeByWarehouseMinus1));
 localStorage.setItem("list_inventory_warehouse",  JSON.stringify(inventoryWarehouse));
 localStorage.setItem("list_backorder_warehouse",  JSON.stringify(backorderWarehouse));
@@ -2103,7 +2104,7 @@ var chartWindow = window.open(url="charts/chartsWarehouse.html");
 }
 
 function generateChartsDC() {
-
+localStorage.setItem("number_rounds",  JSON.stringify(roundSim));
 localStorage.setItem("list_orders_DC",  JSON.stringify(orderMadeByDCMinus1));
 localStorage.setItem("list_inventory_DC",  JSON.stringify(inventoryDC));
 localStorage.setItem("list_backorder_DC",  JSON.stringify(backorderDC));
@@ -2113,7 +2114,7 @@ var chartWindow = window.open(url="charts/chartsDC.html");
 }
 
 function generateChartsFactory() {
-
+localStorage.setItem("number_rounds",  JSON.stringify(roundSim));
 localStorage.setItem("list_orders_factory",  JSON.stringify(quantityInProduction1));
 localStorage.setItem("list_inventory_factory",  JSON.stringify(inventoryFactory));
 localStorage.setItem("list_backorder_factory",  JSON.stringify(backorderFactory));
@@ -2140,6 +2141,7 @@ function generateTables() {
 }
 
 function generateTablesAll() {
+localStorage.setItem("number_rounds",  JSON.stringify(roundSim));
 
 localStorage.setItem("list_orders_retailer",  JSON.stringify(orderMadeByRetailerMinus1));
 localStorage.setItem("list_inventory_retailer",  JSON.stringify(inventoryRetailer));
@@ -2178,8 +2180,7 @@ var chartWindow = window.open(url="charts/TablesAll.html");
 }
 
 function generateTablesWarehouse() {
-
-
+localStorage.setItem("number_rounds",  JSON.stringify(roundSim));
 localStorage.setItem("list_orders_warehouse",  JSON.stringify(orderMadeByWarehouseMinus1));
 localStorage.setItem("list_inventory_warehouse",  JSON.stringify(inventoryWarehouse));
 localStorage.setItem("list_backorder_warehouse",  JSON.stringify(backorderWarehouse));
@@ -2193,7 +2194,7 @@ var chartWindow = window.open(url="charts/TablesWarehouse.html");
 }
 
 function generateTablesRetailer() {
-
+localStorage.setItem("number_rounds",  JSON.stringify(roundSim));
 localStorage.setItem("list_orders_retailer",  JSON.stringify(orderMadeByRetailerMinus1));
 localStorage.setItem("list_inventory_retailer",  JSON.stringify(inventoryRetailer));
 localStorage.setItem("list_backorder_retailer",  JSON.stringify(backorderRetailer));
@@ -2207,7 +2208,7 @@ var chartWindow = window.open(url="charts/TablesRetailer.html");
 }
 
 function generateTablesDC() {
-
+localStorage.setItem("number_rounds",  JSON.stringify(roundSim));
 localStorage.setItem("list_orders_DC",  JSON.stringify(orderMadeByDCMinus1));
 localStorage.setItem("list_inventory_DC",  JSON.stringify(inventoryDC));
 localStorage.setItem("list_backorder_DC",  JSON.stringify(backorderDC));
@@ -2220,7 +2221,7 @@ var chartWindow = window.open(url="charts/TablesDC.html");
 }
 
 function generateTablesFactory() {
-
+localStorage.setItem("number_rounds",  JSON.stringify(roundSim));
 localStorage.setItem("list_orders_factory",  JSON.stringify(quantityInProduction1));
 localStorage.setItem("list_inventory_factory",  JSON.stringify(inventoryFactory));
 localStorage.setItem("list_backorder_factory",  JSON.stringify(backorderFactory));
