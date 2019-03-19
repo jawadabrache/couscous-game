@@ -1,5 +1,11 @@
 
 // get values stored
+
+var nbr_rounds = localStorage.getItem("number_rounds");
+if (nbr_rounds) {
+    nrounds = JSON.parse(nbr_rounds);
+}
+
 var storedOrdersRetailer = localStorage.getItem("list_orders_retailer");
 if (storedOrdersRetailer) {
     ArrayStoredOrdersRetailer= JSON.parse(storedOrdersRetailer);
@@ -62,7 +68,7 @@ if (storedBackorderFactory) {
 
 var rounds=[];
 
-for (var r = 0; r<=ArrayStoredOrdersRetailer.length-1; r++) rounds[r]=r; 
+for (var r = 0; r<=nrounds; r++) rounds[r]=r; 
 
 var canvasRetailer = document.getElementById("myRetailerChart");
 var myRetailerChart = new Chart(canvasRetailer, {
@@ -74,18 +80,21 @@ var myRetailerChart = new Chart(canvasRetailer, {
 			data: ArrayStoredOrdersRetailer,
 			label: "Orders",
 			borderColor: "#3e95cd",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredInventoryRetailer,
 			label: "Inventory",
 			borderColor: "#8e5ea2",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredBackorderRetailer,
 			label: "Backorder",
 			borderColor: "#3cba9f",
+			lineTension: 0,
 			fill: false
 		}
     ]
@@ -102,18 +111,21 @@ var myWarehouseChart = new Chart(canvasWarehouse, {
 			data: ArrayStoredOrdersWarehouse,
 			label: "Orders",
 			borderColor: "#3e95cd",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredInventoryWarehouse,
 			label: "Inventory",
 			borderColor: "#8e5ea2",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredBackorderWarehouse,
 			label: "Backorder",
 			borderColor: "#3cba9f",
+			lineTension: 0,
 			fill: false
 		}
     ]
@@ -130,18 +142,21 @@ var myDCChart = new Chart(canvasDC, {
 			data: ArrayStoredOrdersDC,
 			label: "Orders",
 			borderColor: "#3e95cd",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredInventoryDC,
 			label: "Inventory",
 			borderColor: "#8e5ea2",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredBackorderDC,
 			label: "Backorder",
 			borderColor: "#3cba9f",
+			lineTension: 0,
 			fill: false
 		}
     ]
@@ -158,18 +173,21 @@ var myFactoryChart = new Chart(canvasFactory, {
 			data: ArrayStoredOrdersFactory,
 			label: "Orders",
 			borderColor: "#3e95cd",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredInventoryFactory,
 			label: "Inventory",
 			borderColor: "#8e5ea2",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredBackorderFactory,
 			label: "Backorder",
 			borderColor: "#3cba9f",
+			lineTension: 0,
 			fill: false
 		}
     ]
@@ -186,24 +204,28 @@ var myInventoryChart = new Chart(canvasInventory, {
 			data: ArrayStoredInventoryRetailer,
 			label: "Retailer",
 			borderColor: "#3e95cd",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredInventoryWarehouse,
 			label: "Warehouse",
 			borderColor: "#8e5ea2",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredInventoryDC,
 			label: "DC",
 			borderColor: "#3cba9f",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredInventoryFactory,
 			label: "Factory",
 			borderColor: "#c45850",
+			lineTension: 0,
 			fill: false
 		}
     ]
@@ -220,24 +242,28 @@ var myBackorderChart = new Chart(canvasBackorder, {
 			data: ArrayStoredBackorderRetailer,
 			label: "Retailer",
 			borderColor: "#3e95cd",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredBackorderWarehouse,
 			label: "Warehouse",
 			borderColor: "#8e5ea2",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredBackorderDC,
 			label: "DC",
 			borderColor: "#3cba9f",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredBackorderFactory,
 			label: "Factory",
 			borderColor: "#c45850",
+			lineTension: 0,
 			fill: false
 		}
     ]

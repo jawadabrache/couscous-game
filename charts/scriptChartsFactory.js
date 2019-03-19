@@ -1,6 +1,11 @@
 
 // get values stored
 
+var nbr_rounds = localStorage.getItem("number_rounds");
+if (nbr_rounds) {
+    nrounds = JSON.parse(nbr_rounds);
+}
+
 var storedOrdersFactory = localStorage.getItem("list_orders_factory");
 if (storedOrdersFactory) {
     ArrayStoredOrdersFactory = JSON.parse(storedOrdersFactory);
@@ -18,7 +23,7 @@ if (storedBackorderFactory) {
 
 var rounds=[];
 
-for (var r = 0; r<=ArrayStoredOrdersFactory.length-1; r++) rounds[r]=r; 
+for (var r = 0; r<=nrounds; r++) rounds[r]=r; 
 
 var canvasFactory = document.getElementById("myFactoryChart");
 var myFactoryChart = new Chart(canvasFactory, {
@@ -30,18 +35,21 @@ var myFactoryChart = new Chart(canvasFactory, {
 			data: ArrayStoredOrdersFactory,
 			label: "Orders",
 			borderColor: "#3e95cd",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredInventoryFactory,
 			label: "Inventory",
 			borderColor: "#8e5ea2",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredBackorderFactory,
 			label: "Backorder",
 			borderColor: "#3cba9f",
+			lineTension: 0,
 			fill: false
 		}
     ]

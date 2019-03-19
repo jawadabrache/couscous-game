@@ -1,6 +1,11 @@
 
 // get values stored
 
+var nbr_rounds = localStorage.getItem("number_rounds");
+if (nbr_rounds) {
+    nrounds = JSON.parse(nbr_rounds);
+}
+
 var storedOrdersWarehouse = localStorage.getItem("list_orders_warehouse");
 if (storedOrdersWarehouse) {
     ArrayStoredOrdersWarehouse = JSON.parse(storedOrdersWarehouse);
@@ -16,10 +21,9 @@ if (storedBackorderWarehouse) {
     ArrayStoredBackorderWarehouse = JSON.parse(storedBackorderWarehouse);
 }
 
-
 var rounds=[];
 
-for (var r = 0; r<=ArrayStoredOrdersWarehouse.length-1; r++) rounds[r]=r; 
+for (var r = 0; r<=nrounds; r++) rounds[r]=r; 
 
 var canvasWarehouse = document.getElementById("myWarehouseChart");
 var myWarehouseChart = new Chart(canvasWarehouse, {
@@ -31,18 +35,21 @@ var myWarehouseChart = new Chart(canvasWarehouse, {
 			data: ArrayStoredOrdersWarehouse,
 			label: "Orders",
 			borderColor: "#3e95cd",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredInventoryWarehouse,
 			label: "Inventory",
 			borderColor: "#8e5ea2",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredBackorderWarehouse,
 			label: "Backorder",
 			borderColor: "#3cba9f",
+			lineTension: 0,
 			fill: false
 		}
     ]

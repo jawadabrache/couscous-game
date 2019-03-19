@@ -1,6 +1,11 @@
 
 // get values stored
 
+var nbr_rounds = localStorage.getItem("number_rounds");
+if (nbr_rounds) {
+    nrounds = JSON.parse(nbr_rounds);
+}
+
 var storedOrdersDC = localStorage.getItem("list_orders_DC");
 if (storedOrdersDC) {
     ArrayStoredOrdersDC = JSON.parse(storedOrdersDC);
@@ -18,7 +23,7 @@ if (storedBackorderDC) {
 
 var rounds=[];
 
-for (var r = 0; r<=ArrayStoredOrdersDC.length-1; r++) rounds[r]=r; 
+for (var r = 0; r<=nrounds; r++) rounds[r]=r; 
 
 var canvasDC = document.getElementById("myDCChart");
 var myDCChart = new Chart(canvasDC, {
@@ -30,18 +35,21 @@ var myDCChart = new Chart(canvasDC, {
 			data: ArrayStoredOrdersDC,
 			label: "Orders",
 			borderColor: "#3e95cd",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredInventoryDC,
 			label: "Inventory",
 			borderColor: "#8e5ea2",
+			lineTension: 0,
 			fill: false
 		},
 		{ 
 			data: ArrayStoredBackorderDC,
 			label: "Backorder",
 			borderColor: "#3cba9f",
+			lineTension: 0,
 			fill: false
 		}
     ]
