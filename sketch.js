@@ -537,7 +537,7 @@ function nextStep() {
 }
 
 function nextStepAdmin() {
-	
+	var entryErrorInRound = 0;
 	switch (stepInRound) {
 		case 0: 
 		// new round: update data
@@ -773,13 +773,20 @@ function nextStepAdmin() {
 		
 		case 12:
 		// step 12: Factory enters its production order 
+		if (factoryOrderInput.value() == "") {
+			alert("Please fill a valid production order!");
+			entryErrorInRound = 1;
+		}
+		else {
 		quantityInProduction1[roundSim] = parseFloat(factoryOrderInput.value());
+		entryErrorInRound = 0;
 		message = "New production order by Factory";
 		actionReq = "";
 		displayAll();
 		
 		// draw line
 		drawLineFactory_s08();
+		}
 		break;
 		
 		case 13:
@@ -850,13 +857,20 @@ function nextStepAdmin() {
 		
 		case 17:
 		// step 17: DC enters its order 
-		orderMadeByDCMinus1[roundSim] = parseFloat(DCOrderInput.value());
-		message = "New order by DC";
-		actionReq = "";
-		displayAll();
+		if (DCOrderInput.value() == "") {
+			alert("Please fill a valid DC-made order!");
+			entryErrorInRound = 1;
+		}
+		else {
+			entryErrorInRound = 0;
+			orderMadeByDCMinus1[roundSim] = parseFloat(DCOrderInput.value());
+			message = "New order by DC";
+			actionReq = "";
+			displayAll();
 		
 		// draw line
 		drawLineDC_s11();
+		}
 		break;
 		
 		case 18:
@@ -925,13 +939,21 @@ function nextStepAdmin() {
 		
 		case 22:
 		// step 22: Warehouse enters its order 
-		orderMadeByWarehouseMinus1[roundSim] = parseFloat(warehouseOrderInput.value());
-		message = "New order by Warehouse";
-		actionReq = "";
-		displayAll();
+		if (warehouseOrderInput.value() == "") {
+			alert("Please fill a valid warehouse-made order!");
+			entryErrorInRound = 1;
+		}
 		
-		// draw line
-		drawLineWarehouse_s11();
+		else {
+			entryErrorInRound = 0;
+			orderMadeByWarehouseMinus1[roundSim] = parseFloat(warehouseOrderInput.value());
+			message = "New order by Warehouse";
+			actionReq = "";
+			displayAll();
+		
+			// draw line
+			drawLineWarehouse_s11();
+		}
 		break;
 		
 		case 23:
@@ -988,13 +1010,20 @@ function nextStepAdmin() {
 		
 		case 26:
 		// step 26: Retailer enters its order 
-		orderMadeByRetailerMinus1[roundSim] = parseFloat(retailerOrderInput.value());
-		message = "New order by Retailer";
-		actionReq = "";
-		displayAll();
+		if (retailerOrderInput.value() == "") {
+			alert("Please fill a valid retailer-made order!");
+			entryErrorInRound = 1;
+		}
+		else {
+			entryErrorInRound = 0;
+			orderMadeByRetailerMinus1[roundSim] = parseFloat(retailerOrderInput.value());
+			message = "New order by Retailer";
+			actionReq = "";
+			displayAll();
 		
-		// draw line
-		drawLineRetailer_s08();
+			// draw line
+			drawLineRetailer_s08();
+		}
 		break;
 		
 		case 27:
@@ -1013,11 +1042,14 @@ function nextStepAdmin() {
 	}
 	if (stepInRound == 27) {
 		stepInRound = 0; 
-	} else stepInRound++;
+	} else 
+	{
+		if (!entryErrorInRound) stepInRound++;
+	}
 }
 
 function nextStepRetailer() {
-	
+	var entryErrorInRound = 0;
 	switch (stepInRound) {
 		case 0:
 		roundSim++;
@@ -1065,15 +1097,22 @@ function nextStepRetailer() {
 
 		break;
 		case 3:
-		// step 3: Quantity received by retailer updated 
-		quantityReceivedByRetailer[roundSim] = parseFloat(retailerQtyReceived.value());
+		if (retailerQtyReceived.value() == "") {
+			alert("Please fill a valid shipment received!");
+			entryErrorInRound = 1;
+		}
+		else {
+			entryErrorInRound = 0;
+			// step 3: Quantity received by retailer updated 
+			quantityReceivedByRetailer[roundSim] = parseFloat(retailerQtyReceived.value());
 		
-		message = "Quantity received by retailer updated";
-		actionReq = "";
-		displayRetailerOnly();
+			message = "Quantity received by retailer updated";
+			actionReq = "";
+			displayRetailerOnly();
 		
-		// draw line
-		drawLineRetailer_s03();
+			// draw line
+			drawLineRetailer_s03();
+		}
 		break;
 		case 4:
 		// step 4: Customer order generated at Retailer
@@ -1138,13 +1177,20 @@ function nextStepRetailer() {
 		break;
 		case 8:
 		// step 8: Retailer enters its order 
-		orderMadeByRetailerMinus1[roundSim] = parseFloat(retailerOrderInput.value());
-		message = "New order by Retailer";
-		actionReq = "";
-		displayRetailerOnly();
+		if (retailerOrderInput.value() == "") {
+			alert("Please fill a valid order made!");
+			entryErrorInRound = 1;
+		}
+		else {
+			entryErrorInRound = 0;
+			orderMadeByRetailerMinus1[roundSim] = parseFloat(retailerOrderInput.value());
+			message = "New order by Retailer";
+			actionReq = "";
+			displayRetailerOnly();
 		
-		// draw line
-		drawLineRetailer_s08();
+			// draw line
+			drawLineRetailer_s08();
+		}
 		break;
 		case 9:
 		// step 9: End of current round
@@ -1161,12 +1207,15 @@ function nextStepRetailer() {
 	}
 	if (stepInRound == 9) {
 		stepInRound = 0; 
-	} else stepInRound++;
-	
+	} 
+	else 
+	{
+		if (!entryErrorInRound) stepInRound++;
+	}
 }
 
 function nextStepWarehouse() {
-	
+	var entryErrorInRound = 0;
 	switch (stepInRound) {
 		case 0:
 		roundSim++;
@@ -1202,14 +1251,21 @@ function nextStepWarehouse() {
 		drawNotifWarehouse_s01();
 		break;
 		case 2:
-		// step 2: Order received by warehouse updated 
-		orderReceivedByWarehouse[roundSim] = parseFloat(warehouseOrderReceived.value());
-		message = "Order received by warehouse updated";
-		actionReq = "";
-		displayWarehouseOnly();
+		if (warehouseOrderReceived.value() == "") {
+			alert("Please fill a valid order received!");
+			entryErrorInRound = 1;
+		}
+		else {
+			// step 2: Order received by warehouse updated 
+			entryErrorInRound = 0;
+			orderReceivedByWarehouse[roundSim] = parseFloat(warehouseOrderReceived.value());
+			message = "Order received by warehouse updated";
+			actionReq = "";
+			displayWarehouseOnly();
 		
-		// draw line
-		drawLineWarehouse_s02();
+			// draw line
+			drawLineWarehouse_s02();
+		}
 		break;
 		case 3:
 		// step 3: Warehouse informs the DC that they are receiving 
@@ -1233,14 +1289,21 @@ function nextStepWarehouse() {
 		drawNotifWarehouse_s04();
 		break;
 		case 5:
-		// step 5: Quantity received by warehouse updated 
-		quantityReceivedByWarehouse[roundSim] = parseFloat(warehouseQtyReceived.value());
-		message = "Quantity received by warehouse updated";
-		actionReq = "";
-		displayWarehouseOnly();
+		if (warehouseQtyReceived.value() == "") {
+			alert("Please fill a valid shipment received!");
+			entryErrorInRound = 1;
+		}
+		else {
+			// step 5: Quantity received by warehouse updated 
+			entryErrorInRound = 0;
+			quantityReceivedByWarehouse[roundSim] = parseFloat(warehouseQtyReceived.value());
+			message = "Quantity received by warehouse updated";
+			actionReq = "";
+			displayWarehouseOnly();
 		
-		// draw line
-		drawLineWarehouse_s05();
+			// draw line
+			drawLineWarehouse_s05();
+		}
 		break;
 		case 6:
 		// step 6: Warehouse informs retailer of incoming shipment
@@ -1315,13 +1378,20 @@ function nextStepWarehouse() {
 		break;
 		case 11:
 		// step 11: Warehouse enters its order 
-		orderMadeByWarehouseMinus1[roundSim] = parseFloat(warehouseOrderInput.value());
-		message = "New order by Warehouse";
-		actionReq = "";
-		displayWarehouseOnly();
+		if (warehouseOrderInput.value() == "") {
+			alert("Please fill a valid order made!");
+			entryErrorInRound = 1;
+		}
+		else {
+			entryErrorInRound = 0;
+			orderMadeByWarehouseMinus1[roundSim] = parseFloat(warehouseOrderInput.value());
+			message = "New order by Warehouse";
+			actionReq = "";
+			displayWarehouseOnly();
 		
-		// draw line
-		drawLineWarehouse_s11();
+			// draw line
+			drawLineWarehouse_s11();
+		}
 		break;
 		case 12:
 		// step 12: End of current round
@@ -1338,12 +1408,16 @@ function nextStepWarehouse() {
 	}
 	if (stepInRound == 12) {
 		stepInRound = 0; 
-	} else stepInRound++;
+	} 
+	else 
+	{
+		if (!entryErrorInRound) stepInRound++;
+	}
 	
 }
 
 function nextStepDC() {
-	
+	var entryErrorInRound = 0;
 	switch (stepInRound) {
 		case 0:
 		roundSim++;
@@ -1380,13 +1454,20 @@ function nextStepDC() {
 		break;
 		case 2:
 		// step 2: Order received by DC updated 
-		orderReceivedByDC[roundSim] = parseFloat(DCOrderReceived.value());
-		message = "Order received by DC updated";
-		actionReq = "";
-		displayDCOnly();
+		if (DCOrderReceived.value() == "") {
+			alert("Please fill a valid order received!");
+			entryErrorInRound = 1;
+		}
+		else {
+			entryErrorInRound = 0;
+			orderReceivedByDC[roundSim] = parseFloat(DCOrderReceived.value());
+			message = "Order received by DC updated";
+			actionReq = "";
+			displayDCOnly();
 		
-		// draw line
-		drawLineDC_s02();
+			// draw line
+			drawLineDC_s02();
+		}
 		break;
 		case 3:
 		// step 3: DC informs the Factory that they are receiving 
@@ -1411,13 +1492,20 @@ function nextStepDC() {
 		break;
 		case 5:
 		// step 5: Quantity received by DC updated 
-		quantityReceivedByDC[roundSim] = parseFloat(DCQtyReceived.value());
-		message = "Quantity received by DC updated";
-		actionReq = "";
-		displayDCOnly();
+		if (DCQtyReceived.value() == "") {
+			alert("Please fill a valid shipment received!");
+			entryErrorInRound = 1;
+		}
+		else {
+			entryErrorInRound = 0;
+			quantityReceivedByDC[roundSim] = parseFloat(DCQtyReceived.value());
+			message = "Quantity received by DC updated";
+			actionReq = "";
+			displayDCOnly();
 		
-		// draw line
-		drawLineDC_s05();
+			// draw line
+			drawLineDC_s05();
+		}
 		break;
 		case 6:
 		// step 6: DC informs Warehouse of incoming shipment
@@ -1492,13 +1580,20 @@ function nextStepDC() {
 		break;
 		case 11:
 		// step 11: DC enters its order 
-		orderMadeByDCMinus1[roundSim] = parseFloat(DCOrderInput.value());
-		message = "New order by DC";
-		actionReq = "";
-		displayDCOnly();
+		if (DCOrderInput.value() == "") {
+			alert("Please fill a valid order made!");
+			entryErrorInRound = 1;
+		}
+		else {
+			entryErrorInRound = 0;
+			orderMadeByDCMinus1[roundSim] = parseFloat(DCOrderInput.value());
+			message = "New order by DC";
+			actionReq = "";
+			displayDCOnly();
 		
-		// draw line
-		drawLineDC_s11();
+			// draw line
+			drawLineDC_s11();
+		}
 		break;
 		case 12:
 		// step 12: End of current round
@@ -1516,12 +1611,16 @@ function nextStepDC() {
 	}
 	if (stepInRound == 12) {
 		stepInRound = 0; 
-	} else stepInRound++;
+	} 
+	else 
+	{
+		if (!entryErrorInRound) stepInRound++;
+	}
 	
 }
 
 function nextStepFactory() {
-	
+	var entryErrorInRound = 0;
 	switch (stepInRound) {
 		case 0:
 		roundSim++;
@@ -1559,14 +1658,21 @@ function nextStepFactory() {
 		drawNotifFactory_s01();
 		break;
 		case 2:
-		// step 2: Order received by Factory updated 
-		orderReceivedByFactory[roundSim] = parseFloat(factoryOrderReceived.value());
-		message = "Order received by Factory updated";
-		actionReq = "";
-		displayFactoryOnly();
+		if (factoryOrderReceived.value() == "") {
+			alert("Please fill a valid order received!");
+			entryErrorInRound = 1;
+		}
+		else {
+			// step 2: Order received by Factory updated 
+			entryErrorInRound = 0;
+			orderReceivedByFactory[roundSim] = parseFloat(factoryOrderReceived.value());
+			message = "Order received by Factory updated";
+			actionReq = "";
+			displayFactoryOnly();
 		
-		// draw line
-		drawLineFactory_s02();
+			// draw line
+			drawLineFactory_s02();
+		}
 		break;
 		
 		case 3:
@@ -1646,14 +1752,21 @@ function nextStepFactory() {
 		break;
 		
 		case 8:
-		// step 8: Factory enters its production order 
-		quantityInProduction1[roundSim] = parseFloat(factoryOrderInput.value());
-		message = "New production order by Factory";
-		actionReq = "";
-		displayFactoryOnly();
+		if (factoryOrderInput.value() == "") {
+			alert("Please fill a valid production order!");
+			entryErrorInRound = 1;
+		}
+		else {
+			// step 8: Factory enters its production order 
+			entryErrorInRound = 0;
+			quantityInProduction1[roundSim] = parseFloat(factoryOrderInput.value());
+			message = "New production order by Factory";
+			actionReq = "";
+			displayFactoryOnly();
 		
-		// draw line
-		drawLineFactory_s08();
+			// draw line
+			drawLineFactory_s08();
+		}
 		break;
 		
 		case 9:
@@ -1671,7 +1784,11 @@ function nextStepFactory() {
 	}
 	if (stepInRound == 9) {
 		stepInRound = 0; 
-	} else stepInRound++;
+	} 
+	else 
+	{
+		if (!entryErrorInRound) stepInRound++;
+	}
 	
 }
 
@@ -1684,7 +1801,12 @@ function nextRound() {
 		// DO NOTHING: you need to finish the previous round first
 	}
 	else {
-		//alert('Please make sure the default orders values are filled. You may change these as the game progresses.');
+		if (factoryOrderInput.value() == "" || warehouseOrderInput.value() == "" || DCOrderInput.value() == ""|| retailerOrderInput.value() == "") {
+			alert('Please make sure default orders values are entered. You may change these as the game progresses.');
+		}
+		
+		else {
+		//
 		// update round first
 		roundSim++;
 		
@@ -1915,6 +2037,8 @@ function nextRound() {
 		// stepInRound = 0; NO NEED FOR THIS IN THE BATCH MODE
 		
 		displayAll();	
+	}
+	
 	}
 	
 	}
@@ -2172,16 +2296,16 @@ function displayRetailer() {
 	
 	switch (colorInv) {
 		case 'G': 
-			fill(0, 255, 0); 
+			fill(0, 153, 0); 
 			break;
 		case 'Y': 
-			fill(255, 255, 0); 
+			fill(220, 220, 0); 
 			break;
 		case 'O': 
-			fill(255,165,0); 
+			fill(255,130,0); 
 			break;
 		case 'R': 
-			fill(255,0,0); 
+			fill(215,0,0); 
 			break;
 	}
 		
@@ -2195,10 +2319,10 @@ function displayRetailer() {
 	
 	switch (colorBO) {
 		case 'G': 
-			fill(0, 255, 0); 
+			fill(0, 153, 0); 
 			break;
 		case 'R': 
-			fill(255,0,0); 
+			fill(215,0,0); 
 			break;
 	}
 	text(backorderRetailer[roundSim], 155, 335);
@@ -2242,16 +2366,16 @@ function displayWarehouse() {
 	
 	switch (colorInv) {
 		case 'G': 
-			fill(0, 255, 0); 
+			fill(0, 153, 0); 
 			break;
 		case 'Y': 
-			fill(255, 255, 0); 
+			fill(220, 220, 0); 
 			break;
 		case 'O': 
-			fill(255,165,0); 
+			fill(255,130,0); 
 			break;
 		case 'R': 
-			fill(255,0,0); 
+			fill(215,0,0); 
 			break;
 	}
 	text(inventoryWarehouse[roundSim], 155+300, 315);
@@ -2264,10 +2388,10 @@ function displayWarehouse() {
 	
 	switch (colorBO) {
 		case 'G': 
-			fill(0, 255, 0); 
+			fill(0, 153, 0); 
 			break;
 		case 'R': 
-			fill(255,0,0); 
+			fill(215,0,0); 
 			break;
 	}
 	
@@ -2310,16 +2434,16 @@ function displayDC() {
 	
 	switch (colorInv) {
 		case 'G': 
-			fill(0, 255, 0); 
+			fill(0, 153, 0); 
 			break;
 		case 'Y': 
-			fill(255, 255, 0); 
+			fill(220, 220, 0); 
 			break;
 		case 'O': 
-			fill(255,165,0); 
+			fill(255,130,0); 
 			break;
 		case 'R': 
-			fill(255,0,0); 
+			fill(215,0,0); 
 			break;
 	}
 	
@@ -2333,10 +2457,10 @@ function displayDC() {
 	
 	switch (colorBO) {
 		case 'G': 
-			fill(0, 255, 0); 
+			fill(0, 153, 0); 
 			break;
 		case 'R': 
-			fill(255,0,0); 
+			fill(215,0,0); 
 			break;
 	}
 	
@@ -2380,16 +2504,16 @@ function displayFactory() {
 	
 	switch (colorInv) {
 		case 'G': 
-			fill(0, 255, 0); 
+			fill(0, 153, 0); 
 			break;
 		case 'Y': 
-			fill(255, 255, 0); 
+			fill(220, 220, 0); 
 			break;
 		case 'O': 
-			fill(255,165,0); 
+			fill(255,130,0); 
 			break;
 		case 'R': 
-			fill(255,0,0); 
+			fill(215,0,0); 
 			break;
 	}
 	
@@ -2403,10 +2527,10 @@ function displayFactory() {
 	
 	switch (colorBO) {
 		case 'G': 
-			fill(0, 255, 0); 
+			fill(0, 153, 0); 
 			break;
 		case 'R': 
-			fill(255,0,0); 
+			fill(215,0,0); 
 			break;
 	}
 	text(backorderFactory[roundSim], 155+900, 335);
@@ -2458,8 +2582,8 @@ function displayInit() {
 	
 	
 	noFill();
-	triangle(20,340,50,340,35,310);
-	triangle(230,340,260,340,245,310);
+	triangle(20,340,54,340,37,310);
+	triangle(230,340,264,340,247,310);
 	
 	// Area Retailer
 	rect(10,30,300-10,480);
@@ -2484,9 +2608,9 @@ function displayInit() {
 	
 	
 	noFill();
-	triangle(20+300,340,50+300,340,35+300,310);
-	triangle(60+300,340,90+300,340,75+300,310);
-	triangle(230+300,340,260+300,340,245+300,310);
+	triangle(20+300,340,54+300,340,37+300,310);
+	triangle(60+300,340,94+300,340,77+300,310);
+	triangle(230+300,340,264+300,340,247+300,310);
 	
 	// Area Warehouse
 	
@@ -2511,9 +2635,9 @@ function displayInit() {
 	text("BO", 125+600, 335);
 	
 	noFill();
-	triangle(20+600,340,50+600,340,35+600,310);
-	triangle(60+600,340,90+600,340,75+600,310);
-	triangle(230+600,340,260+600,340,245+600,310);
+	triangle(20+600,340,54+600,340,37+600,310);
+	triangle(60+600,340,94+600,340,77+600,310);
+	triangle(230+600,340,264+600,340,247+600,310);
 	
 	// Area DC
 	rect(10+600,30,300-10,480);
@@ -2537,10 +2661,10 @@ function displayInit() {
 	text("BO", 125+900, 335);
 	
 	noFill();
-	triangle(20+900,340,50+900,340,35+900,310);
-	triangle(60+900,340,90+900,340,75+900,310);
+	triangle(20+900,340,54+900,340,37+900,310);
+	triangle(60+900,340,94+900,340,77+900,310);
 	
-	triangle(230+900,340,260+900,340,245+900,310);
+	triangle(230+900,340,264+900,340,247+900,310);
 	
 	// Area Factory
 	rect(10+900,30,300-10,480);
