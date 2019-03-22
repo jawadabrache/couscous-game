@@ -8,6 +8,7 @@ var myClearAllInputsButton;
 var mySummaryButton;
 var myUpdateParametersButton;
 var myMusicButton;
+var myMusicRadio;
 
 // Order input areas
 var retailerOrderInput, warehouseOrderInput, DCOrderInput, factoryOrderInput;
@@ -204,12 +205,16 @@ function setup() {
 	
 	myUpdateParametersButton = createButton("Update Params.");
 	myUpdateParametersButton.mousePressed(updateParameters);
-	myUpdateParametersButton.position(1015,5);
+	myUpdateParametersButton.position(1200+100,560);
 	
-	myMusicButton = createButton("Music?");
+	myMusicButton = createButton("Track played?");
 	myMusicButton.mousePressed(displayMusic);
-	myMusicButton.position(1140,5);
+	myMusicButton.position(180+900,585);
 	
+	myMusicRadio = createRadio();
+    myMusicRadio.position(70+900,585);
+	myMusicRadio.option('Yes');
+	myMusicRadio.option('No');
 	
  	myNextStepButton = createButton("Next Step");
 	myNextStepButton.mousePressed(nextStep);
@@ -516,7 +521,7 @@ function initGame() {
 	trackPlayed = Math.floor (Math.random() * nbrTracks);
 	
 	var track = new Audio("sounds/"+trackFileName[trackPlayed]);
-    track.play();
+    if (myMusicRadio.value() == "Yes") track.play();
 
 }
 
@@ -2334,6 +2339,15 @@ function displayRetailer() {
 	
 	text("Order", 20, 445);
 	
+	textSize(12);
+	noFill();
+	rect(175,175,120,22);
+	fill(215,0,0); 
+	text("Cumulative Cost: ", 180, 170);
+	text(cumcostInventoryRetailer[roundSim]+cumcostBackorderRetailer[roundSim], 180, 190);
+	textSize(11);
+	fill(0, 0, 0);
+	
 
 }
 
@@ -2403,6 +2417,15 @@ function displayWarehouse() {
 	text("Cost Backorder: " + costBackorderWarehouse[roundSim] + " - cumul.: " + cumcostBackorderWarehouse[roundSim], 20+300, 225);
 	
 	text("Order", 20+300, 445);
+	
+	textSize(12);
+	noFill();
+	rect(175+300,175,120,22);
+	fill(215,0,0); 
+	text("Cumulative Cost: ", 180+300, 170);
+	text(cumcostInventoryWarehouse[roundSim]+cumcostBackorderWarehouse[roundSim], 180+300, 190);
+	textSize(11);
+	fill(0, 0, 0);
 
 }
 
@@ -2472,6 +2495,15 @@ function displayDC() {
 	text("Cost Backorder: " + costBackorderDC[roundSim] + " - cumul.: " + cumcostBackorderDC[roundSim], 20+600, 225);
 	
 	text("Order", 20+600, 445);
+	
+	textSize(12);
+	noFill();
+	rect(175+600,175,120,22);
+	fill(215,0,0); 
+	text("Cumulative Cost: ", 180+600, 170);
+	text(cumcostInventoryDC[roundSim]+cumcostBackorderDC[roundSim], 180+600, 190);
+	textSize(11);
+	fill(0, 0, 0);
 
 }
 
@@ -2541,6 +2573,15 @@ function displayFactory() {
 	text("Cost Backorder: " + costBackorderFactory[roundSim] + " - cumul.: " + cumcostBackorderFactory[roundSim], 20+900, 225);
 	
 	text("Order", 20+900, 445);
+	
+	textSize(12);
+	noFill();
+	rect(175+900,175,120,22);
+	fill(215,0,0); 
+	text("Cumulative Cost: ", 180+900, 170);
+	text(cumcostInventoryFactory[roundSim]+cumcostBackorderFactory[roundSim], 180+900, 190);
+	textSize(11);
+	fill(0, 0, 0);
 
 }
 
@@ -2685,6 +2726,14 @@ function displayInit() {
 	textSize(18);
 	text("Display Summary", 20, 600); 
 	noFill();
+	
+	// Music Area
+	rect(10+900,580,300-10,40);
+	fill(0, 0, 0);
+	textSize(18);
+	text("Music", 20+900, 600); 
+	noFill();
+	
 	
 	// Game log area
 	rect(10+1200,30,300,260);

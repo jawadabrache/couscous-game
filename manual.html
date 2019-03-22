@@ -43,7 +43,7 @@
 	
 	<br>
 	
-	<h1> How is the game played? </h1>
+	<h1> An overview on how to play the game </h1>
 	<p> 
 		Before playing the game, the admin needs to the game's parameters. This is done through the following steps:
 	<ul>
@@ -51,7 +51,7 @@
 		<li>	<u>Step 2</u>: Following Step 1, the "Game Parameters" area becomes accessible to the admin, who needs to enter the chosen pattern for customer order generation, supply the needed parameters accordingly, and click on the "Update Params." button.</li>
 		<li>	<u>Step 3</u>: Following Step 2, the entered parameters are hidden (so that the players may not see them) and the game is ready to be played.</li>
 	</ul>
-	<u>Note</u>: The user will notice that each time a game is initiated, a randomly selected classical music mini-track (among 30 different pieces) will play. Clicking on the "Music?" button will uncover the identity of the piece and its composer.
+	<u>Note</u>: In case classical music play is selected by admin, the user will notice that each time a game is initiated, a randomly selected classical music mini-track (among 30 different pieces) will play. Clicking on the "Track played?" button will uncover the identity of the piece and its composer.
 	</p>
 	
 	<p>
@@ -64,12 +64,196 @@
 	</p>
 	
 	<p>
-		The admin can also play the game, but with more possibilities and full visibility of the system. 
-		Indeed, admin can play in step-wise manner in a similar way to the retailer, warehouse, DC, and factory, and see every single step of the whole cycle in a given round. Furthermore, admin can conveniently play round-wise, that is, complete rounds in one shot; this is done by clicking on the "Next round" button instead of "Next Step". 
-		By playing this way, admin needs to be cautious enough to have all orders entered beforehand, and change these default values if necessary as the game progresses. Further versions of the game may place warnings in case this is forgotten.
-		After a number of rounds of play, admin may of course generate tables and charts, which concern all the players and give him a holistic view on the individual and overall performances. 
+		The administrator can also play the game as admin, but with more possibilities and full visibility of the system. 
+		Indeed, admin can play in step-wise manner in a similar way to the retailer, warehouse, DC, and factory, and see every single step of the whole cycle in a given round. In addition, admin can conveniently play round-wise, that is, complete rounds in one shot. This is done by clicking on the "Next Round" button instead of "Next Step". 
+		By playing this way, admin needs to be cautious enough to have all orders entered beforehand, and change these default values if necessary as the game progresses. A warning is issued in case this element of common sense is forgotten.
+		After a number of rounds of play, admin may of course generate tables and charts. The latter cover all the players and give the admin a holistic view on the individual and overall performances. Note that the user can copy/past a table to an Excel spreadsheet, which is convenient for storage of sessions and further analysis.
 	</p>
 	<br>
+	
+	<h1> A step-by-step guide to a typical game session </h1>
+	<p> 
+		In the following, a step-by-step game session played by an instructor with a group of students is described. Screenshots are used to illustrate visually the play.
+		<h3> Initialization of the game session:</h3>
+	<ul>
+		<li>	The admin first decides whether to enable music when playing the game.
+		<br><br>
+		<img src="pics/screenshot01.jpg">
+		<br><br>
+		</li>
+		<li>	The admin enters A (for "A"dmin) in the approriate cell on the top of the game's canvas, and the admin password is entered in the corresponding cell; the admin then initializes the game by clicking on the "Init Game" button.
+		<br><br>
+		<img src="pics/screenshot02.jpg">
+		<br><br>
+		</li>
+		<li>	The "Game Parameters" area becomes accessible to the admin, who needs to enter the chosen pattern for customer order generation, supply the needed parameters accordingly, and click on the "Update Params." button. 
+			In the present session, we choose to play with Pattern 3, which consist of uniformly distributed customer demand, with a minimum demand of 40, a maximum demand of 50, a burst in demand (with a multiplicative factor of 2.5) every 4 rounds.
+		<br><br>
+		<img src="pics/screenshot03.jpg">
+		<br><br>
+		</li>
+	</ul>
+		<h3> Playing as a retailer:</h3>
+	<ul>
+		<li>	The admin asks the retailer team to enter R (for "R"etailer) in the approriate cell on the top of the game's canvas and click on the "Init Game" button. No password is needed here.
+		<br><br>
+		<img src="pics/screenshot04.jpg">
+		<br><br>
+		</li>
+		<li>	The retailer team will then notice that its game board is intialized; indeed the other participants' boards are not visible to the retailer. 
+		The latter should take note of: (a) its initial on-hand inventory (100 units) and backorders (0); (b) its pipeline of outstanding orders to the warehouse made in previous periods (30 and 35 units); 
+		(c) customer order for the period - the upper left box with NA; (d) the buffers to serve the customer and receive shipments from warehouse - the triangles with NA; 
+		(e) two empty fields to enter new orders to the warehouse and new shipments received from the warehouse, and (f) cost information: on-hand inventory and backorder for the period and cumulative.
+		<br><br>
+		<img src="pics/screenshot05.jpg">
+		<br><br>
+		</li>
+		<li>	The retailer plays one game round by repetitively clicking on the "Next Step" button. The following screens will be displayed. 
+		The retailer should keep an eye on the "Game Log" section of the canvas for an explanation of what is happening and instructions whenever action (e.g. order entry) is needed.
+		Also an instructor administring the game should note that orders need to be physically transmitted from the retailer team to the warehouse team (e.g. using post-it paper slips), as well as shipments from the warehouse to the retailer. 
+		The instructor has to halt the retailer's play after it issues an order to the warehouse, and reactivate the play at the retailer once an order is received from the warehouse.
+		<br><br>
+		<img src="pics/screenshot06.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot07.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot08.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot09.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot10.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot11.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot12.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot13.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot14.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot15.jpg">
+		<br><br>
+		</li>
+	</ul>
+			<h3> Playing as a warehouse/DC:</h3>
+			Warehouse and DC play being identical, the following will describe a typical round played by the warehouse. 
+	<ul>
+		<li>	The admin asks the warehouse team to enter W (for "W"arehouse) in the approriate cell on the top of the game's canvas and click on the "Init Game" button. 
+		<br><br>
+		<img src="pics/screenshot16.jpg">
+		<br><br>
+		</li>
+		<li>	The warehouse team's game board is intialized. The elements present are almost the same as with the retailer, with the exception of: (a) customer orders are replaced by retailer orders, 
+		(b) two transit (transport) channels representing the 2-period transport lead time, and (c) an additional field to enter orders received from the warehouse.
+		<br><br>
+		<img src="pics/screenshot17.jpg">
+		<br><br>
+		</li>
+		<li>	The warehouse plays one game round by repetitively clicking on the "Next Step" button. The following screens will be displayed. 
+		Similarly to the retailer play, the warehouse will have to enter order information received from the retailer, issue an order to the DC on a post-it slip, 
+		halt its play until a shipment is received from the DC, and resume the play to conclude the round (which will include sending a shipment to the retailer on a post-it slip).
+		<br><br>
+		<img src="pics/screenshot18.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot19.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot20.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot21.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot22.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot23.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot24.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot25.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot26.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot27.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot28.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot29.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot30.jpg">
+		<br><br>
+		</li>
+	</ul>
+	
+				<h3> Playing as a factory:</h3>
+		
+	<ul>
+		<li>	The admin asks the factory team to enter F (for "F"actory) in the approriate cell on the top of the game's canvas and click on the "Init Game" button. 
+		<br><br>
+		<img src="pics/screenshot31.jpg">
+		<br><br>
+		</li>
+		<li>	The factory team's game board is intialized. Again, the elements present are almost the same as with the warehouse/DC, with the exception of: (a) DC orders instead of retailer/warehouse ones, 
+		and (b) a production order pipeline with a lead time of two periods instead of normal orders as was the case with the other layers.
+		<br><br>
+		<img src="pics/screenshot32.jpg">
+		<br><br>
+		</li>
+		<li>	The factory plays one game round by repetitively clicking on the "Next Step" button. The following screens will be displayed. 
+		The factory will have to enter order information received from the DC, send a shipment (on post-it slip) to the DC, feed its inventory from the production system, 
+		fullfill (if possible) the current DC order, update its on-hand inventory and backorder, and place a new production order in the production pipeline. 
+		Note that contrary to the other layers, the factory does not need to halt within a round.
+		<br><br>
+		<img src="pics/screenshot33.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot34.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot35.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot36.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot37.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot38.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot39.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot40.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot41.jpg">
+		<br><br>
+		<br><br>
+		<img src="pics/screenshot42.jpg">
+		<br><br>
+		</li>
+	</ul>
+	</p>
 
     <p>&copy; 2019 Jawad Abrache. All rights reserved.</p>
   </body>
