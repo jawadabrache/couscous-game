@@ -25,8 +25,9 @@ var stepInRound;
 
 // Role played in game
 var role;
-var roleInput;
+//var roleInput;
 var adminPasswordInput;
+var myRoleRadio;
 
 // messages and actions required
 var message;
@@ -191,16 +192,25 @@ function setup() {
 	canvas = createCanvas(1600, 640);
 	
 	//createP('');
-	roleInput = createInput('');
-	roleInput.position(505, 5);
-	roleInput.size(30, 15);
+	//roleInput = createInput('');
+	//roleInput.position(505, 5);
+	//roleInput.size(30, 15);
+	
+	// Role
+	myRoleRadio = createRadio();
+    myRoleRadio.position(120,5);
+	myRoleRadio.option('Admin');
+	myRoleRadio.option('Retailer');
+	myRoleRadio.option('Warehouse');
+	myRoleRadio.option('DC');
+	myRoleRadio.option('Factory');
 	
 	adminPasswordInput = createInput('', 'password');
-	adminPasswordInput.position(775, 5);
-	adminPasswordInput.size(120, 15);
+	adminPasswordInput.position(710, 5);
+	adminPasswordInput.size(185, 15);
 	
-	myInitButton = createButton("Init. Game");
-	myInitButton.position(930,5)
+	myInitButton = createButton("Initialize Game");
+	myInitButton.position(995,5)
 	myInitButton.mousePressed(initGame);
 	
 	myUpdateParametersButton = createButton("Update Params.");
@@ -416,17 +426,17 @@ function initGame() {
 	// set role
 	
 	role = "NA";
-	switch (roleInput.value()) {
-		case "A": checkAdminPassword();
+	switch (myRoleRadio.value()) {
+		case "Admin": checkAdminPassword();
 		if (adminPasswordSuccess) role = "Admin";
 		break;
-		case "R": role = "Retailer";
+		case "Retailer": role = "Retailer";
 		break;
-		case "W": role = "Warehouse";
+		case "Warehouse": role = "Warehouse";
 		break;
-		case "D": role = "DC";
+		case "DC": role = "DC";
 		break;
-		case "F": role = "Factory";
+		case "Factory": role = "Factory";
 		break;
 	}
 	
@@ -2594,8 +2604,8 @@ function displayInit() {
 
 	fill(0, 0, 0);
 	textSize(18);
-	text("Playing as: [A]dmin, [R]etailer, [W]arehouse, [D]C, [F]actory?", 20, 20); 
-	text("Password (for Admin):", 590, 20); 
+	text("Playing as: ", 20, 20); 
+	text("Password (for Admin):", 515, 20); 
 	
 	textSize(18);
 	text("Retailer", 120, 50);
