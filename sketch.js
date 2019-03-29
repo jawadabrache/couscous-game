@@ -45,6 +45,8 @@ var costInventoryRetailer = [];
 var cumcostInventoryRetailer = [];
 var costBackorderRetailer = [];
 var cumcostBackorderRetailer = [];
+var costOrderingRetailer = [];
+var cumcostOrderingRetailer = [];
 
 // Warehouse data
 var orderReceivedByWarehouse = [];
@@ -59,6 +61,8 @@ var costInventoryWarehouse = [];
 var cumcostInventoryWarehouse = [];
 var costBackorderWarehouse = [];
 var cumcostBackorderWarehouse = [];
+var costOrderingWarehouse = [];
+var cumcostOrderingWarehouse = [];
 
 // DC data
 var orderReceivedByDC = [];
@@ -73,6 +77,8 @@ var costInventoryDC = [];
 var cumcostInventoryDC = [];
 var costBackorderDC = [];
 var cumcostBackorderDC = [];
+var costOrderingDC = [];
+var cumcostOrderingDC = [];
 
 // Factory data
 var orderReceivedByFactory = [];
@@ -87,6 +93,8 @@ var costInventoryFactory = [];
 var cumcostInventoryFactory = [];
 var costBackorderFactory = [];
 var cumcostBackorderFactory = [];
+var costOrderingFactory = [];
+var cumcostOrderingFactory = [];
 
 // Pattern for customer order generation
 var pattern;
@@ -115,7 +123,7 @@ var minOrderSizeInput1;
 var minOrderSizeInput2;
 var minOrderSizeInput3;
 
-// Unit holding and backorder costs
+// Unit holding, ordering and backorder costs
 var UCInventoryRetailer;
 var UCInventoryWarehouse;
 var UCInventoryDC;
@@ -124,6 +132,10 @@ var UCBackorderRetailer;
 var UCBackorderWarehouse;
 var UCBackorderDC;
 var UCBackorderFactory;
+var UCOrderingRetailer;
+var UCOrderingWarehouse;
+var UCOrderingDC;
+var UCOrderingFactory;
 
 // Admin Password
 var adminPasswordSuccess = 0;
@@ -457,6 +469,8 @@ function initGame() {
 	cumcostInventoryRetailer[roundSim] = 0;
 	costBackorderRetailer[roundSim] = 0;
 	cumcostBackorderRetailer[roundSim] = 0;
+	costOrderingRetailer[roundSim] = 0;
+	cumcostOrderingRetailer[roundSim] = 0;
 
 	// Warehouse elements to initialize and display
 	
@@ -472,6 +486,8 @@ function initGame() {
 	cumcostInventoryWarehouse[roundSim] = 0;
 	costBackorderWarehouse[roundSim] = 0;
 	cumcostBackorderWarehouse[roundSim] = 0;
+	costOrderingWarehouse[roundSim] = 0;
+	cumcostOrderingWarehouse[roundSim] = 0;
 	
 	// DC elements to initialize and display
 	
@@ -487,6 +503,8 @@ function initGame() {
 	cumcostInventoryDC[roundSim] = 0;
 	costBackorderDC[roundSim] = 0;
 	cumcostBackorderDC[roundSim] = 0;
+	costOrderingDC[roundSim] = 0;
+	cumcostOrderingDC[roundSim] = 0;
 	
 	// Factory elements to initialize and display
 	
@@ -502,6 +520,8 @@ function initGame() {
 	cumcostInventoryFactory[roundSim] = 0;
 	costBackorderFactory[roundSim] = 0;
 	cumcostBackorderFactory[roundSim] = 0;
+	costOrderingFactory[roundSim] = 0;
+	cumcostOrderingFactory[roundSim] = 0;
 	
 	// Unit Costs
 	
@@ -513,6 +533,10 @@ function initGame() {
 	UCBackorderWarehouse = 2;
 	UCBackorderDC = 1.50;
 	UCBackorderFactory = 1;
+	UCOrderingRetailer = 50;
+	UCOrderingWarehouse = 50;
+	UCOrderingDC = 50;
+	UCOrderingFactory = 20;
 	
 	switch (role) {
 		case "Admin": displayAll(); displayParams();
@@ -569,6 +593,8 @@ function nextStepAdmin() {
 		cumcostInventoryRetailer[roundSim] = cumcostInventoryRetailer[roundSim-1];
 		costBackorderRetailer[roundSim] = 0;
 		cumcostBackorderRetailer[roundSim] = cumcostBackorderRetailer[roundSim-1];
+		costOrderingRetailer[roundSim] = 0;
+		cumcostOrderingRetailer[roundSim] = cumcostOrderingRetailer[roundSim-1];
 		
 		// Warehouse update
 		orderReceivedByWarehouse[roundSim]= "NA";
@@ -583,6 +609,8 @@ function nextStepAdmin() {
 		cumcostInventoryWarehouse[roundSim] = cumcostInventoryWarehouse[roundSim-1];
 		costBackorderWarehouse[roundSim] = 0;
 		cumcostBackorderWarehouse[roundSim] = cumcostBackorderWarehouse[roundSim-1];
+		costOrderingWarehouse[roundSim] = 0;
+		cumcostOrderingWarehouse[roundSim] = cumcostOrderingWarehouse[roundSim-1];
 		
 		// DC update
 		orderReceivedByDC[roundSim]= "NA";
@@ -597,6 +625,8 @@ function nextStepAdmin() {
 		cumcostInventoryDC[roundSim] = cumcostInventoryDC[roundSim-1];
 		costBackorderDC[roundSim] = 0;
 		cumcostBackorderDC[roundSim] = cumcostBackorderDC[roundSim-1];
+		costOrderingDC[roundSim] = 0;
+		cumcostOrderingDC[roundSim] = cumcostOrderingDC[roundSim-1];
 		
 		// Factory update
 		orderReceivedByFactory[roundSim]= "NA";
@@ -611,6 +641,9 @@ function nextStepAdmin() {
 		cumcostInventoryFactory[roundSim] = cumcostInventoryFactory[roundSim-1];
 		costBackorderFactory[roundSim] = 0;
 		cumcostBackorderFactory[roundSim] = cumcostBackorderFactory[roundSim-1];
+		costOrderingFactory[roundSim] = 0;
+		cumcostOrderingFactory[roundSim] = cumcostOrderingFactory[roundSim-1];
+		
 		message = "New round starting!";
 		
 		displayAll();
@@ -788,14 +821,24 @@ function nextStepAdmin() {
 		
 		case 12:
 		// step 12: Factory enters its production order 
-		if (factoryOrderInput.value() == "") {
+		if (factoryOrderInput.value() == "" || isNaN(factoryOrderInput.value())) {
 			alert("Please fill a valid production order!");
 			entryErrorInRound = 1;
 		}
 		else {
 		quantityInProduction1[roundSim] = parseFloat(factoryOrderInput.value());
+		
+		if (quantityInProduction1[roundSim] != 0) {
+			costOrderingFactory[roundSim] = UCOrderingFactory;
+			cumcostOrderingFactory[roundSim] += costOrderingFactory[roundSim];
+			message = "New production order by Factory";
+		}
+		else {
+			message = "No production order made by Factory";
+		}
+		
 		entryErrorInRound = 0;
-		message = "New production order by Factory";
+		
 		actionReq = "";
 		displayAll();
 		
@@ -872,14 +915,23 @@ function nextStepAdmin() {
 		
 		case 17:
 		// step 17: DC enters its order 
-		if (DCOrderInput.value() == "") {
+		if (DCOrderInput.value() == "" || isNaN(DCOrderInput.value())) {
 			alert("Please fill a valid DC-made order!");
 			entryErrorInRound = 1;
 		}
 		else {
 			entryErrorInRound = 0;
 			orderMadeByDCMinus1[roundSim] = parseFloat(DCOrderInput.value());
+			
+			if (orderMadeByDCMinus1[roundSim] != 0) {
+			costOrderingDC[roundSim] = UCOrderingDC;
+			cumcostOrderingDC[roundSim] += costOrderingDC[roundSim];
 			message = "New order by DC";
+			}
+			else {
+			message = "No order made by DC";
+			}
+			
 			actionReq = "";
 			displayAll();
 		
@@ -954,7 +1006,7 @@ function nextStepAdmin() {
 		
 		case 22:
 		// step 22: Warehouse enters its order 
-		if (warehouseOrderInput.value() == "") {
+		if (warehouseOrderInput.value() == "" || isNaN(warehouseOrderInput.value())) {
 			alert("Please fill a valid warehouse-made order!");
 			entryErrorInRound = 1;
 		}
@@ -962,7 +1014,16 @@ function nextStepAdmin() {
 		else {
 			entryErrorInRound = 0;
 			orderMadeByWarehouseMinus1[roundSim] = parseFloat(warehouseOrderInput.value());
+			
+			if (orderMadeByWarehouseMinus1[roundSim] != 0) {
+			costOrderingWarehouse[roundSim] = UCOrderingWarehouse;
+			cumcostOrderingWarehouse[roundSim] += costOrderingWarehouse[roundSim];
 			message = "New order by Warehouse";
+			}
+			else {
+			message = "No order made by Warehouse";
+			}
+			
 			actionReq = "";
 			displayAll();
 		
@@ -1025,14 +1086,23 @@ function nextStepAdmin() {
 		
 		case 26:
 		// step 26: Retailer enters its order 
-		if (retailerOrderInput.value() == "") {
+		if (retailerOrderInput.value() == "" || isNaN(retailerOrderInput.value())) {
 			alert("Please fill a valid retailer-made order!");
 			entryErrorInRound = 1;
 		}
 		else {
 			entryErrorInRound = 0;
 			orderMadeByRetailerMinus1[roundSim] = parseFloat(retailerOrderInput.value());
+			
+			if (orderMadeByRetailerMinus1[roundSim] != 0) {
+			costOrderingRetailer[roundSim] = UCOrderingRetailer;
+			cumcostOrderingRetailer[roundSim] += costOrderingRetailer[roundSim];
 			message = "New order by Retailer";
+			}
+			else {
+			message = "No order made by Retailer";
+			}
+			
 			actionReq = "";
 			displayAll();
 		
@@ -1081,6 +1151,8 @@ function nextStepRetailer() {
 		cumcostInventoryRetailer[roundSim] = cumcostInventoryRetailer[roundSim-1];
 		costBackorderRetailer[roundSim] = 0;
 		cumcostBackorderRetailer[roundSim] = cumcostBackorderRetailer[roundSim-1];
+		costOrderingRetailer[roundSim] = 0;
+		cumcostOrderingRetailer[roundSim] = cumcostOrderingRetailer[roundSim-1];
 		
 		message = "New round starting!";
 		displayRetailerOnly();
@@ -1112,7 +1184,7 @@ function nextStepRetailer() {
 
 		break;
 		case 3:
-		if (retailerQtyReceived.value() == "") {
+		if (retailerQtyReceived.value() == "" || isNaN(retailerQtyReceived.value())) {
 			alert("Please fill a valid shipment received!");
 			entryErrorInRound = 1;
 		}
@@ -1192,14 +1264,23 @@ function nextStepRetailer() {
 		break;
 		case 8:
 		// step 8: Retailer enters its order 
-		if (retailerOrderInput.value() == "") {
+		if (retailerOrderInput.value() == "" || isNaN(retailerOrderInput.value())) {
 			alert("Please fill a valid order made!");
 			entryErrorInRound = 1;
 		}
 		else {
 			entryErrorInRound = 0;
 			orderMadeByRetailerMinus1[roundSim] = parseFloat(retailerOrderInput.value());
+			
+			if (orderMadeByRetailerMinus1[roundSim] != 0) {
+			costOrderingRetailer[roundSim] = UCOrderingRetailer;
+			cumcostOrderingRetailer[roundSim] += costOrderingRetailer[roundSim];
 			message = "New order by Retailer";
+			}
+			else {
+			message = "No order made by Retailer";
+			}
+
 			actionReq = "";
 			displayRetailerOnly();
 		
@@ -1248,6 +1329,8 @@ function nextStepWarehouse() {
 		cumcostInventoryWarehouse[roundSim] = cumcostInventoryWarehouse[roundSim-1];
 		costBackorderWarehouse[roundSim] = 0;
 		cumcostBackorderWarehouse[roundSim] = cumcostBackorderWarehouse[roundSim-1];
+		costOrderingWarehouse[roundSim] = 0;
+		cumcostOrderingWarehouse[roundSim] = cumcostOrderingWarehouse[roundSim-1];
 		
 		message = "New round starting!";
 		displayWarehouseOnly();
@@ -1266,7 +1349,7 @@ function nextStepWarehouse() {
 		drawNotifWarehouse_s01();
 		break;
 		case 2:
-		if (warehouseOrderReceived.value() == "") {
+		if (warehouseOrderReceived.value() == "" || isNaN(warehouseOrderReceived.value())) {
 			alert("Please fill a valid order received!");
 			entryErrorInRound = 1;
 		}
@@ -1304,7 +1387,7 @@ function nextStepWarehouse() {
 		drawNotifWarehouse_s04();
 		break;
 		case 5:
-		if (warehouseQtyReceived.value() == "") {
+		if (warehouseQtyReceived.value() == "" || isNaN(warehouseQtyReceived.value())) {
 			alert("Please fill a valid shipment received!");
 			entryErrorInRound = 1;
 		}
@@ -1393,14 +1476,23 @@ function nextStepWarehouse() {
 		break;
 		case 11:
 		// step 11: Warehouse enters its order 
-		if (warehouseOrderInput.value() == "") {
+		if (warehouseOrderInput.value() == "" || isNaN(warehouseOrderInput.value())) {
 			alert("Please fill a valid order made!");
 			entryErrorInRound = 1;
 		}
 		else {
 			entryErrorInRound = 0;
 			orderMadeByWarehouseMinus1[roundSim] = parseFloat(warehouseOrderInput.value());
+			
+			if (orderMadeByWarehouseMinus1[roundSim] != 0) {
+			costOrderingWarehouse[roundSim] = UCOrderingWarehouse;
+			cumcostOrderingWarehouse[roundSim] += costOrderingWarehouse[roundSim];
 			message = "New order by Warehouse";
+			}
+			else {
+			message = "No order made by Warehouse";
+			}
+			
 			actionReq = "";
 			displayWarehouseOnly();
 		
@@ -1450,6 +1542,8 @@ function nextStepDC() {
 		cumcostInventoryDC[roundSim] = cumcostInventoryDC[roundSim-1];
 		costBackorderDC[roundSim] = 0;
 		cumcostBackorderDC[roundSim] = cumcostBackorderDC[roundSim-1];
+		costOrderingDC[roundSim] = 0;
+		cumcostOrderingDC[roundSim] = cumcostOrderingDC[roundSim-1];
 		
 		message = "New round starting!";
 		displayDCOnly();
@@ -1469,7 +1563,7 @@ function nextStepDC() {
 		break;
 		case 2:
 		// step 2: Order received by DC updated 
-		if (DCOrderReceived.value() == "") {
+		if (DCOrderReceived.value() == "" || isNaN(DCOrderReceived.value())) {
 			alert("Please fill a valid order received!");
 			entryErrorInRound = 1;
 		}
@@ -1507,7 +1601,7 @@ function nextStepDC() {
 		break;
 		case 5:
 		// step 5: Quantity received by DC updated 
-		if (DCQtyReceived.value() == "") {
+		if (DCQtyReceived.value() == "" || isNaN(DCQtyReceived.value())) {
 			alert("Please fill a valid shipment received!");
 			entryErrorInRound = 1;
 		}
@@ -1595,14 +1689,23 @@ function nextStepDC() {
 		break;
 		case 11:
 		// step 11: DC enters its order 
-		if (DCOrderInput.value() == "") {
+		if (DCOrderInput.value() == "" || isNaN(DCOrderInput.value())) {
 			alert("Please fill a valid order made!");
 			entryErrorInRound = 1;
 		}
 		else {
 			entryErrorInRound = 0;
 			orderMadeByDCMinus1[roundSim] = parseFloat(DCOrderInput.value());
+			
+			if (orderMadeByDCMinus1[roundSim] != 0) {
+			costOrderingDC[roundSim] = UCOrderingDC;
+			cumcostOrderingDC[roundSim] += costOrderingDC[roundSim];
 			message = "New order by DC";
+			}
+			else {
+			message = "No order made by DC";
+			}
+			
 			actionReq = "";
 			displayDCOnly();
 		
@@ -1654,6 +1757,8 @@ function nextStepFactory() {
 		cumcostInventoryFactory[roundSim] = cumcostInventoryFactory[roundSim-1];
 		costBackorderFactory[roundSim] = 0;
 		cumcostBackorderFactory[roundSim] = cumcostBackorderFactory[roundSim-1];
+		costOrderingFactory[roundSim] = 0;
+		cumcostOrderingFactory[roundSim] = cumcostOrderingFactory[roundSim-1];
 		
 		message = "New round starting!";
 		displayFactoryOnly();
@@ -1673,7 +1778,7 @@ function nextStepFactory() {
 		drawNotifFactory_s01();
 		break;
 		case 2:
-		if (factoryOrderReceived.value() == "") {
+		if (factoryOrderReceived.value() == "" || isNaN(factoryOrderReceived.value())) {
 			alert("Please fill a valid order received!");
 			entryErrorInRound = 1;
 		}
@@ -1767,7 +1872,7 @@ function nextStepFactory() {
 		break;
 		
 		case 8:
-		if (factoryOrderInput.value() == "") {
+		if (factoryOrderInput.value() == "" || isNaN(factoryOrderInput.value())) {
 			alert("Please fill a valid production order!");
 			entryErrorInRound = 1;
 		}
@@ -1775,7 +1880,16 @@ function nextStepFactory() {
 			// step 8: Factory enters its production order 
 			entryErrorInRound = 0;
 			quantityInProduction1[roundSim] = parseFloat(factoryOrderInput.value());
-			message = "New production order by Factory";
+			
+			if (quantityInProduction1[roundSim] != 0) {
+				costOrderingFactory[roundSim] = UCOrderingFactory;
+				cumcostOrderingFactory[roundSim] += costOrderingFactory[roundSim];
+				message = "New production order by Factory";
+			}
+			else {
+				message = "No production order made by Factory";
+			}
+			
 			actionReq = "";
 			displayFactoryOnly();
 		
@@ -1816,8 +1930,9 @@ function nextRound() {
 		// DO NOTHING: you need to finish the previous round first
 	}
 	else {
-		if (factoryOrderInput.value() == "" || warehouseOrderInput.value() == "" || DCOrderInput.value() == ""|| retailerOrderInput.value() == "") {
-			alert('Please make sure default orders values are entered. You may change these as the game progresses.');
+		if (factoryOrderInput.value() == "" || warehouseOrderInput.value() == "" || DCOrderInput.value() == ""|| retailerOrderInput.value() == "" ||
+		isNaN(factoryOrderInput.value()) || isNaN(warehouseOrderInput.value()) || isNaN(DCOrderInput.value()) || isNaN(retailerOrderInput.value())) {
+			alert('Please make sure valid default orders values are entered. You may change these as the game progresses.');
 		}
 		
 		else {
@@ -1837,6 +1952,8 @@ function nextRound() {
 		cumcostInventoryRetailer[roundSim] = cumcostInventoryRetailer[roundSim-1];
 		costBackorderRetailer[roundSim] = 0;
 		cumcostBackorderRetailer[roundSim] = cumcostBackorderRetailer[roundSim-1];
+		costOrderingRetailer[roundSim] = 0;
+		cumcostOrderingRetailer[roundSim] = cumcostOrderingRetailer[roundSim-1];
 		
 		// Warehouse update
 		orderReceivedByWarehouse[roundSim]= "NA";
@@ -1851,6 +1968,8 @@ function nextRound() {
 		cumcostInventoryWarehouse[roundSim] = cumcostInventoryWarehouse[roundSim-1];
 		costBackorderWarehouse[roundSim] = 0;
 		cumcostBackorderWarehouse[roundSim] = cumcostBackorderWarehouse[roundSim-1];
+		costOrderingWarehouse[roundSim] = 0;
+		cumcostOrderingWarehouse[roundSim] = cumcostOrderingWarehouse[roundSim-1];
 		
 		// DC update
 		orderReceivedByDC[roundSim]= "NA";
@@ -1865,6 +1984,8 @@ function nextRound() {
 		cumcostInventoryDC[roundSim] = cumcostInventoryDC[roundSim-1];
 		costBackorderDC[roundSim] = 0;
 		cumcostBackorderDC[roundSim] = cumcostBackorderDC[roundSim-1];
+		costOrderingDC[roundSim] = 0;
+		cumcostOrderingDC[roundSim] = cumcostOrderingDC[roundSim-1];
 		
 		// Factory update
 		orderReceivedByFactory[roundSim]= "NA";
@@ -1879,6 +2000,8 @@ function nextRound() {
 		cumcostInventoryFactory[roundSim] = cumcostInventoryFactory[roundSim-1];
 		costBackorderFactory[roundSim] = 0;
 		cumcostBackorderFactory[roundSim] = cumcostBackorderFactory[roundSim-1];
+		costOrderingFactory[roundSim] = 0;
+		cumcostOrderingFactory[roundSim] = cumcostOrderingFactory[roundSim-1];
 		
 		// Perform all the steps at once
 		
@@ -1946,6 +2069,11 @@ function nextRound() {
 		
 		// step 12: Factory enters its production order 
 		quantityInProduction1[roundSim] = parseFloat(factoryOrderInput.value());
+		if (quantityInProduction1[roundSim] != 0) {
+			costOrderingFactory[roundSim] = UCOrderingFactory;
+			cumcostOrderingFactory[roundSim] += costOrderingFactory[roundSim];
+			}
+
 		
 		// step 13: Shipment advancement DC to warehouse
 		quantityDeliveredByDCTransit2[roundSim] = quantityDeliveredByDCTransit1[roundSim];
@@ -1981,6 +2109,10 @@ function nextRound() {
 		
 		// step 17: DC enters its order 
 		orderMadeByDCMinus1[roundSim] = parseFloat(DCOrderInput.value());
+		if (orderMadeByDCMinus1[roundSim] != 0) {
+			costOrderingDC[roundSim] = UCOrderingDC;
+			cumcostOrderingDC[roundSim] += costOrderingDC[roundSim];
+			}
 		
 		// step 18: Shipment advancement warehouse to retailer
 		quantityDeliveredByWarehouseTransit2[roundSim] = quantityDeliveredByWarehouseTransit1[roundSim];
@@ -2016,6 +2148,10 @@ function nextRound() {
 		
 		// step 22: Warehouse enters its order 
 		orderMadeByWarehouseMinus1[roundSim] = parseFloat(warehouseOrderInput.value());
+		if (orderMadeByWarehouseMinus1[roundSim] != 0) {
+			costOrderingWarehouse[roundSim] = UCOrderingWarehouse;
+			cumcostOrderingWarehouse[roundSim] += costOrderingWarehouse[roundSim];
+			}
 		
 		// step 23: Quantity added to inventory at the level of Retailer
 		inventoryRetailer[roundSim] = inventoryRetailer[roundSim] + quantityReceivedByRetailer[roundSim];
@@ -2046,6 +2182,10 @@ function nextRound() {
 		
 		// step 26: Retailer enters its order 
 		orderMadeByRetailerMinus1[roundSim] = parseFloat(retailerOrderInput.value());
+		if (orderMadeByRetailerMinus1[roundSim] != 0) {
+			costOrderingRetailer[roundSim] = UCOrderingRetailer;
+			cumcostOrderingRetailer[roundSim] += costOrderingRetailer[roundSim];
+			}
 		
 		// step 27: End of current round
 		
@@ -2344,8 +2484,9 @@ function displayRetailer() {
 	text(backorderRetailer[roundSim], 155, 335);
 	fill(0, 0, 0);
 	
-	text("Cost Inventory: " + costInventoryRetailer[roundSim] + " - cumul.: " + cumcostInventoryRetailer[roundSim], 20, 210);
-	text("Cost Backorder: " + costBackorderRetailer[roundSim] + " - cumul.: " + cumcostBackorderRetailer[roundSim], 20, 225);
+	text("Cost Inventory: " + costInventoryRetailer[roundSim] + " - cumul.: " + Math.round(cumcostInventoryRetailer[roundSim]), 20, 210);
+	text("Cost Backorder: " + costBackorderRetailer[roundSim] + " - cumul.: " + Math.round(cumcostBackorderRetailer[roundSim]), 20, 225);
+	text("Cost Ordering: " + costOrderingRetailer[roundSim] + " - cumul.: " + Math.round(cumcostOrderingRetailer[roundSim]), 20, 240);
 	
 	text("Order", 20, 445);
 	
@@ -2354,7 +2495,7 @@ function displayRetailer() {
 	rect(175,175,120,22);
 	fill(215,0,0); 
 	text("Cumulative Cost: ", 180, 170);
-	text(cumcostInventoryRetailer[roundSim]+cumcostBackorderRetailer[roundSim], 180, 190);
+	text(Math.round(cumcostInventoryRetailer[roundSim]+cumcostBackorderRetailer[roundSim]+cumcostOrderingRetailer[roundSim]), 180, 190);
 	textSize(11);
 	fill(0, 0, 0);
 	
@@ -2423,8 +2564,9 @@ function displayWarehouse() {
 	text(backorderWarehouse[roundSim], 155+300, 335);
 	fill(0,0,0);
 	
-	text("Cost Inventory: " + costInventoryWarehouse[roundSim] + " - cumul.: " + cumcostInventoryWarehouse[roundSim], 20+300, 210);
-	text("Cost Backorder: " + costBackorderWarehouse[roundSim] + " - cumul.: " + cumcostBackorderWarehouse[roundSim], 20+300, 225);
+	text("Cost Inventory: " + costInventoryWarehouse[roundSim] + " - cumul.: " + Math.round(cumcostInventoryWarehouse[roundSim]), 20+300, 210);
+	text("Cost Backorder: " + costBackorderWarehouse[roundSim] + " - cumul.: " + Math.round(cumcostBackorderWarehouse[roundSim]), 20+300, 225);
+	text("Cost Ordering: " + costOrderingWarehouse[roundSim] + " - cumul.: " + Math.round(cumcostOrderingWarehouse[roundSim]), 20+300, 240);
 	
 	text("Order", 20+300, 445);
 	
@@ -2433,7 +2575,7 @@ function displayWarehouse() {
 	rect(175+300,175,120,22);
 	fill(215,0,0); 
 	text("Cumulative Cost: ", 180+300, 170);
-	text(cumcostInventoryWarehouse[roundSim]+cumcostBackorderWarehouse[roundSim], 180+300, 190);
+	text(Math.round(cumcostInventoryWarehouse[roundSim]+cumcostBackorderWarehouse[roundSim]+cumcostOrderingWarehouse[roundSim]), 180+300, 190);
 	textSize(11);
 	fill(0, 0, 0);
 
@@ -2501,8 +2643,9 @@ function displayDC() {
 	text(backorderDC[roundSim], 155+600, 335);
 	fill(0,0,0);
 	
-	text("Cost Inventory: " + costInventoryDC[roundSim] + " - cumul.: " + cumcostInventoryDC[roundSim], 20+600, 210);
-	text("Cost Backorder: " + costBackorderDC[roundSim] + " - cumul.: " + cumcostBackorderDC[roundSim], 20+600, 225);
+	text("Cost Inventory: " + costInventoryDC[roundSim] + " - cumul.: " + Math.round(cumcostInventoryDC[roundSim]), 20+600, 210);
+	text("Cost Backorder: " + costBackorderDC[roundSim] + " - cumul.: " + Math.round(cumcostBackorderDC[roundSim]), 20+600, 225);
+	text("Cost Ordering: " + costOrderingDC[roundSim] + " - cumul.: " + Math.round(cumcostOrderingDC[roundSim]), 20+600, 240);
 	
 	text("Order", 20+600, 445);
 	
@@ -2511,7 +2654,7 @@ function displayDC() {
 	rect(175+600,175,120,22);
 	fill(215,0,0); 
 	text("Cumulative Cost: ", 180+600, 170);
-	text(cumcostInventoryDC[roundSim]+cumcostBackorderDC[roundSim], 180+600, 190);
+	text(Math.round(cumcostInventoryDC[roundSim]+cumcostBackorderDC[roundSim]+cumcostOrderingDC[roundSim]), 180+600, 190);
 	textSize(11);
 	fill(0, 0, 0);
 
@@ -2579,8 +2722,9 @@ function displayFactory() {
 	text(backorderFactory[roundSim], 155+900, 335);
 	fill(0,0,0);
 	
-	text("Cost Inventory: " + costInventoryFactory[roundSim] + " - cumul.: " + cumcostInventoryFactory[roundSim], 20+900, 210);
-	text("Cost Backorder: " + costBackorderFactory[roundSim] + " - cumul.: " + cumcostBackorderFactory[roundSim], 20+900, 225);
+	text("Cost Inventory: " + costInventoryFactory[roundSim] + " - cumul.: " + Math.round(cumcostInventoryFactory[roundSim]), 20+900, 210);
+	text("Cost Backorder: " + costBackorderFactory[roundSim] + " - cumul.: " + Math.round(cumcostBackorderFactory[roundSim]), 20+900, 225);
+	text("Cost Ordering: " + costOrderingFactory[roundSim] + " - cumul.: " + Math.round(cumcostOrderingFactory[roundSim]), 20+900, 240);
 	
 	text("Order", 20+900, 445);
 	
@@ -2589,7 +2733,7 @@ function displayFactory() {
 	rect(175+900,175,120,22);
 	fill(215,0,0); 
 	text("Cumulative Cost: ", 180+900, 170);
-	text(cumcostInventoryFactory[roundSim]+cumcostBackorderFactory[roundSim], 180+900, 190);
+	text(Math.round(cumcostInventoryFactory[roundSim]+cumcostBackorderFactory[roundSim]+cumcostOrderingFactory[roundSim]), 180+900, 190);
 	textSize(11);
 	fill(0, 0, 0);
 
