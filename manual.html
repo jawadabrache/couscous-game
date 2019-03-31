@@ -7,7 +7,7 @@
   
     <h1> The game's setting and assumptions </h1>
 	
-    <p> The game evolves around a simplified supply chain of couscous, made of four layers representing respectively: a retailer, a warehouse, a distribution center (DC), and a factory where couscous is produced. 
+    <p> Let us consider a simplified supply chain of couscous, made of four layers representing respectively: a retailer, a warehouse, a distribution center (DC), and a factory where couscous is produced. 
 	Orders flow in the following direction: retailer - warehouse - DC - factory, while shipments of couscous travel in the opposite direction.
 	Each layer (retailer, warehouse, DC, and factory) maintains its own inventory of couscous and uses it to fulfill orders from the layer downstream; that is, the retailer satisfies orders from customers, the warehouse responds to orders from the retailer, the DC deals with orders from the warehouse, and finally, the factory fullfills the DC's orders.
 	All layers have an order lead time (which may correspond to processing delays for instance) of two periods (rounds). Hence, an order made by a retailer of period 4 will reach the warehouse in period 6, etc. The factory has also a similar lead time of two periods for its production orders.
@@ -37,7 +37,7 @@
 	</ul>
 	</p>
 	
-	<p> Customer orders at the level of the retailer are randomly and independently generated on every period using patterns chosen by the game's administrator (admin). For the moment, three patterns have been implemented:
+	<p> Customer orders at the level of the retailer are randomly and independently generated on every period using patterns chosen by the game's administrator (Admin). For the moment, three patterns have been implemented:
 	<ul>
 		<li>	<u>Pattern 1</u>: Uniform distribution between a minimum value and a maximum value.</li>
 		<li>	<u>Pattern 2</u>: Uniform distribution between a minimum value and a maximum value, with a persisting burst (or drop) in demand after n periods. The change is simulated by applying a multiplicative factor to the generated uniformly-distributed values for all periods >= n.</li>
@@ -45,7 +45,7 @@
 	</ul>
 	</p>
 	
-	<p> The game starts with an initial inventory (100 units) at every layer, no backorders, and an initial pipeline of outstanding orders and shipments, that will be displayed once the game is initiated. 
+	<p> The game starts with an initial inventory (100 units) at each layer, no backorders, and an initial pipeline of outstanding orders and shipments, that will be displayed once the game is initiated. 
 		The objective of the players is to place appropriate orders and manage their inventory in a way that "optimizes" their individual costs (ordering, on-hand and backorder) or the entire supply chain's should they decide to play cooperatively.  
 	</p>
 	
@@ -54,13 +54,14 @@
 	
 	<h1> An overview on how to play the game </h1>
 	<p> 
-		Before playing the game, the admin needs to the game's parameters. This is done through the following steps:
+		Before playing the game, Admin needs to set up the game's parameters. If parameter setting is skipped by Admin, the following default pattern for customer order generation is used: uniformly distributed orders, with a minimum value of 20 and a maximum value of 80. Parameter setting is done through the following steps:
 	<ul>
-		<li>	<u>Step 1</u>: The role played in the game (here "Admin") is chosen using the radio button on the top of the game's canvas, and the password provided by the author (me) is entered in the corresponding cell. The admin then initializes the game by clicking on the "Initialize Game" button.</li>
-		<li>	<u>Step 2</u>: Following Step 1, the "Game Parameters" area becomes accessible to the admin, who needs to enter the chosen pattern for customer order generation, supply the needed parameters accordingly, and click on the "Update Params." button.</li>
+		<li>	<u>Step 1</u>: The role played in the game (here "Admin") is chosen using the radio button on the top of the game's canvas, and the password provided by the author (me) is entered in the corresponding cell. Admin then initializes the game by clicking on the "Initialize Game" button.</li>
+		<li>	<u>Step 2</u>: Following Step 1, the "Game Parameters" area becomes accessible to Admin, who needs to enter the chosen pattern for customer order generation, supply the needed parameters accordingly, and click on the "Update Params." button.</li>
 		<li>	<u>Step 3</u>: Following Step 2, the entered parameters are hidden (so that the players may not see them) and the game is ready to be played.</li>
 	</ul>
-	<u>Note</u>: In case classical music play is selected by admin, the user will notice that each time a game is initiated, a randomly selected classical music mini-track (among 30 different pieces) will play. The instructor may quiz the participants on the piece played or at least the identity of the composer. Clicking on the "Track played?" button will uncover the identity of the piece and its composer.
+	
+	<u>Note</u>: In case classical music play is selected by Admin, the user will notice that each time a game is initiated, a randomly selected classical music mini-track (among 30 different pieces) will play. The instructor may quiz the participants on the piece played or at least the identity of the composer. Clicking on the "Track played?" button will uncover the identity of the piece and its composer.
 	</p>
 	
 	<p>
@@ -73,10 +74,10 @@
 	</p>
 	
 	<p>
-		The administrator can also play the game as admin, with more possibilities and full visibility of the system. 
-		Indeed, admin can play in step-wise manner in a similar way to the retailer, warehouse, DC, and factory, and see every single step of the whole cycle in a given round. In addition, admin can conveniently play round-wise, that is, complete rounds in one shot. This is done by clicking on the "Next Round" button instead of "Next Step". 
-		By playing this way, admin needs to be cautious enough to have all orders entered beforehand, and change these default values if necessary as the game progresses. A warning is issued in case this element of common sense is forgotten.
-		After a number of rounds of play, admin may choose to generate tables and charts. The latter cover all the players and give the admin a holistic view on individual and overall performances. Note that the user can copy/past a table to an Excel spreadsheet, which is convenient for storage of game sessions and further analysis.
+		The administrator can also play the game as Admin, with more possibilities and full visibility of the system. 
+		Indeed, Admin can play in stepwise manner in a similar way to the retailer, warehouse, DC, and factory, and see every single step of the whole cycle in a given round. In addition, Admin can conveniently play round-wise, that is, complete rounds in one shot. This is done by clicking on the "Next Round" button instead of "Next Step". 
+		By playing this way, Admin needs to be cautious enough to have all orders entered beforehand, and change these default values if necessary as the game progresses. A warning is issued in case this element of common sense is forgotten.
+		After a number of rounds of play, Admin may choose to generate tables and charts. The latter cover all the players and give Admin a holistic view on individual and overall performances. Note that the user can copy/past a table to an Excel spreadsheet, which is convenient for storage of game sessions and further analysis.
 	</p>
 	<br>
 	
@@ -85,17 +86,17 @@
 		In the following, a step-by-step game session played by an instructor with a group of students is described. Screenshots are used to illustrate visually the play.
 		<h3> Initialization of the game session:</h3>
 	<ul>
-		<li>	The admin first decides whether to enable music when playing the game.
+		<li>	Admin first decides whether to enable music when playing the game.
 		<br><br>
 		<img src="pics/screenshot01.jpg">
 		<br><br>
 		</li>
-		<li>	The admin chooses the "Admin" role and enters the password in the corresponding cell. The game is then initialized by clicking on the "Initialize Game" button.
+		<li>	Admin chooses the "Admin" role and enters the password in the corresponding cell. The game is then initialized by clicking on the "Initialize Game" button.
 		<br><br>
 		<img src="pics/screenshot02.jpg">
 		<br><br>
 		</li>
-		<li>	The "Game Parameters" area becomes accessible to the admin, who needs to enter the chosen pattern for customer order generation, supply the needed parameters accordingly, and click on the "Update Params." button. 
+		<li>	The "Game Parameters" area becomes accessible to Admin, who needs to enter the chosen pattern for customer order generation, supply the needed parameters accordingly, and click on the "Update Params." button. 
 			In the present session, we choose to play with Pattern 3, which consist of uniformly distributed customer demand, with a minimum demand of 40, a maximum demand of 50, a burst in demand (with a multiplicative factor of 2.5) every 4 rounds.
 		<br><br>
 		<img src="pics/screenshot03.jpg">
@@ -104,7 +105,7 @@
 	</ul>
 		<h3> Playing as a retailer:</h3>
 	<ul>
-		<li>	The admin asks the retailer team to choose "Retailer" as role and click on the "Initialize Game" button. No password is needed here.
+		<li>	Admin asks the retailer team to choose "Retailer" as role and click on the "Initialize Game" button. No password is needed here.
 		<br><br>
 		<img src="pics/screenshot04.jpg">
 		<br><br>
@@ -156,7 +157,7 @@
 			<h3> Playing as a warehouse/DC:</h3>
 			Warehouse and DC play being identical, the following will describe a typical round played by the warehouse. 
 	<ul>
-		<li>	The admin asks the warehouse team to choose "Warehouse" as role and click on the "Initialize Game" button. 
+		<li>	Admin asks the warehouse team to choose "Warehouse" as role and click on the "Initialize Game" button. 
 		<br><br>
 		<img src="pics/screenshot16.jpg">
 		<br><br>
@@ -215,7 +216,7 @@
 				<h3> Playing as a factory:</h3>
 		
 	<ul>
-		<li>	The admin asks the factory team to choose "Factory" as role and click on the "Initialize Game" button.  
+		<li>	Admin asks the factory team to choose "Factory" as role and click on the "Initialize Game" button.  
 		<br><br>
 		<img src="pics/screenshot31.jpg">
 		<br><br>
