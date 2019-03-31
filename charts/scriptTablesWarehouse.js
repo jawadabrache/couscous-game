@@ -41,14 +41,25 @@ if (storedCumcostBackorderWarehouse) {
     ArrayStoredCumcostBackorderWarehouse = JSON.parse(storedCumcostBackorderWarehouse);
 }
 
+var storedCostOrderingWarehouse = localStorage.getItem("list_cost_ordering_warehouse");
+if (storedCostOrderingWarehouse) {
+    ArrayStoredCostOrderingWarehouse = JSON.parse(storedCostOrderingWarehouse);
+}
+
+var storedCumcostOrderingWarehouse = localStorage.getItem("list_cumcost_ordering_warehouse");
+if (storedCumcostOrderingWarehouse) {
+    ArrayStoredCumcostOrderingWarehouse = JSON.parse(storedCumcostOrderingWarehouse);
+}
+
+
 //Static content ---------------------------------------------------------
 document.write('<h1 align="left">Warehouse</h1></br>');
-document.write("<table border='1' width='1000'>")
-document.write("<tr><th>Round #</th><th>Order made</th><th>Inventory</th><th>Cost Inv.</th><th>Cum. Cost Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
+document.write("<font face='Times' size='2'><table border='1' width='1000'>")
+document.write("<tr><th>Round #</th><th>Order made</th><th>Cost Ordering</th><th>Cum. Cost Ordering</th><th>O.H. Inventory</th><th>Cost O.H. Inv.</th><th>Cum. Cost O.H. Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
 //Dynamic content --------------------------------------------------------
 for(var r = 0; r <= nrounds; r++)
 {
-	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersWarehouse[r] + "</td><td>" + ArrayStoredInventoryWarehouse[r] + "</td><td>" + ArrayStoredCostInventoryWarehouse[r] + "</td><td>" + ArrayStoredCumcostInventoryWarehouse[r] + "</td><td>" + ArrayStoredBackorderWarehouse[r] + "</td><td>" + ArrayStoredCostBackorderWarehouse[r] + "</td><td>" + ArrayStoredCumcostBackorderWarehouse[r] +"</td></tr>");
+	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersWarehouse[r] + "</td><td>" + ArrayStoredCostOrderingWarehouse[r] + "</td><td>" + ArrayStoredCumcostOrderingWarehouse[r] +"</td><td>" + ArrayStoredInventoryWarehouse[r] + "</td><td>" + ArrayStoredCostInventoryWarehouse[r] + "</td><td>" + ArrayStoredCumcostInventoryWarehouse[r] + "</td><td>" + ArrayStoredBackorderWarehouse[r] + "</td><td>" + ArrayStoredCostBackorderWarehouse[r] + "</td><td>" + ArrayStoredCumcostBackorderWarehouse[r] +"</td></tr>");
 }
 //Static content  --------------------------------------------------------
-document.write("</table><br>")
+document.write("</table></font><br>")

@@ -40,17 +40,27 @@ if (storedCumcostBackorderRetailer) {
     ArrayStoredCumcostBackorderRetailer = JSON.parse(storedCumcostBackorderRetailer);
 }
 
+var storedCostOrderingRetailer = localStorage.getItem("list_cost_ordering_retailer");
+if (storedCostOrderingRetailer) {
+    ArrayStoredCostOrderingRetailer = JSON.parse(storedCostOrderingRetailer);
+}
+
+var storedCumcostOrderingRetailer = localStorage.getItem("list_cumcost_ordering_retailer");
+if (storedCumcostOrderingRetailer) {
+    ArrayStoredCumcostOrderingRetailer = JSON.parse(storedCumcostOrderingRetailer);
+}
+
 
 //var rounds=[];
 
 //Static content ---------------------------------------------------------
 document.write('<h1 align="left">Retailer</h1></br>');
-document.write("<table border='1' width='1000'>")
-document.write("<tr><th>Round #</th><th>Order made</th><th>Inventory</th><th>Cost Inv.</th><th>Cum. Cost Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
+document.write("<font face='Times' size='2'><table border='1' width='1000'>")
+document.write("<tr><th>Round #</th><th>Order made</th><th>Cost Ordering</th><th>Cum. Cost Ordering</th><th>O.H. Inventory</th><th>Cost O.H. Inv.</th><th>Cum. Cost O.H. Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
 //Dynamic content --------------------------------------------------------
 for(var r = 0; r <= nrounds; r++)
 {
-	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersRetailer[r] + "</td><td>" + ArrayStoredInventoryRetailer[r] + "</td><td>" + ArrayStoredCostInventoryRetailer[r] + "</td><td>" + ArrayStoredCumcostInventoryRetailer[r] + "</td><td>" + ArrayStoredBackorderRetailer[r] + "</td><td>" + ArrayStoredCostBackorderRetailer[r] + "</td><td>" + ArrayStoredCumcostBackorderRetailer[r] +"</td></tr>");
+	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersRetailer[r] + "</td><td>" + ArrayStoredCostOrderingRetailer[r] + "</td><td>" + ArrayStoredCumcostOrderingRetailer[r] +"</td><td>" + ArrayStoredInventoryRetailer[r] + "</td><td>" + ArrayStoredCostInventoryRetailer[r] + "</td><td>" + ArrayStoredCumcostInventoryRetailer[r] + "</td><td>" + ArrayStoredBackorderRetailer[r] + "</td><td>" + ArrayStoredCostBackorderRetailer[r] + "</td><td>" + ArrayStoredCumcostBackorderRetailer[r] +"</td></tr>");
 }
 //Static content  --------------------------------------------------------
-document.write("</table><br>")
+document.write("</table></font><br>")

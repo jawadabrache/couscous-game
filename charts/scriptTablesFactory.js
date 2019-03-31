@@ -41,16 +41,26 @@ if (storedCumcostBackorderFactory) {
     ArrayStoredCumcostBackorderFactory = JSON.parse(storedCumcostBackorderFactory);
 }
 
+var storedCostOrderingFactory = localStorage.getItem("list_cost_ordering_factory");
+if (storedCostOrderingFactory) {
+    ArrayStoredCostOrderingFactory = JSON.parse(storedCostOrderingFactory);
+}
+
+var storedCumcostOrderingFactory = localStorage.getItem("list_cumcost_ordering_factory");
+if (storedCumcostOrderingFactory) {
+    ArrayStoredCumcostOrderingFactory = JSON.parse(storedCumcostOrderingFactory);
+}
+
 //var rounds=[];
 
 //Static content ---------------------------------------------------------
 document.write('<h1 align="left">Factory</h1></br>');
-document.write("<table border='1' width='1000'>")
-document.write("<tr><th>Round #</th><th>Order made</th><th>Inventory</th><th>Cost Inv.</th><th>Cum. Cost Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
+document.write("<font face='Times' size='2'><table border='1' width='1000'>")
+document.write("<tr><th>Round #</th><th>Order made</th><th>Cost Ordering</th><th>Cum. Cost Ordering</th><th>O.H. Inventory</th><th>Cost O.H. Inv.</th><th>Cum. Cost O.H. Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
 //Dynamic content --------------------------------------------------------
 for(var r = 0; r <= nrounds; r++)
 {
-	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersFactory[r] + "</td><td>" + ArrayStoredInventoryFactory[r] + "</td><td>" + ArrayStoredCostInventoryFactory[r] + "</td><td>" + ArrayStoredCumcostInventoryFactory[r] + "</td><td>" + ArrayStoredBackorderFactory[r] + "</td><td>" + ArrayStoredCostBackorderFactory[r] + "</td><td>" + ArrayStoredCumcostBackorderFactory[r] +"</td></tr>");
+	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersFactory[r] + "</td><td>" + ArrayStoredCostOrderingFactory[r] + "</td><td>" + ArrayStoredCumcostOrderingFactory[r] + "</td><td>" + ArrayStoredInventoryFactory[r] + "</td><td>" + ArrayStoredCostInventoryFactory[r] + "</td><td>" + ArrayStoredCumcostInventoryFactory[r] + "</td><td>" + ArrayStoredBackorderFactory[r] + "</td><td>" + ArrayStoredCostBackorderFactory[r] + "</td><td>" + ArrayStoredCumcostBackorderFactory[r] +"</td></tr>");
 }
 //Static content  --------------------------------------------------------
-document.write("</table><br>")
+document.write("</table></font><br>")

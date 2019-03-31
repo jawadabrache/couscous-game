@@ -41,16 +41,27 @@ if (storedCumcostBackorderDC) {
     ArrayStoredCumcostBackorderDC = JSON.parse(storedCumcostBackorderDC);
 }
 
+var storedCostOrderingDC = localStorage.getItem("list_cost_ordering_DC");
+if (storedCostOrderingDC) {
+    ArrayStoredCostOrderingDC = JSON.parse(storedCostOrderingDC);
+}
+
+var storedCumcostOrderingDC = localStorage.getItem("list_cumcost_ordering_DC");
+if (storedCumcostOrderingDC) {
+    ArrayStoredCumcostOrderingDC = JSON.parse(storedCumcostOrderingDC);
+}
+
+
 //var rounds=[];
 
 //Static content ---------------------------------------------------------
 document.write('<h1 align="left">DC</h1></br>');
-document.write("<table border='1' width='1000'>")
-document.write("<tr><th>Round #</th><th>Order made</th><th>Inventory</th><th>Cost Inv.</th><th>Cum. Cost Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
+document.write("<font face='Times' size='2'><table border='1' width='1000'>")
+document.write("<tr><th>Round #</th><th>Order made</th><th>Cost Ordering</th><th>Cum. Cost Ordering</th><th>O.H. Inventory</th><th>Cost O.H. Inv.</th><th>Cum. Cost O.H. Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
 //Dynamic content --------------------------------------------------------
 for(var r = 0; r <= nrounds; r++)
 {
-	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersDC[r] + "</td><td>" + ArrayStoredInventoryDC[r] + "</td><td>" + ArrayStoredCostInventoryDC[r] + "</td><td>" + ArrayStoredCumcostInventoryDC[r] + "</td><td>" + ArrayStoredBackorderDC[r] + "</td><td>" + ArrayStoredCostBackorderDC[r] + "</td><td>" + ArrayStoredCumcostBackorderDC[r] +"</td></tr>");
+	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersDC[r] + "</td><td>" + ArrayStoredCostOrderingDC[r] + "</td><td>" + ArrayStoredCumcostOrderingDC[r] + "</td><td>" + ArrayStoredInventoryDC[r] + "</td><td>" + ArrayStoredCostInventoryDC[r] + "</td><td>" + ArrayStoredCumcostInventoryDC[r] + "</td><td>" + ArrayStoredBackorderDC[r] + "</td><td>" + ArrayStoredCostBackorderDC[r] + "</td><td>" + ArrayStoredCumcostBackorderDC[r] +"</td></tr>");
 }
 //Static content  --------------------------------------------------------
-document.write("</table><br>")
+document.write("</table></font><br>")

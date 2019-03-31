@@ -194,6 +194,44 @@ var myFactoryChart = new Chart(canvasFactory, {
   }
 });
 
+var canvasOrder = document.getElementById("myOrderChart");
+var myOrderChart = new Chart(canvasOrder, {
+  type: 'line',
+  data: {
+    labels: rounds,
+    datasets: [
+        { 
+			data: ArrayStoredOrdersRetailer,
+			label: "Retailer",
+			borderColor: "#3e95cd",
+			lineTension: 0,
+			fill: false
+		},
+		{ 
+			data: ArrayStoredOrdersWarehouse,
+			label: "Warehouse",
+			borderColor: "#8e5ea2",
+			lineTension: 0,
+			fill: false
+		},
+		{ 
+			data: ArrayStoredOrdersDC,
+			label: "DC",
+			borderColor: "#3cba9f",
+			lineTension: 0,
+			fill: false
+		},
+		{ 
+			data: ArrayStoredOrdersFactory,
+			label: "Factory",
+			borderColor: "#c45850",
+			lineTension: 0,
+			fill: false
+		}
+    ]
+  }
+});
+
 var canvasInventory = document.getElementById("myInventoryChart");
 var myInventoryChart = new Chart(canvasInventory, {
   type: 'line',

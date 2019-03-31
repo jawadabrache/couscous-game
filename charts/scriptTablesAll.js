@@ -6,6 +6,9 @@ if (nbr_rounds) {
     nrounds = JSON.parse(nbr_rounds);
 }
 
+
+// Retailer
+
 var storedOrdersRetailer = localStorage.getItem("list_orders_retailer");
 if (storedOrdersRetailer) {
     ArrayStoredOrdersRetailer= JSON.parse(storedOrdersRetailer);
@@ -40,6 +43,19 @@ var storedCumcostBackorderRetailer = localStorage.getItem("list_cumcost_backorde
 if (storedCumcostBackorderRetailer) {
     ArrayStoredCumcostBackorderRetailer = JSON.parse(storedCumcostBackorderRetailer);
 }
+
+var storedCostOrderingRetailer = localStorage.getItem("list_cost_ordering_retailer");
+if (storedCostOrderingRetailer) {
+    ArrayStoredCostOrderingRetailer = JSON.parse(storedCostOrderingRetailer);
+}
+
+var storedCumcostOrderingRetailer = localStorage.getItem("list_cumcost_ordering_retailer");
+if (storedCumcostOrderingRetailer) {
+    ArrayStoredCumcostOrderingRetailer = JSON.parse(storedCumcostOrderingRetailer);
+}
+
+
+// Warehouse
 
 var storedOrdersWarehouse = localStorage.getItem("list_orders_warehouse");
 if (storedOrdersWarehouse) {
@@ -76,6 +92,17 @@ if (storedCumcostBackorderWarehouse) {
     ArrayStoredCumcostBackorderWarehouse = JSON.parse(storedCumcostBackorderWarehouse);
 }
 
+var storedCostOrderingWarehouse = localStorage.getItem("list_cost_ordering_warehouse");
+if (storedCostOrderingWarehouse) {
+    ArrayStoredCostOrderingWarehouse = JSON.parse(storedCostOrderingWarehouse);
+}
+
+var storedCumcostOrderingWarehouse = localStorage.getItem("list_cumcost_ordering_warehouse");
+if (storedCumcostOrderingWarehouse) {
+    ArrayStoredCumcostOrderingWarehouse = JSON.parse(storedCumcostOrderingWarehouse);
+}
+
+// DC 
 
 var storedOrdersDC = localStorage.getItem("list_orders_DC");
 if (storedOrdersDC) {
@@ -112,6 +139,19 @@ if (storedCumcostBackorderDC) {
     ArrayStoredCumcostBackorderDC = JSON.parse(storedCumcostBackorderDC);
 }
 
+var storedCostOrderingDC = localStorage.getItem("list_cost_ordering_DC");
+if (storedCostOrderingDC) {
+    ArrayStoredCostOrderingDC = JSON.parse(storedCostOrderingDC);
+}
+
+var storedCumcostOrderingDC = localStorage.getItem("list_cumcost_ordering_DC");
+if (storedCumcostOrderingDC) {
+    ArrayStoredCumcostOrderingDC = JSON.parse(storedCumcostOrderingDC);
+}
+
+
+// Factory 
+
 var storedOrdersFactory = localStorage.getItem("list_orders_factory");
 if (storedOrdersFactory) {
     ArrayStoredOrdersFactory = JSON.parse(storedOrdersFactory);
@@ -147,52 +187,62 @@ if (storedCumcostBackorderFactory) {
     ArrayStoredCumcostBackorderFactory = JSON.parse(storedCumcostBackorderFactory);
 }
 
+var storedCostOrderingFactory = localStorage.getItem("list_cost_ordering_factory");
+if (storedCostOrderingFactory) {
+    ArrayStoredCostOrderingFactory = JSON.parse(storedCostOrderingFactory);
+}
+
+var storedCumcostOrderingFactory = localStorage.getItem("list_cumcost_ordering_factory");
+if (storedCumcostOrderingFactory) {
+    ArrayStoredCumcostOrderingFactory = JSON.parse(storedCumcostOrderingFactory);
+}
+
 //var rounds=[];
 
 //Static content ---------------------------------------------------------
 document.write('<h1 align="left">Retailer</h1></br>');
-document.write("<table border='1' width='1000'>")
-document.write("<tr><th>Round #</th><th>Order made</th><th>Inventory</th><th>Cost Inv.</th><th>Cum. Cost Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
+document.write("<font face='Times' size='2'><table border='1' width='1000'>")
+document.write("<tr><th>Round #</th><th>Order made</th><th>Cost Ordering</th><th>Cum. Cost Ordering</th><th>O.H. Inventory</th><th>Cost O.H. Inv.</th><th>Cum. Cost O.H. Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
 //Dynamic content --------------------------------------------------------
 for(var r = 0; r <= nrounds; r++)
 {
-	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersRetailer[r] + "</td><td>" + ArrayStoredInventoryRetailer[r] + "</td><td>" + ArrayStoredCostInventoryRetailer[r] + "</td><td>" + ArrayStoredCumcostInventoryRetailer[r] + "</td><td>" + ArrayStoredBackorderRetailer[r] + "</td><td>" + ArrayStoredCostBackorderRetailer[r] + "</td><td>" + ArrayStoredCumcostBackorderRetailer[r] +"</td></tr>");
+	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersRetailer[r] + "</td><td>" + ArrayStoredCostOrderingRetailer[r] + "</td><td>" + ArrayStoredCumcostOrderingRetailer[r] +"</td><td>" + ArrayStoredInventoryRetailer[r] + "</td><td>" + ArrayStoredCostInventoryRetailer[r] + "</td><td>" + ArrayStoredCumcostInventoryRetailer[r] + "</td><td>" + ArrayStoredBackorderRetailer[r] + "</td><td>" + ArrayStoredCostBackorderRetailer[r] + "</td><td>" + ArrayStoredCumcostBackorderRetailer[r] +"</td></tr>");
 }
 //Static content  --------------------------------------------------------
-document.write("</table><br>")
+document.write("</table></font><br>")
 
 //Static content ---------------------------------------------------------
 document.write('<h1 align="left">Warehouse</h1></br>');
-document.write("<table border='1' width='1000'>")
-document.write("<tr><th>Round #</th><th>Order made</th><th>Inventory</th><th>Cost Inv.</th><th>Cum. Cost Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
+document.write("<font face='Times' size='2'><table border='1' width='1000'>")
+document.write("<tr><th>Round #</th><th>Order made</th><th>Cost Ordering</th><th>Cum. Cost Ordering</th><th>O.H. Inventory</th><th>Cost O.H. Inv.</th><th>Cum. Cost O.H. Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
 //Dynamic content --------------------------------------------------------
 for(var r = 0; r <= nrounds; r++)
 {
-	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersWarehouse[r] + "</td><td>" + ArrayStoredInventoryWarehouse[r] + "</td><td>" + ArrayStoredCostInventoryWarehouse[r] + "</td><td>" + ArrayStoredCumcostInventoryWarehouse[r] + "</td><td>" + ArrayStoredBackorderWarehouse[r] + "</td><td>" + ArrayStoredCostBackorderWarehouse[r] + "</td><td>" + ArrayStoredCumcostBackorderWarehouse[r] +"</td></tr>");
+	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersWarehouse[r] + "</td><td>" + ArrayStoredCostOrderingWarehouse[r] + "</td><td>" + ArrayStoredCumcostOrderingWarehouse[r] +"</td><td>" + ArrayStoredInventoryWarehouse[r] + "</td><td>" + ArrayStoredCostInventoryWarehouse[r] + "</td><td>" + ArrayStoredCumcostInventoryWarehouse[r] + "</td><td>" + ArrayStoredBackorderWarehouse[r] + "</td><td>" + ArrayStoredCostBackorderWarehouse[r] + "</td><td>" + ArrayStoredCumcostBackorderWarehouse[r] +"</td></tr>");
 }
 //Static content  --------------------------------------------------------
-document.write("</table><br>")
+document.write("</table></font><br>")
 
 //Static content ---------------------------------------------------------
 document.write('<h1 align="left">DC</h1></br>');
-document.write("<table border='1' width='1000'>")
-document.write("<tr><th>Round #</th><th>Order made</th><th>Inventory</th><th>Cost Inv.</th><th>Cum. Cost Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
+document.write("<font face='Times' size='2'><table border='1' width='1000'>")
+document.write("<tr><th>Round #</th><th>Order made</th><th>Cost Ordering</th><th>Cum. Cost Ordering</th><th>O.H. Inventory</th><th>Cost O.H. Inv.</th><th>Cum. Cost O.H. Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
 //Dynamic content --------------------------------------------------------
 for(var r = 0; r <= nrounds; r++)
 {
-	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersDC[r] + "</td><td>" + ArrayStoredInventoryDC[r] + "</td><td>" + ArrayStoredCostInventoryDC[r] + "</td><td>" + ArrayStoredCumcostInventoryDC[r] + "</td><td>" + ArrayStoredBackorderDC[r] + "</td><td>" + ArrayStoredCostBackorderDC[r] + "</td><td>" + ArrayStoredCumcostBackorderDC[r] +"</td></tr>");
+	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersDC[r] + "</td><td>" + ArrayStoredCostOrderingDC[r] + "</td><td>" + ArrayStoredCumcostOrderingDC[r] + "</td><td>" + ArrayStoredInventoryDC[r] + "</td><td>" + ArrayStoredCostInventoryDC[r] + "</td><td>" + ArrayStoredCumcostInventoryDC[r] + "</td><td>" + ArrayStoredBackorderDC[r] + "</td><td>" + ArrayStoredCostBackorderDC[r] + "</td><td>" + ArrayStoredCumcostBackorderDC[r] +"</td></tr>");
 }
 //Static content  --------------------------------------------------------
-document.write("</table><br>")
+document.write("</table></font><br>")
 
 //Static content ---------------------------------------------------------
 document.write('<h1 align="left">Factory</h1></br>');
-document.write("<table border='1' width='1000'>")
-document.write("<tr><th>Round #</th><th>Order made</th><th>Inventory</th><th>Cost Inv.</th><th>Cum. Cost Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
+document.write("<font face='Times' size='2'><table border='1' width='1000'>")
+document.write("<tr><th>Round #</th><th>Order made</th><th>Cost Ordering</th><th>Cum. Cost Ordering</th><th>O.H. Inventory</th><th>Cost O.H. Inv.</th><th>Cum. Cost O.H. Inv.</th><th>Backorder</th><th>Cost B.O.</th><th>Cum. Cost B.O.</th></tr>");
 //Dynamic content --------------------------------------------------------
 for(var r = 0; r <= nrounds; r++)
 {
-	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersFactory[r] + "</td><td>" + ArrayStoredInventoryFactory[r] + "</td><td>" + ArrayStoredCostInventoryFactory[r] + "</td><td>" + ArrayStoredCumcostInventoryFactory[r] + "</td><td>" + ArrayStoredBackorderFactory[r] + "</td><td>" + ArrayStoredCostBackorderFactory[r] + "</td><td>" + ArrayStoredCumcostBackorderFactory[r] +"</td></tr>");
+	document.write("<tr><td>" + r + "</td><td>" + ArrayStoredOrdersFactory[r] + "</td><td>" + ArrayStoredCostOrderingFactory[r] + "</td><td>" + ArrayStoredCumcostOrderingFactory[r] + "</td><td>" + ArrayStoredInventoryFactory[r] + "</td><td>" + ArrayStoredCostInventoryFactory[r] + "</td><td>" + ArrayStoredCumcostInventoryFactory[r] + "</td><td>" + ArrayStoredBackorderFactory[r] + "</td><td>" + ArrayStoredCostBackorderFactory[r] + "</td><td>" + ArrayStoredCumcostBackorderFactory[r] +"</td></tr>");
 }
 //Static content  --------------------------------------------------------
-document.write("</table><br>")
+document.write("</table></font><br>")
