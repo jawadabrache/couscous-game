@@ -148,7 +148,6 @@ var trackName = [];
 var trackFileName = [];
 var trackPlayed;
 
-
 // Support function for drawing
 function drawInformationFlowLine(xorig, yorig, xdest, ydest, withTerm) {
 
@@ -422,7 +421,7 @@ function setup() {
 		'Track28.mp3',
 		'Track29.mp3'
 		];
-
+	
 }
 
 function draw() {
@@ -3079,10 +3078,12 @@ function drawLineRetailer_s01() {
 	drawInformationFlowLine(260,255,260,245,0);
 	drawInformationFlowLine(260,245,340,245,0);
 	drawInformationFlowLine(340,245,340,255,1);
+	drawEnveloppe(270,230);
 }
 
 function drawLineRetailer_s02() {
 	drawMaterialFlowLine(315,325,260,325,1);
+	drawTruck(270,305);
 }
 
 function drawNotifRetailer_s02() {
@@ -3128,6 +3129,7 @@ function drawLineWarehouse_s01() {
 	drawInformationFlowLine(260,255,260,245,0);
 	drawInformationFlowLine(260,245,340,245,0);
 	drawInformationFlowLine(340,245,340,255,1);
+	drawEnveloppe(270,230);
 }
 
 function drawNotifWarehouse_s01() {
@@ -3139,16 +3141,19 @@ function drawLineWarehouse_s02() {
 	drawInformationFlowLine(55+300,408,110+300,408,0);
 	drawInformationFlowLine(110+300,408,110+300,270,0);
 	drawInformationFlowLine(110+300,270,65+300,270,1);
+
 }
 
 function drawLineWarehouse_s03() {
 	drawInformationFlowLine(260+300,255,260+300,245,0);
 	drawInformationFlowLine(260+300,245,340+300,245,0);
 	drawInformationFlowLine(340+300,245,340+300,255,1);
+	drawEnveloppe(270+300,230);
 }
 
 function drawLineWarehouse_s04() {
 	drawMaterialFlowLine(315+300,325,260+300,325,1);
+	drawTruck(270+300,305);
 }
 
 function drawNotifWarehouse_s04() {
@@ -3163,6 +3168,7 @@ function drawLineWarehouse_s05() {
 
 function drawLineWarehouse_s06() {
 	drawMaterialFlowLine(315,325,260,325,1);
+	drawTruck(270,305);
 }
 
 function drawLineWarehouse_s07() {
@@ -3200,11 +3206,13 @@ function drawLineDC_s01() {
 	drawInformationFlowLine(260+300,255,260+300,245,0);
 	drawInformationFlowLine(260+300,245,340+300,245,0);
 	drawInformationFlowLine(340+300,245,340+300,255,1);
+	drawEnveloppe(270+300,230);
 }
 
 function drawNotifDC_s01() {
 	noFill();
 	ellipse(45+600,400,120,80);
+
 }
 
 function drawLineDC_s02() {
@@ -3217,10 +3225,12 @@ function drawLineDC_s03() {
 	drawInformationFlowLine(260+600,255,260+600,245,0);
 	drawInformationFlowLine(260+600,245,340+600,245,0);
 	drawInformationFlowLine(340+600,245,340+600,255,1);
+	drawEnveloppe(270+600,230);
 }
 
 function drawLineDC_s04() {
 	drawMaterialFlowLine(315+600,325,260+600,325,1);
+	drawTruck(270+600,305);
 }
 
 function drawNotifDC_s04() {
@@ -3235,6 +3245,7 @@ function drawLineDC_s05() {
 
 function drawLineDC_s06() {
 	drawMaterialFlowLine(315+300,325,260+300,325,1);
+	drawTruck(270+300,305);
 }
 
 function drawLineDC_s07() {
@@ -3272,6 +3283,7 @@ function drawLineFactory_s01() {
 	drawInformationFlowLine(260+600,255,260+600,245,0);
 	drawInformationFlowLine(260+600,245,340+600,245,0);
 	drawInformationFlowLine(340+600,245,340+600,255,1);
+	drawEnveloppe(270+600,230);
 }
 
 function drawNotifFactory_s01() {
@@ -3287,6 +3299,7 @@ function drawLineFactory_s02() {
 
 function drawLineFactory_s03() {
 	drawMaterialFlowLine(315+600,325,260+600,325,1);
+	drawTruck(270+600,305);
 }
 
 function drawLineFactory_s04() {
@@ -3386,4 +3399,19 @@ function displayMusicFactory() {
 	fill(0,0,255);
 	text("Music played - Excerpts from:", 20+900, 505);
 	text(trackName[trackPlayed], 20+900, 530); 
+}
+
+function drawEnveloppe(x,y) {
+	noFill();
+	rect(x,y,20,10);
+	line(x,y,x+10,y+6);
+	line(x+10,y+6,x+20,y);
+}
+
+function drawTruck(x,y) {
+	noFill();
+	rect(x,y+3,7,5);
+	rect(x+8,y,12,8);
+	ellipse(x+4,y+10,4,4);
+	ellipse(x+16,y+10,4,4);
 }
