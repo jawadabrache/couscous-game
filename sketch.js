@@ -2491,7 +2491,10 @@ function displayRetailer() {
 	var colorInv = 'G';
 	
 	if (inventoryRetailer[roundSim] < inventoryRetailer[0]/2 && inventoryRetailer[roundSim] >= inventoryRetailer[0]/4) colorInv = 'Y';
+	if (inventoryRetailer[roundSim] >= inventoryRetailer[0]*2 && inventoryRetailer[roundSim] < inventoryRetailer[0]*4) colorInv = 'Y';
 	if (inventoryRetailer[roundSim] < inventoryRetailer[0]/4 && inventoryRetailer[roundSim] > 0) colorInv = 'O';
+	if (inventoryRetailer[roundSim] >= inventoryRetailer[0]*4 && inventoryRetailer[roundSim] < inventoryRetailer[0]*8) colorInv = 'O';
+	if (inventoryRetailer[roundSim] > inventoryRetailer[0]*8) colorInv = 'R';
 	if (inventoryRetailer[roundSim] == 0) colorInv = 'R';
 	
 	switch (colorInv) {
@@ -2571,7 +2574,10 @@ function displayWarehouse() {
 	var colorInv = 'G';
 	
 	if (inventoryWarehouse[roundSim] < inventoryWarehouse[0]/2 && inventoryWarehouse[roundSim] >= inventoryWarehouse[0]/4) colorInv = 'Y';
+	if (inventoryWarehouse[roundSim] >= inventoryWarehouse[0]*2 && inventoryWarehouse[roundSim] < inventoryWarehouse[0]*4) colorInv = 'Y';
 	if (inventoryWarehouse[roundSim] < inventoryWarehouse[0]/4 && inventoryWarehouse[roundSim] > 0) colorInv = 'O';
+	if (inventoryWarehouse[roundSim] >= inventoryWarehouse[0]*4 && inventoryWarehouse[roundSim] < inventoryWarehouse[0]*8) colorInv = 'O';
+	if (inventoryWarehouse[roundSim] > inventoryWarehouse[0]*8) colorInv = 'R';
 	if (inventoryWarehouse[roundSim] == 0) colorInv = 'R';
 	
 	switch (colorInv) {
@@ -2647,11 +2653,15 @@ function displayDC() {
 	text(quantityReceivedByDC[roundSim], 237+600, 335);
 	text("Inventory: " + inventoryDC[roundSim], 20+600, 170);
 	var colorInv = 'G';
-	
+		
 	if (inventoryDC[roundSim] < inventoryDC[0]/2 && inventoryDC[roundSim] >= inventoryDC[0]/4) colorInv = 'Y';
+	if (inventoryDC[roundSim] >= inventoryDC[0]*2 && inventoryDC[roundSim] < inventoryDC[0]*4) colorInv = 'Y';
 	if (inventoryDC[roundSim] < inventoryDC[0]/4 && inventoryDC[roundSim] > 0) colorInv = 'O';
+	if (inventoryDC[roundSim] >= inventoryDC[0]*4 && inventoryDC[roundSim] < inventoryDC[0]*8) colorInv = 'O';
+	if (inventoryDC[roundSim] > inventoryDC[0]*8) colorInv = 'R';
 	if (inventoryDC[roundSim] == 0) colorInv = 'R';
-	
+
+
 	switch (colorInv) {
 		case 'G': 
 			fill(0, 153, 0); 
@@ -2729,9 +2739,12 @@ function displayFactory() {
 	var colorInv = 'G';
 	
 	if (inventoryFactory[roundSim] < inventoryFactory[0]/2 && inventoryFactory[roundSim] >= inventoryFactory[0]/4) colorInv = 'Y';
+	if (inventoryFactory[roundSim] >= inventoryFactory[0]*2 && inventoryFactory[roundSim] < inventoryFactory[0]*4) colorInv = 'Y';
 	if (inventoryFactory[roundSim] < inventoryFactory[0]/4 && inventoryFactory[roundSim] > 0) colorInv = 'O';
+	if (inventoryFactory[roundSim] >= inventoryFactory[0]*4 && inventoryFactory[roundSim] < inventoryFactory[0]*8) colorInv = 'O';
+	if (inventoryFactory[roundSim] > inventoryFactory[0]*8) colorInv = 'R';
 	if (inventoryFactory[roundSim] == 0) colorInv = 'R';
-	
+
 	switch (colorInv) {
 		case 'G': 
 			fill(0, 153, 0); 
