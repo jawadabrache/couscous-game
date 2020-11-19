@@ -103,7 +103,7 @@ var patternInput;
 // Amplification multiplicative factors
 var amplifMultip2;
 var amplifMultipInput2;
-var amplifMultip3;
+var amplifMultip3; 
 var amplifMultipInput3;
 
 // Amplification after/every n rounds
@@ -309,9 +309,11 @@ function setup() {
 	
 	// default parameter values
 	
-	pattern = "1";
+	pattern = "3";
 	minOrderSize = 20;
 	maxOrderSize = 80;
+	amplifMultip3 = 3;
+	amplifEvery = 4; 
 	
 	patternInput = createInput('');
 	patternInput.position(80+1200, 340);
